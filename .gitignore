@@ -12,3 +12,5 @@ starparse-shared/starparse-shared.iml
 starparse.iml
 starparse.log
 starparse.xml
+starparse-attacks.xml
+starparse-timers.xml
