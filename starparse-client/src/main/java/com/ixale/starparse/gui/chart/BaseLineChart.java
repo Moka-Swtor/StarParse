@@ -56,7 +56,7 @@ public abstract class BaseLineChart extends BaseChart<LineChart<Number, Number>>
 		chart = new LineChart<Number, Number>(xAxis, yAxis);
 		chart.setCreateSymbols(false);
 		chart.setAnimated(false);
-		chart.setMaxHeight(100);
+		chart.setMaxHeight(600);
 		chart.setLegendVisible(false);
 
 		xAxis.setAutoRanging(false);

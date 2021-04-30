@@ -100,7 +100,21 @@ abstract public class BaseStatsPresenter implements Initializable {
 		Platform.runLater(onBreakdownSelectAction);
 	}
 
-	protected void toggleWrapper(final Pane wrapper, boolean isVisible, int height) throws Exception {
+	protected List<Pane> getOtherVisibleCharts(final Pane wrapper) {
+		return List.of();
+	}
+
+	protected void toggleWrapper(final Pane wrapper, boolean isVisible, boolean isChart) throws Exception {
+		List<Pane> otherVisibleCharts = null;
+		int nbChartVisible = -1;
+		int height = 165;
+		if (isChart) {
+			otherVisibleCharts = getOtherVisibleCharts(wrapper);
+			nbChartVisible = otherVisibleCharts.size() + (isVisible ? 1 : 0);
+			height *= nbChartVisible == 3 ? 1 : nbChartVisible==2 ? 2 : 3;
+			final int prefHeight = height;
+			otherVisibleCharts.forEach(chart -> chart.setPrefHeight(prefHeight));
+		}
 
 		if (isVisible) {
 			wrapper.setPrefHeight(height);

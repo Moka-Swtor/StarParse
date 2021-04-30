@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -21,6 +23,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 
@@ -183,24 +186,32 @@ public class OverviewPresenter extends BaseStatsPresenter
 		groupEffectsWrapper.setVisible(false);
 	}
 
+	@Override
+	protected List<Pane> getOtherVisibleCharts(final Pane wrapper) {
+		return List.of(dpsChartWrapper, dtpsChartWrapper, hpsChartWrapper).stream()
+				.filter(Predicate.not(wrapper::equals))
+				.filter(Node::isVisible)
+				.collect(Collectors.toList());
+	}
+
 	public void toggleDpsChart(ActionEvent event) throws Exception {
-		toggleWrapper(dpsChartWrapper, ((CheckBox) event.getSource()).isSelected(), 165);
+		toggleWrapper(dpsChartWrapper, ((CheckBox) event.getSource()).isSelected(), true);
 	}
 
 	public void toggleHpsChart(ActionEvent event) throws Exception {
-		toggleWrapper(hpsChartWrapper, ((CheckBox) event.getSource()).isSelected(), 165);
+		toggleWrapper(hpsChartWrapper, ((CheckBox) event.getSource()).isSelected(), true);
 	}
 
 	public void toggleDtpsChart(ActionEvent event) throws Exception {
-		toggleWrapper(dtpsChartWrapper, ((CheckBox) event.getSource()).isSelected(), 165);
+		toggleWrapper(dtpsChartWrapper, ((CheckBox) event.getSource()).isSelected(), true);
 	}
 
 	public void toggleMineEffects(ActionEvent event) throws Exception {
-		toggleWrapper(mineEffectsWrapper, ((CheckBox) event.getSource()).isSelected(), 165);
+		toggleWrapper(mineEffectsWrapper, ((CheckBox) event.getSource()).isSelected(), false);
 	}
 
 	public void toggleGroupEffects(ActionEvent event) throws Exception {
-		toggleWrapper(groupEffectsWrapper, ((CheckBox) event.getSource()).isSelected(), 165);
+		toggleWrapper(groupEffectsWrapper, ((CheckBox) event.getSource()).isSelected(), false);
 	}
 
 	protected void refreshCombatStats(final Combat combat, final CombatStats stats) throws Exception {

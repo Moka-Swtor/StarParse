@@ -27,7 +27,7 @@
       <content>
         <VBox id="VBox" alignment="TOP_LEFT" disable="false" fillWidth="true" spacing="0.0" visible="true">
           <children>
-            <StackPane fx:id="dpsChartWrapper" minHeight="-Infinity" prefHeight="165.0" prefWidth="-1.0" visible="true">
+            <StackPane fx:id="dpsChartWrapper" minHeight="-Infinity" prefHeight="495.0" prefWidth="-1.0" visible="true">
               <padding>
                 <Insets bottom="5.0" />
               </padding>
