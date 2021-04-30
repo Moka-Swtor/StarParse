@@ -15,7 +15,7 @@
 <?import javafx.scene.text.*?>
 <?scenebuilder-stylesheet ../styles.css?>
 
-<BorderPane fx:id="root" minHeight="-1.0" minWidth="-1.0" prefHeight="520.0" prefWidth="805.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ixale.starparse.gui.main.MainPresenter">
+<BorderPane fx:id="root" minHeight="-1.0" minWidth="-1.0" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ixale.starparse.gui.main.MainPresenter">
   <bottom>
     <AnchorPane fx:id="status" minHeight="21.0" prefHeight="-1.0" prefWidth="-1.0">
       <children>
