@@ -181,7 +181,7 @@ public class Parser {
 	// to support mara/jugg and sent/guard distinction (used for player only)
 	private boolean isDualWield = false;
 
-	public class ActorState {
+	public class ActorState implements TimerState {
 
 		// effective guard state (0, 1, 2)
 		public int guarded = 0;
@@ -193,6 +193,31 @@ public class Parser {
 		public Entity hotEffect = null;
 		public Integer hotDuration = null;
 		public Long hotLast = null;
+
+		@Override
+		public int getStacks() {
+			return hotStacks;
+		}
+
+		@Override
+		public Long getSince() {
+			return hotSince;
+		}
+
+		@Override
+		public Long getLast() {
+			return hotLast;
+		}
+
+		@Override
+		public Entity getEffect() {
+			return hotEffect;
+		}
+
+		@Override
+		public Integer getDuration() {
+			return hotDuration;
+		}
 	}
 
 	private final HashMap<Actor, ActorState> actorStates = new HashMap<Actor, ActorState>();

@@ -161,7 +161,7 @@ public class StarparseAppFactory
 	}
 
 	@Bean
-	public HotsPopoutPresenter hotsPopoutPresenter()
+	public HotsPopoutPresenter2 hotsPopoutPresenter()
 	{
 		return loadPresenter("/fxml/HotsPopout.fxml");
 	}

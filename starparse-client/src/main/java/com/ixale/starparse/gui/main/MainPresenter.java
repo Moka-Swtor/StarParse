@@ -179,7 +179,7 @@ public class MainPresenter implements Initializable {
 	@Inject
 	private RaidTpsPopoutPresenter raidTpsPopoutPresenter;
 	@Inject
-	private HotsPopoutPresenter hotsPopoutPresenter;
+	private HotsPopoutPresenter2 hotsPopoutPresenter;
 	@Inject
 	private RaidNotesPopoutPresenter raidNotesPopoutPresenter;
 
