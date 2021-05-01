@@ -511,6 +511,8 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 		}
 	}
 
+	abstract void repaintTimer(GraphicsContext gc, double width, double height, TimerState timerState);
+
 	private boolean repaintHot(final TimerFrame frame, final Integer newSize) {
 		final Integer duration = frame.state.getDuration();
 		final Long since = frame.state.getSince();
@@ -522,63 +524,13 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 		if (since == null || (duration != null && duration < (TimeUtils.getCurrentTime() - since - TIMEOUT_WITH_DURATION))) { // arbitrary tolerance
 			return false;
 		}
-		if (since != null && (TimeUtils.getCurrentTime() - since) > TIMEOUT_WITHOUT_DURATION) {
+		if (TimeUtils.getCurrentTime() - since > TIMEOUT_WITHOUT_DURATION) {
 			// expired (out of range etc.)
 			return false;
 		}
 
 		final GraphicsContext gc = canvas.getGraphicsContext2D();
-		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		if (duration == null) {
-			gc.setFill(Color.LIMEGREEN);
-		} else {
-			gc.setFill(Color.DARKGREEN);
-		}
-		gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 0, 0);
-		if (duration != null && since != null) {
-			gc.setFill(Color.LIMEGREEN);
-			double a = 360 * ((TimeUtils.getCurrentTime() - since) * 1.0 / duration);
-			if (a > 360) {
-				a = 360;
-			}
-			double x, y;
-			double b = a % 90;
-			double r = canvas.getWidth() / 2;
-			double offset = r + (r * Math.sin(Math.toRadians(b > 45 ? 90 - b : b)) / Math.sin(Math.toRadians(b > 45 ? b : 90 - b))
-				* (b > 45 ? -1 : 1));
-			if (a < 45) {
-				x = offset;
-				y = 0;
-				gc.fillPolygon(
-					new double[]{0, r, r, x, canvas.getWidth(), canvas.getWidth(), 0},
-					new double[]{0, 0, r, y, 0, canvas.getHeight(), canvas.getHeight()}, 7);
-			} else if (a < 135) {
-				x = canvas.getWidth();
-				y = offset;
-				gc.fillPolygon(
-					new double[]{0, r, r, x, canvas.getWidth(), 0},
-					new double[]{0, 0, r, y, canvas.getHeight(), canvas.getHeight()}, 6);
-			} else if (a < 225) {
-				x = canvas.getWidth() - offset;
-				y = canvas.getHeight();
-				gc.fillPolygon(
-					new double[]{0, r, r, x, 0},
-					new double[]{0, 0, r, y, canvas.getHeight()}, 5);
-			} else if (a < 315) {
-				x = 0;
-				y = canvas.getHeight() - offset;
-				gc.fillPolygon(
-					new double[]{0, r, r, x},
-					new double[]{0, 0, r, y}, 4);
-			} else {
-				x = offset;
-				y = 0;
-				gc.fillPolygon(
-					new double[]{r, r, x},
-					new double[]{0, r, y, canvas.getHeight()}, 3);
-			}
-
-		}
+		this.repaintTimer(gc, canvas.getWidth(), canvas.getHeight(), frame.state);
 		return true;
 	}
 

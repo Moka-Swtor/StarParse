@@ -5,9 +5,12 @@ import com.ixale.starparse.domain.Combat;
 import com.ixale.starparse.domain.stats.CombatStats;
 import com.ixale.starparse.parser.Parser;
 import com.ixale.starparse.parser.TimerState;
+import com.ixale.starparse.time.TimeUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 
 import java.io.File;
@@ -45,6 +48,61 @@ public class HotsPopoutPresenter2 extends GridPopoutPresenter {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
         autosizeButton.setVisible(false);
+    }
+
+    @Override
+    void repaintTimer(final GraphicsContext gc, final double width, final double height, final TimerState timerState) {
+        gc.clearRect(0, 0, width, height);
+        if (timerState.getDuration() == null) {
+            gc.setFill(Color.LIMEGREEN);
+        } else {
+            gc.setFill(Color.DARKGREEN);
+        }
+        gc.fillRoundRect(0, 0, width, height, 0, 0);
+        if (timerState.getDuration() != null) {
+            gc.setFill(Color.LIMEGREEN);
+            double a = 360 * ((TimeUtils.getCurrentTime() - timerState.getSince()) * 1.0 / timerState.getDuration());
+            if (a > 360) {
+                a = 360;
+            }
+            double x, y;
+            double b = a % 90;
+            double r = width / 2;
+            double offset = r + (r * Math.sin(Math.toRadians(b > 45 ? 90 - b : b)) / Math.sin(Math.toRadians(b > 45 ? b : 90 - b))
+                    * (b > 45 ? -1 : 1));
+            if (a < 45) {
+                x = offset;
+                y = 0;
+                gc.fillPolygon(
+                        new double[]{0, r, r, x, width, width, 0},
+                        new double[]{0, 0, r, y, 0, height, height}, 7);
+            } else if (a < 135) {
+                x = width;
+                y = offset;
+                gc.fillPolygon(
+                        new double[]{0, r, r, x, width, 0},
+                        new double[]{0, 0, r, y, height, height}, 6);
+            } else if (a < 225) {
+                x = width - offset;
+                y = height;
+                gc.fillPolygon(
+                        new double[]{0, r, r, x, 0},
+                        new double[]{0, 0, r, y, height}, 5);
+            } else if (a < 315) {
+                x = 0;
+                y = height - offset;
+                gc.fillPolygon(
+                        new double[]{0, r, r, x},
+                        new double[]{0, 0, r, y}, 4);
+            } else {
+                x = offset;
+                y = 0;
+                gc.fillPolygon(
+                        new double[]{r, r, x},
+                        new double[]{0, r, y, height}, 3);
+            }
+
+        }
     }
 
     @Override
