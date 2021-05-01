@@ -166,6 +166,12 @@ public class StarparseAppFactory
 		return loadPresenter("/fxml/HotsPopout.fxml");
 	}
 
+	@Bean
+	public AbilityTimersPopoutPresenter abilityTimersPopoutPresenter()
+	{
+		return loadPresenter("/fxml/AbilityTimersPopout.fxml");
+	}
+
 	@SuppressWarnings("unchecked")
 	private <T> T loadPresenter(String fxmlFile)
 	{

@@ -237,7 +237,7 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 		}
 	}
 
-	public void resetPlayers() {
+	public void resetTimers() {
 		for (final TimerFrame frame: timers.values()) {
 			frames.getChildren().remove(frame.pane);
 		}

@@ -134,7 +134,7 @@ public class MainPresenter implements Initializable {
 	private MenuItem raidGroupsSettingsMenu, timersSettingsMenu, timersCheckAllMenu, timersUncheckAllMenu;
 	@FXML
 	private CheckMenuItem timersPopoutMenu, timersCenterPopoutMenu, personalStatsPopoutMenu, damageTakenPopoutMenu, challengesPopoutMenu,
-		raidDpsPopoutMenu, raidDtpsPopoutMenu, raidHpsPopoutMenu, raidTpsPopoutMenu, hotsPopoutMenu, raidNotesPopoutMenu, lockOverlaysMenu;
+		raidDpsPopoutMenu, raidDtpsPopoutMenu, raidHpsPopoutMenu, raidTpsPopoutMenu, hotsPopoutMenu, abilityTImersPopoutMenu, raidNotesPopoutMenu, lockOverlaysMenu;
 
 	@Inject
 	private OverviewPresenter overviewPresenter;
@@ -180,6 +180,8 @@ public class MainPresenter implements Initializable {
 	private RaidTpsPopoutPresenter raidTpsPopoutPresenter;
 	@Inject
 	private HotsPopoutPresenter2 hotsPopoutPresenter;
+	@Inject
+	private AbilityTimersPopoutPresenter abilityTimersPopoutPresenter;
 	@Inject
 	private RaidNotesPopoutPresenter raidNotesPopoutPresenter;
 
@@ -568,7 +570,8 @@ public class MainPresenter implements Initializable {
 					// set the current combat log (will trigger full reset)
 					raidPresenter.setCombatLogName(currentCombatLog.getFileName());
 
-					hotsPopoutPresenter.resetPlayers();
+					hotsPopoutPresenter.resetTimers();
+					abilityTimersPopoutPresenter.resetTimers();
 
 				} else {
 					raidPresenter.setCombatLogName(null);
@@ -705,6 +708,8 @@ public class MainPresenter implements Initializable {
 					// TODO: leaking parser?
 					hotsPopoutPresenter.setActorStates(parser.getActorStates(), currentCharacterName);
 				}
+				// TODO: call from elsewhere with data of current ability timers
+				abilityTimersPopoutPresenter.setActorStates(parser.getActorStates());
 
 			} catch (Exception e) {
 				logger.error("General error", e);
@@ -1107,6 +1112,14 @@ public class MainPresenter implements Initializable {
 								}
 							});
 						}
+						if (abilityTimersPopoutPresenter.isEnabled()) {
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+									abilityTimersPopoutPresenter.tickHots();
+								}
+							});
+						}
 					}
 				});
 			}
@@ -1217,6 +1230,7 @@ public class MainPresenter implements Initializable {
 		StatsPopout.add(raidHpsPopoutPresenter, raidHpsPopoutMenu, config);
 		StatsPopout.add(raidTpsPopoutPresenter, raidTpsPopoutMenu, config);
 		StatsPopout.add(hotsPopoutPresenter, hotsPopoutMenu, config);
+		StatsPopout.add(abilityTimersPopoutPresenter, abilityTImersPopoutMenu, config);
 		StatsPopout.add(raidNotesPopoutPresenter, raidNotesPopoutMenu, config);
 
 		timersPopoutPresenter.setTimersCenterControl(timersCenterPopoutPresenter);
