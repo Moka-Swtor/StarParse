@@ -1,0 +1,1879 @@
+<com.ixale.starparse.domain.ConfigTimers>
+  <timers>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun (2&amp;3) Flare</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <ability>Ignite Flare</ability>
+        <effect>Ignite Flare</effect>
+      </trigger>
+      <volume>13</volume>
+      <soundOffset>6</soundOffset>
+      <interval>20.0</interval>
+      <color>0x00ffffff</color>
+      <audio>R2D2 - WEEEOOOOWW!.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Sage Cleanse</name>
+      <folder>community: community: Sage and Sorc</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Self</source>
+        <target>@Self</target>
+        <effect>Swift Rejuvenation</effect>
+      </trigger>
+      <interval>30.0</interval>
+      <color>0x334db3ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Sage Benevolence</name>
+      <folder>community: community: Sage and Sorc</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Self</source>
+        <target>@Self</target>
+        <effect>Altruism</effect>
+      </trigger>
+      <interval>10.0</interval>
+      <color>0x4d804dff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>true</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Sorc Cleanse</name>
+      <folder>community: community: Sage and Sorc</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Self</source>
+        <target>@Self</target>
+        <effect>Galvanizing Cleanse</effect>
+      </trigger>
+      <interval>30.0</interval>
+      <color>0x334db3ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Sorc Dark Heal</name>
+      <folder>community: community: Sage and Sorc</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Self</source>
+        <target>@Self</target>
+        <effect>Dark Concentration</effect>
+      </trigger>
+      <interval>10.0</interval>
+      <color>0x4d804dff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>true</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>DP Bestia Pulverize</name>
+      <folder>community: community: Dread Palace</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <ability>Pulverize</ability>
+        <boss>Dread Master Bestia</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <volume>100</volume>
+      <soundOffset>2</soundOffset>
+      <interval>12.0</interval>
+      <color>0xcc8099ff</color>
+      <audio>Jar Jar - Boom!.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>SV HF Dread Touch</name>
+      <folder>community: community: Scum and Villainy</folder>
+      <trigger>
+        <type>EFFECT_LOST</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3265798642597888</abilityGuid>
+        <effectGuid>3265798642598176</effectGuid>
+        <boss>Hateful Entity</boss>
+      </trigger>
+      <interval>157.0</interval>
+      <color>0x663366ff</color>
+      <countdownVoice>Amy</countdownVoice>
+      <countdownCount>5</countdownCount>
+      <countdownVolume>18</countdownVolume>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>SV HF Hate Pulse</name>
+      <folder>community: community: Scum and Villainy</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3265811527499776</abilityGuid>
+        <boss>Hateful Entity</boss>
+      </trigger>
+      <interval>15.0</interval>
+      <color>0x664db3ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>SV HF Void PING</name>
+      <folder>community: community: Scum and Villainy</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3265820117434368</abilityGuid>
+        <boss>Hateful Entity</boss>
+      </trigger>
+      <volume>13</volume>
+      <interval>0.0</interval>
+      <audio>Alarm.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dark Ward</name>
+      <folder>community: community: Shadow and Sin</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <abilityGuid>975760735076352</abilityGuid>
+      </trigger>
+      <cancel>
+        <type>TIMER_STARTED</type>
+        <timer>Scndrl Underworld M.</timer>
+      </cancel>
+      <volume>16</volume>
+      <soundOffset>1</soundOffset>
+      <interval>20.0</interval>
+      <color>0xffff4dff</color>
+      <audio>Alert.mp3</audio>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Kinetic Ward</name>
+      <folder>community: community: Shadow and Sin</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <abilityGuid>980828796485632</abilityGuid>
+      </trigger>
+      <cancel>
+        <type>TIMER_STARTED</type>
+        <timer>Scndrl Underworld M.</timer>
+      </cancel>
+      <volume>16</volume>
+      <soundOffset>1</soundOffset>
+      <interval>20.0</interval>
+      <color>0xffff4dff</color>
+      <audio>Alert.mp3</audio>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>DF Grob&apos;Fire PING</name>
+      <folder>community: community: Dread Fortress</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3294682297663488</abilityGuid>
+        <boss>Grob’Thok, Who Feeds The Forge</boss>
+      </trigger>
+      <volume>13</volume>
+      <interval>0.0</interval>
+      <audio>Alarm.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>DF Cz Mine</name>
+      <folder>community: community: Dread Fortress</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3321882325549324</abilityGuid>
+        <effectGuid>3321882325549056</effectGuid>
+        <boss>Corruptor Zero</boss>
+      </trigger>
+      <volume>8</volume>
+      <interval>0.0</interval>
+      <audio>Alarm.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>DF Cz Mine PING</name>
+      <folder>community: community: Dread Fortress</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3321882325549324</abilityGuid>
+        <boss>Corruptor Zero</boss>
+      </trigger>
+      <volume>8</volume>
+      <interval>0.0</interval>
+      <audio>Alarm.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>DP Bestia Debuff</name>
+      <folder>community: community: Dread Palace</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3294098182111232</abilityGuid>
+        <boss>Dread Master Bestia</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <repeat>10</repeat>
+      <interval>25.0</interval>
+      <color>0xcc8033ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>DP Bestia Debuff PING</name>
+      <folder>community: community: Dread Palace</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3294098182111232</abilityGuid>
+        <boss>Dread Master Bestia</boss>
+      </trigger>
+      <repeat>10</repeat>
+      <volume>13</volume>
+      <interval>25.0</interval>
+      <audio>Alarm.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>DP Tyrans Simp</name>
+      <folder>community: community: Dread Palace</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Self</source>
+        <target>@Self</target>
+        <abilityGuid>3277841730895872</abilityGuid>
+        <effectGuid>3277841730895872</effectGuid>
+        <boss>Dread Master Tyrans</boss>
+      </trigger>
+      <volume>13</volume>
+      <interval>0.0</interval>
+      <audio>Leia - I don&apos;t like this.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>DP Tyrans DEATH</name>
+      <folder>community: community: Dread Palace</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Self</source>
+        <target>@Self</target>
+        <abilityGuid>3349606339444736</abilityGuid>
+        <effectGuid>3349606339445026</effectGuid>
+        <boss>Dread Master Tyrans</boss>
+      </trigger>
+      <volume>13</volume>
+      <interval>0.0</interval>
+      <audio>C3P0 - We are doomed.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>DP Raptus D. Thrust</name>
+      <folder>community: community: Dread Palace</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3298406034309120</abilityGuid>
+        <boss>Dread Master Raptus</boss>
+      </trigger>
+      <interval>15.2</interval>
+      <color>0xccccccff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>DP Council C. Crystals</name>
+      <folder>community: community: Dread Palace</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3317217991065600</abilityGuid>
+        <boss>Dread Council</boss>
+      </trigger>
+      <volume>10</volume>
+      <soundOffset>2</soundOffset>
+      <interval>11.0</interval>
+      <color>0xccccccff</color>
+      <audio>Jar Jar - Boom!.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>EC Z/T Baradium</name>
+      <folder>community: community: Explosive Conflicts</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3004587321589760</abilityGuid>
+        <effectGuid>3004587321590019</effectGuid>
+        <boss>Zorn &amp; Toth</boss>
+      </trigger>
+      <volume>5</volume>
+      <interval>0.0</interval>
+      <audio>Ackbar - It&apos;s a trap!.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>EC Z/T Enrage</name>
+      <folder>community: community: Explosive Conflicts</folder>
+      <trigger>
+        <type>COMBAT_START</type>
+        <boss>Zorn &amp; Toth</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>310.0</interval>
+      <color>0xccffccff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Rav Cora Ricochet</name>
+      <folder>community: community: Ravagers and ToS</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3372876472254464</abilityGuid>
+        <effectGuid>3372876472254730</effectGuid>
+        <boss>Coratanni</boss>
+      </trigger>
+      <volume>18</volume>
+      <interval>0.0</interval>
+      <audio>Alarm.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>SV Dash Kick</name>
+      <folder>community: community: Scum and Villainy</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3063806330667008</abilityGuid>
+        <boss>Dash&apos;Roode</boss>
+      </trigger>
+      <interval>9.0</interval>
+      <color>0x990000ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>SV Warlords Nade</name>
+      <folder>community: community: Scum and Villainy</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3126843565670400</abilityGuid>
+        <effectGuid>3126843565670659</effectGuid>
+        <boss>Cartel Warlords</boss>
+      </trigger>
+      <volume>16</volume>
+      <interval>0.0</interval>
+      <audio>Alarm.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>SV Warlords Nade PING</name>
+      <folder>community: community: Scum and Villainy</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3126843565670400</abilityGuid>
+        <boss>Cartel Warlords</boss>
+      </trigger>
+      <volume>16</volume>
+      <interval>0.0</interval>
+      <audio>Alarm.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>SV Warlords END</name>
+      <folder>community: community: Scum and Villainy</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3145926105366528</abilityGuid>
+        <boss>Cartel Warlords</boss>
+      </trigger>
+      <interval>16.5</interval>
+      <color>0x6680e6ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>TFB Terror Slam 8M</name>
+      <folder>community: community: Terror from Beyond</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3025877474476032</abilityGuid>
+        <boss>The Terror From Beyond</boss>
+      </trigger>
+      <interval>10.8</interval>
+      <color>0x4d3399ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>ToS Revan Corruption</name>
+      <folder>community: community: Ravagers and ToS</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3447359795101696</abilityGuid>
+        <effectGuid>3447359795101696</effectGuid>
+        <boss>Revan</boss>
+      </trigger>
+      <volume>16</volume>
+      <interval>0.0</interval>
+      <audio>Alarm.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>DF Brontes Orb</name>
+      <folder>community: community: Dread Fortress</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3292247051206942</abilityGuid>
+        <boss>Dread Master Brontes</boss>
+      </trigger>
+      <volume>13</volume>
+      <interval>0.0</interval>
+      <audio>Alarm.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>DP Council B. Push</name>
+      <folder>community: community: Dread Palace</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3301257892593664</abilityGuid>
+        <boss>Dread Council</boss>
+      </trigger>
+      <interval>20.0</interval>
+      <color>0x994d00ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>EC Z/T Fearful</name>
+      <folder>community: community: Explosive Conflicts</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>2857171159089152</abilityGuid>
+        <effectGuid>2857171159089412</effectGuid>
+        <boss>Zorn &amp; Toth</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <volume>18</volume>
+      <interval>0.0</interval>
+      <audio>Alarm.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>EC Z/T Anguish</name>
+      <folder>community: community: Explosive Conflicts</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>2877718282633477</abilityGuid>
+        <boss>Zorn &amp; Toth</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <volume>18</volume>
+      <interval>0.0</interval>
+      <audio>Alarm.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>EC F/S Enrage</name>
+      <folder>community: community: Explosive Conflicts</folder>
+      <trigger>
+        <type>COMBAT_START</type>
+        <boss>Firebrand &amp; Stormcaller</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>360.0</interval>
+      <color>0xe6b3ccff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>EC V. Turrets Enrage</name>
+      <folder>community: community: Explosive Conflicts</folder>
+      <trigger>
+        <type>COMBAT_START</type>
+        <boss>Colonel Vorgath</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>330.0</interval>
+      <color>0xe6b3ccff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>EC K. Walker Enrage</name>
+      <folder>community: community: Explosive Conflicts</folder>
+      <trigger>
+        <type>COMBAT_START</type>
+        <boss>Warlord Kephess</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>450.0</interval>
+      <color>0xe6b3ccff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Gods AE Neg. Pol.</name>
+      <folder>community: community: Gods from the Machine</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>4109587917570048</abilityGuid>
+        <effectGuid>4109587917570315</effectGuid>
+        <boss>AIVELA &amp; ESNE</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <volume>18</volume>
+      <interval>0.0</interval>
+      <audio>R2D2 - Alarmed Trill.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Gods AE Pos. Pol.</name>
+      <folder>community: community: Gods from the Machine</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>4109583622602752</abilityGuid>
+        <effectGuid>4109583622603019</effectGuid>
+        <boss>AIVELA &amp; ESNE</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <volume>18</volume>
+      <interval>0.0</interval>
+      <audio>R2D2 - Alarmed Trill.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Gods AE Remote</name>
+      <folder>community: community: Gods from the Machine</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>4113827050291200</abilityGuid>
+        <effectGuid>4113827050291200</effectGuid>
+        <boss>AIVELA &amp; ESNE</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <volume>26</volume>
+      <interval>0.0</interval>
+      <audio>Obi Wan - Come to your senses!.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Gods N. Candle CD</name>
+      <folder>community: community: Gods from the Machine</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <abilityGuid>4181850742325248</abilityGuid>
+        <boss>Nahut</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>60.0</interval>
+      <color>0xcce6ffff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Gods N. Candle Received</name>
+      <folder>community: community: Gods from the Machine</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Self</source>
+        <target>@Self</target>
+        <abilityGuid>4132016236789760</abilityGuid>
+        <effectGuid>4132016236789760</effectGuid>
+        <boss>Nahut</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <volume>16</volume>
+      <interval>0.0</interval>
+      <audio>Obi Wan - You were the chosen one!.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Gods N. Ener. Slice</name>
+      <folder>community: community: Gods from the Machine</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>4137075708264448</abilityGuid>
+        <boss>Nahut</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <volume>16</volume>
+      <interval>12.5</interval>
+      <color>0xf5deb3ff</color>
+      <audio>Alarm.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Gods N. Gravity</name>
+      <folder>community: community: Gods from the Machine</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>4133016964169728</abilityGuid>
+        <boss>Nahut</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>25.4</interval>
+      <color>0xf5deb3ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Gods Iz. Def. Shield</name>
+      <folder>community: community: Gods from the Machine</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>4160143977611264</abilityGuid>
+        <boss>IZAX</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <volume>19</volume>
+      <interval>0.0</interval>
+      <audio>Alarm.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Gods Iz. Radiation</name>
+      <folder>community: community: Gods from the Machine</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>4168656602791936</abilityGuid>
+        <boss>IZAX</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <volume>19</volume>
+      <interval>0.0</interval>
+      <audio>Alarm.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Gods Iz. Induction</name>
+      <folder>community: community: Gods from the Machine</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>4168128321814528</abilityGuid>
+        <effectGuid>4168128321814821</effectGuid>
+        <boss>IZAX</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <volume>16</volume>
+      <interval>0.0</interval>
+      <audio>Other - Danger danger!.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Gods Iz. Swipe</name>
+      <folder>community: community: Gods from the Machine</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>4159529797287936</abilityGuid>
+        <boss>IZAX</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <volume>16</volume>
+      <interval>0.0</interval>
+      <audio>Alarm.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Queen Throw 1</name>
+      <folder>community: community: World Bosses</folder>
+      <trigger>
+        <type>COMBAT_START</type>
+        <boss>Geonosian Queen</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>36.0</interval>
+      <color>0x99cc99ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Queen Throw 2</name>
+      <folder>community: community: World Bosses</folder>
+      <trigger>
+        <type>COMBAT_START</type>
+        <boss>Geonosian Queen</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>149.0</interval>
+      <color>0x99cc99ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Queen Throw 3</name>
+      <folder>community: community: World Bosses</folder>
+      <trigger>
+        <type>COMBAT_START</type>
+        <boss>Geonosian Queen</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>263.0</interval>
+      <color>0x99cc99ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Queen Throw 4</name>
+      <folder>community: community: World Bosses</folder>
+      <trigger>
+        <type>COMBAT_START</type>
+        <boss>Geonosian Queen</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>283.0</interval>
+      <color>0x99cc99ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>TFB Writhing Enrage</name>
+      <folder>community: community: Terror from Beyond</folder>
+      <trigger>
+        <type>COMBAT_START</type>
+        <boss>The Writhing Horror</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>345.0</interval>
+      <color>0xffccccff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>TFB Terror Enrage</name>
+      <folder>community: community: Terror from Beyond</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3012056269717504</abilityGuid>
+        <effectGuid>3012056269717504</effectGuid>
+        <boss>The Terror From Beyond</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>540.0</interval>
+      <color>0xffccccff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Apex Cont. 1</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>COMBAT_START</type>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>33.0</interval>
+      <color>0x80b380ff</color>
+      <countdownVoice>Yolo</countdownVoice>
+      <countdownCount>5</countdownCount>
+      <countdownVolume>13</countdownVolume>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Apex Salvo</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <target>@Self</target>
+        <sourceGuid>4350020186800128</sourceGuid>
+        <abilityGuid>4308741256118272</abilityGuid>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <repeat>0</repeat>
+      <interval>25.0</interval>
+      <color>0xe64d4dff</color>
+      <countdownVoice>Amy</countdownVoice>
+      <countdownCount>5</countdownCount>
+      <countdownVolume>18</countdownVolume>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Apex Flare</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <abilityGuid>4296410405011456</abilityGuid>
+      </trigger>
+      <volume>18</volume>
+      <interval>30.0</interval>
+      <color>0xe6e6e6ff</color>
+      <audio>Alarm.mp3</audio>
+      <countdownVoice>Nerevar</countdownVoice>
+      <countdownCount>5</countdownCount>
+      <countdownVolume>19</countdownVolume>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>TFB Terror Slam 16M</name>
+      <folder>community: community: Terror from Beyond</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3025886064410624</abilityGuid>
+        <boss>The Terror From Beyond</boss>
+      </trigger>
+      <interval>10.8</interval>
+      <color>0x4d3399ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Mono HM Enrage</name>
+      <folder>community: community: World Bosses</folder>
+      <trigger>
+        <type>COMBAT_START</type>
+        <boss>Colossal Monolith</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>580.0</interval>
+      <color>0xb31a1aff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>DF Nefra Curse</name>
+      <folder>community: community: Dread Fortress</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3342034312101888</abilityGuid>
+        <effectGuid>3342034312102196</effectGuid>
+        <boss>Nefra, Who Bars the Way</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <volume>16</volume>
+      <interval>9.0</interval>
+      <color>0xe64d4dff</color>
+      <audio>C3P0 - I thought you were dead!.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>true</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>DF Draxus D. Swipe 1</name>
+      <folder>community: community: Dread Fortress</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <abilityGuid>3288033688289280</abilityGuid>
+        <effectGuid>836045448945501</effectGuid>
+        <boss>Gate Commander Draxus</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <repeat>1</repeat>
+      <volume>21</volume>
+      <interval>15.0</interval>
+      <color>0x661a33ff</color>
+      <audio>Jar Jar - Boom!.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>DF Draxus D. Swipe 2</name>
+      <folder>community: community: Dread Fortress</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <abilityGuid>3288033688289280</abilityGuid>
+        <effectGuid>3288029393321984</effectGuid>
+        <boss>Gate Commander Draxus</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <repeat>1</repeat>
+      <volume>21</volume>
+      <interval>15.0</interval>
+      <color>0xb34d1aff</color>
+      <audio>Jar Jar - Boom!.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Sorc Dark Speed</name>
+      <folder>community: community: Sage and Sorc</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Dark Heal</ability>
+      </trigger>
+      <interval>13.3</interval>
+      <color>0xb3e6b3ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>true</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Sage Benev. Haste</name>
+      <folder>community: community: Sage and Sorc</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Benevolence</ability>
+      </trigger>
+      <interval>13.3</interval>
+      <color>0xb3e6b3ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>true</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Apex Acid B.</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>4305240857772032</abilityGuid>
+        <effectGuid>4305240857772294</effectGuid>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>25.0</interval>
+      <color>0xffff99ff</color>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Apex A.B. (1st)</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>COMBAT_START</type>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>10.5</interval>
+      <color>0xffff99ff</color>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Spinning Kick</name>
+      <folder>community: community: Shadow and Sin</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Spinning Kick</ability>
+      </trigger>
+      <cancel>
+        <type>TIMER_STARTED</type>
+        <timer>Scndrl Underworld M.</timer>
+      </cancel>
+      <volume>16</volume>
+      <soundOffset>1</soundOffset>
+      <interval>20.0</interval>
+      <color>0xe6e6e6ff</color>
+      <audio>Alarm.mp3</audio>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>HS Tunneler Laser</name>
+      <folder>community: community: Flashpoints</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3169647209742336</abilityGuid>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>20.0</interval>
+      <color>0xcc3333ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>true</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Free UpperHand</name>
+      <folder>community: community: Scoundrel and Op</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Emergency Medpac</ability>
+      </trigger>
+      <interval>10.2</interval>
+      <color>0xccffccff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>true</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Insta Medpac</name>
+      <folder>community: community: Scoundrel and Op</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Emergency Medpac</ability>
+      </trigger>
+      <cancel>
+        <type>TIMER_STARTED</type>
+        <timer>Underworld Medicine</timer>
+      </cancel>
+      <interval>15.0</interval>
+      <color>0x336633ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Underworld Medicine</name>
+      <folder>community: community: Scoundrel and Op</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Underworld Medicine</ability>
+      </trigger>
+      <cancel>
+        <type>TIMER_STARTED</type>
+        <timer>Scndrl Underworld M.</timer>
+      </cancel>
+      <interval>0.5</interval>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Double Slow-R.</name>
+      <folder>community: community: Scoundrel and Op</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Self</source>
+        <target>@Self</target>
+        <effect>Sly Surrender</effect>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>10.0</interval>
+      <color>0xcce6ffff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>REFRESH (4)</name>
+      <folder>community: community: Scoundrel and Op</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Slow-release Medpac</ability>
+      </trigger>
+      <interval>11.0</interval>
+      <color>0x990000ff</color>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Titax Strike</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>4256733497131008</abilityGuid>
+        <effectGuid>4256733497131282</effectGuid>
+        <boss>Trandoshan Squad</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>40.0</interval>
+      <color>0xf5deb3ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Red A. Jet</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>4250089182724096</abilityGuid>
+        <boss>The Pack Leader</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>30.0</interval>
+      <color>0xff8080ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>true</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Spike</name>
+      <folder>community: community: Shadow and Sin</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Spike</ability>
+      </trigger>
+      <cancel>
+        <type>TIMER_STARTED</type>
+        <timer>Scndrl Underworld M.</timer>
+      </cancel>
+      <volume>16</volume>
+      <soundOffset>1</soundOffset>
+      <interval>20.0</interval>
+      <color>0xe6e6e6ff</color>
+      <audio>Alarm.mp3</audio>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Gods Tyth Adds</name>
+      <folder>community: community: Gods from the Machine</folder>
+      <trigger>
+        <type>COMBAT_START</type>
+        <boss>Tyth</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <repeat>99</repeat>
+      <interval>35.0</interval>
+      <color>0x664db3ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Rav Sparky Throw</name>
+      <folder>community: community: Ravagers and ToS</folder>
+      <trigger>
+        <type>DAMAGE</type>
+        <target>@Self</target>
+        <abilityGuid>3377850044383232</abilityGuid>
+        <boss>Sparky</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>15.0</interval>
+      <color>0xccffffff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Rav Bulo Jump</name>
+      <folder>community: community: Ravagers and ToS</folder>
+      <trigger>
+        <type>COMBAT_START</type>
+        <boss>Quartermaster Bulo</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <repeat>99</repeat>
+      <interval>50.0</interval>
+      <color>0xccffffff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>TFB Terror 1st Slam</name>
+      <folder>community: community: Terror from Beyond</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>3025864589574144</abilityGuid>
+        <effectGuid>3025864589574402</effectGuid>
+        <boss>The Terror From Beyond</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>16.0</interval>
+      <color>0x9980e6ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>TFB DG Doom</name>
+      <folder>community: community: Terror from Beyond</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <ability>Doom</ability>
+        <effectGuid>3014573120552960</effectGuid>
+        <boss>Dread Guards</boss>
+      </trigger>
+      <interval>34.0</interval>
+      <color>0x990000ff</color>
+      <countdownVoice>Amy</countdownVoice>
+      <countdownCount>5</countdownCount>
+      <countdownVolume>18</countdownVolume>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Double Probes</name>
+      <folder>community: community: Scoundrel and Op</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Self</source>
+        <target>@Self</target>
+        <effect>Countermeasures</effect>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>10.0</interval>
+      <color>0xcce6ffff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Free Tact. Adv.</name>
+      <folder>community: community: Scoundrel and Op</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Surgical Probe</ability>
+      </trigger>
+      <interval>10.2</interval>
+      <color>0xccffccff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>true</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Insta Injection</name>
+      <folder>community: community: Scoundrel and Op</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Surgical Probe</ability>
+      </trigger>
+      <cancel>
+        <type>TIMER_STARTED</type>
+        <timer>Kolto Injection</timer>
+      </cancel>
+      <interval>15.0</interval>
+      <color>0x336633ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>REFRESH (4) Op</name>
+      <folder>community: community: Scoundrel and Op</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Kolto Probe</ability>
+      </trigger>
+      <interval>11.0</interval>
+      <color>0x990000ff</color>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Kolto Injection</name>
+      <folder>community: community: Scoundrel and Op</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Kolto Injection</ability>
+      </trigger>
+      <cancel>
+        <type>TIMER_STARTED</type>
+        <timer>Scndrl Underworld M.</timer>
+      </cancel>
+      <interval>0.5</interval>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Kolto Infusion</name>
+      <folder>community: community: Scoundrel and Op</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Self</source>
+        <target>@Self</target>
+        <effect>Curative Jolt</effect>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>18.0</interval>
+      <color>0x80b380ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Kolto Pack</name>
+      <folder>community: community: Scoundrel and Op</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Self</source>
+        <target>@Self</target>
+        <effect>Bootlegged Remedy</effect>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>18.0</interval>
+      <color>0x80b380ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Ion Storm Proc</name>
+      <folder>community: community: Vanguard and PT Tanks</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <target>@Self</target>
+        <effect>Pulse Engine</effect>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>15.0</interval>
+      <color>0xccb3ffff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>EP God mode</name>
+      <folder>community: community: Vanguard and PT Tanks</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <target>@Self</target>
+        <effect>Emergency Power</effect>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>3.0</interval>
+      <color>0xffe666ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>EP Reactive Shield</name>
+      <folder>community: community: Vanguard and PT Tanks</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <target>@Self</target>
+        <effect>Reactive Shield</effect>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>20.0</interval>
+      <color>0xffccb3ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Battle Focus</name>
+      <folder>community: community: Vanguard and PT Tanks</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <target>@Self</target>
+        <effect>Battle Focus</effect>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>15.0</interval>
+      <color>0xcce6ffff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Riot Gas</name>
+      <folder>community: community: Vanguard and PT Tanks</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Riot Gas</ability>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>10.0</interval>
+      <color>0xb36680ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Explosive Fuel</name>
+      <folder>community: community: Vanguard and PT Tanks</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <target>@Self</target>
+        <effect>Explosive Fuel</effect>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>15.0</interval>
+      <color>0xcce6ffff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Firestorm Proc</name>
+      <folder>community: community: Vanguard and PT Tanks</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <target>@Self</target>
+        <effect>Flame Engine</effect>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>15.0</interval>
+      <color>0xccb3ffff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>EP Energy Shield</name>
+      <folder>community: community: Vanguard and PT Tanks</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <target>@Self</target>
+        <effect>Energy Shield</effect>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>20.0</interval>
+      <color>0xffccb3ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Oil Slick</name>
+      <folder>community: community: Vanguard and PT Tanks</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Oil Slick</ability>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>10.0</interval>
+      <color>0xb36680ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>HF PT Rebounder</name>
+      <folder>community: community: Scum and Villainy</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Sonic Missle</ability>
+        <boss>Hateful Entity</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>45.0</interval>
+      <color>0xb3b3b3ff</color>
+      <countdownVoice>Amy</countdownVoice>
+      <countdownCount>5</countdownCount>
+      <countdownVolume>22</countdownVolume>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>HF Vg Rebounder</name>
+      <folder>community: community: Scum and Villainy</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Sonic Round</ability>
+        <boss>Hateful Entity</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>45.0</interval>
+      <color>0xb3b3b3ff</color>
+      <countdownVoice>Amy</countdownVoice>
+      <countdownCount>5</countdownCount>
+      <countdownVolume>22</countdownVolume>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Apex 1st Salvo</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>COMBAT_START</type>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>17.0</interval>
+      <color>0x990000ff</color>
+      <countdownVoice>Jim</countdownVoice>
+      <countdownCount>5</countdownCount>
+      <countdownVolume>18</countdownVolume>
+      <enabled>false</enabled>
+      <ignoreRepeated>true</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Energy Shield</name>
+      <folder>community: community: Vanguard and PT Tanks</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <target>@Self</target>
+        <effect>Energy Shield</effect>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>15.0</interval>
+      <color>0xffccb3ff</color>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Reactive Shield</name>
+      <folder>community: community: Vanguard and PT Tanks</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <target>@Self</target>
+        <effect>Reactive Shield</effect>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>15.0</interval>
+      <color>0xffccb3ff</color>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Kron Blast</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <effect>Sublimation</effect>
+        <boss>Trandoshan Squad</boss>
+      </trigger>
+      <cancel>
+        <type>TIMER_STARTED</type>
+        <timer>Dxun Kron Sub Lost</timer>
+      </cancel>
+      <interval>9.5</interval>
+      <color>0x80b3b3ff</color>
+      <enabled>true</enabled>
+      <ignoreRepeated>true</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Kron Sub Lost</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>EFFECT_LOST</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <effect>Sublimation</effect>
+        <boss>Trandoshan Squad</boss>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>0.0</interval>
+      <enabled>true</enabled>
+      <ignoreRepeated>true</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Apex Pred</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <target>@Self</target>
+        <effect>Predation</effect>
+      </trigger>
+      <interval>30.0</interval>
+      <color>0xe6ccffff</color>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>TFB DG Puddle</name>
+      <folder>community: community: Terror from Beyond</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <effect>Vitality Extraction</effect>
+        <boss>Dread Guards</boss>
+      </trigger>
+      <volume>24</volume>
+      <soundOffset>3</soundOffset>
+      <interval>3.0</interval>
+      <color>0xff8080ff</color>
+      <audio>C3P0 - Ahhhh go away!.mp3</audio>
+      <enabled>true</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Apex Trans</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <effect>Transcendence</effect>
+      </trigger>
+      <interval>30.0</interval>
+      <color>0xe6b3e6ff</color>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Apex Cont.</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <abilityGuid>4352726016196608</abilityGuid>
+        <effectGuid>4352726016196922</effectGuid>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <repeat>0</repeat>
+      <interval>64.0</interval>
+      <color>0x80b380ff</color>
+      <countdownVoice>Yolo</countdownVoice>
+      <countdownCount>5</countdownCount>
+      <countdownVolume>19</countdownVolume>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Apex Droid</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <effect>Anti-Theft Device</effect>
+      </trigger>
+      <volume>32</volume>
+      <soundOffset>3</soundOffset>
+      <interval>4.0</interval>
+      <color>0x80b3b3ff</color>
+      <audio>Ackbar - It&apos;s a trap!.mp3</audio>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Apex Mad Dash</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Mad Dash</ability>
+      </trigger>
+      <cancel>
+        <type>TIMER_STARTED</type>
+        <timer>Scndrl Underworld M.</timer>
+      </cancel>
+      <volume>16</volume>
+      <soundOffset>1</soundOffset>
+      <interval>26.0</interval>
+      <color>0x80334dff</color>
+      <audio>Alert.mp3</audio>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Apex Blade Blitz</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>ABILITY_ACTIVATED</type>
+        <ability>Blade Blitz</ability>
+      </trigger>
+      <cancel>
+        <type>TIMER_STARTED</type>
+        <timer>Scndrl Underworld M.</timer>
+      </cancel>
+      <volume>16</volume>
+      <soundOffset>1</soundOffset>
+      <interval>26.0</interval>
+      <color>0x80334dff</color>
+      <audio>Alert.mp3</audio>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Apex EMP</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>EFFECT_GAINED</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>4308938824613888</abilityGuid>
+        <effectGuid>4308938824613888</effectGuid>
+      </trigger>
+      <cancel>
+        <type>TIMER_STARTED</type>
+        <timer>Dxun Apex EMP (2)</timer>
+      </cancel>
+      <interval>35.0</interval>
+      <color>0x994d66ff</color>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+    <com.ixale.starparse.domain.ConfigTimer>
+      <name>Dxun Apex EMP (2)</name>
+      <folder>community: community: Dxun Timers</folder>
+      <trigger>
+        <type>EFFECT_LOST</type>
+        <source>@Other</source>
+        <target>@Self</target>
+        <abilityGuid>4308938824613888</abilityGuid>
+        <effectGuid>4308938824613888</effectGuid>
+      </trigger>
+      <cancel>
+        <type>COMBAT_END</type>
+      </cancel>
+      <interval>0.0</interval>
+      <enabled>false</enabled>
+      <ignoreRepeated>false</ignoreRepeated>
+    </com.ixale.starparse.domain.ConfigTimer>
+  </timers>
+</com.ixale.starparse.domain.ConfigTimers>

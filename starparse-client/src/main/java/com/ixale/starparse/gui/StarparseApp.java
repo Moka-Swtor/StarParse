@@ -1,18 +1,17 @@
 package com.ixale.starparse.gui;
 
 import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.ixale.starparse.domain.ConfigTimer;
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
 import org.slf4j.Logger;
@@ -49,6 +48,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
+import static com.ixale.starparse.domain.ConfigTimers.COMMUNITY_PREFIX;
+import static com.ixale.starparse.domain.ConfigTimers.DEFAULT_PREFIX;
+
 public class StarparseApp extends Application {
 	private static final Logger logger = LoggerFactory.getLogger(StarparseApp.class);
 
@@ -56,6 +58,7 @@ public class StarparseApp extends Application {
 		TITLE = "Ixale's StarParse",
 		CONFIG_FILE = "starparse.xml",
 		CONFIG_TIMERS_FILE = "starparse-timers.xml",
+		CONFIG_TIMERS_FILE_JMNEVES = "starparse-timers-community.xml",
 		CONFIG_ATTACKS_FILE = "starparse-attacks.xml",
 		SOUNDS_DIR = "sounds",
 		ICONS_DIR = "icons";
@@ -168,7 +171,7 @@ public class StarparseApp extends Application {
 		loadConfigurationFile();
 		TimeUtils.setCurrentTimezone(config.getTimezone());
 
-		config.setConfigTimers((ConfigTimers) Marshaller.loadFromFile(CONFIG_TIMERS_FILE));
+		loadConfigTimers();
 		config.setConfigAttacks((ConfigAttacks) Marshaller.loadFromFile(CONFIG_ATTACKS_FILE));
 
 		setWindowSizeAndPosition(scene);
@@ -190,6 +193,44 @@ public class StarparseApp extends Application {
 		bindShutdownHooks(stage);
 		setupClockSyncScheduler(config, mainPresenter, 60 * 60 * 1000);
 		updateLauncherIfNeeded();
+	}
+
+	/**
+	 * We want to aggregate multiple files containing timers. We try to load staparse-timers localy. If not present we search into AppData
+	 * We also try to load community timers, and prefix them so that they are easy to distinguate
+	 */
+	private void loadConfigTimers() {
+		ConfigTimers userConfigTImers = Marshaller.loadFromFile(CONFIG_TIMERS_FILE);
+		if (userConfigTImers == null || userConfigTImers.wasEmpty()) {
+			String config_file = System.getenv("LOCALAPPDATA") + "/StarParse/app/client/app/" + CONFIG_TIMERS_FILE;
+			try {
+				logger.info("No local timers found, trying to load from AppData: {}", config_file);
+				userConfigTImers = Marshaller.loadFromFile(config_file);
+			} catch (Exception e) {
+				logger.warn("error while trying to load staparse-timers from AppData");
+			}
+		}
+
+		ConfigTimers jmneves_list = Marshaller.loadFromFile(CONFIG_TIMERS_FILE_JMNEVES);
+		if (userConfigTImers == null && jmneves_list == null) {
+			logger.info("no timers were found");
+			return;
+		}
+
+		if (jmneves_list == null) {
+			config.setConfigTimers(userConfigTImers);
+			return;
+		}
+
+		jmneves_list.addPrefixToFolders(COMMUNITY_PREFIX);
+
+		if (userConfigTImers == null) {
+			config.setConfigTimers(jmneves_list);
+			return;
+		}
+
+		userConfigTImers.getTimers().addAll(jmneves_list.getTimers());
+		config.setConfigTimers(userConfigTImers);
 	}
 
 	private void loadConfigurationFile() {
@@ -262,13 +303,19 @@ public class StarparseApp extends Application {
 
 		if (config != null) {
 			Marshaller.storeToFile(config, CONFIG_FILE);
-			Marshaller.storeToFile(config.getConfigTimers(), CONFIG_TIMERS_FILE);
+			storeTimersToFiles(config.getConfigTimers());
 			Marshaller.storeToFile(config.getConfigAttacks(), CONFIG_ATTACKS_FILE);
 		}
 
 		Win32Utils.stopHotkeyHook();
 
 		isGracefulStop = true;
+	}
+
+	public static void storeTimersToFiles(ConfigTimers configTimers) {
+		Map<String, ConfigTimers> timersMap = configTimers.splitByPrefix(COMMUNITY_PREFIX);
+		Marshaller.storeToFile(timersMap.get(DEFAULT_PREFIX), CONFIG_TIMERS_FILE);
+		Marshaller.storeToFile(timersMap.get(COMMUNITY_PREFIX), CONFIG_TIMERS_FILE_JMNEVES);
 	}
 
 	private void reportError(final String msg, final Throwable cause) {

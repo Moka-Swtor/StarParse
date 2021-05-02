@@ -2270,7 +2270,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			}
 
 			// save now
-			Marshaller.storeToFile(config.getConfigTimers(), StarparseApp.CONFIG_TIMERS_FILE);
+			StarparseApp.storeTimersToFiles(config.getConfigTimers());
 		}
 
 		private boolean handleCustomTimer() {
