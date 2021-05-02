@@ -1,6 +1,7 @@
 package com.ixale.starparse.gui;
 
 import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -164,9 +165,7 @@ public class StarparseApp extends Application {
 			}
 		});
 
-		if ((config = Marshaller.loadFromFile(CONFIG_FILE)) == null) {
-			config = new Config();
-		}
+		loadConfigurationFile();
 		TimeUtils.setCurrentTimezone(config.getTimezone());
 
 		config.setConfigTimers((ConfigTimers) Marshaller.loadFromFile(CONFIG_TIMERS_FILE));
@@ -191,6 +190,23 @@ public class StarparseApp extends Application {
 		bindShutdownHooks(stage);
 		setupClockSyncScheduler(config, mainPresenter, 60 * 60 * 1000);
 		updateLauncherIfNeeded();
+	}
+
+	private void loadConfigurationFile() {
+		config = Marshaller.loadFromFile(CONFIG_FILE);
+		if (config == null) {
+			String config_file = System.getenv("LOCALAPPDATA") + "/StarParse/app/client/app/" + CONFIG_FILE;
+			try {
+				logger.info("Configuration not found locally, trying to load from {}", config_file);
+				config = Marshaller.loadFromFile(config_file);
+			} catch (Exception e) {
+				logger.error("exception while trying to load config from APPDATA");
+			}
+		}
+		if (config == null) {
+			logger.info("No configuration found, creating new configuration file");
+			config = new Config();
+		}
 	}
 
 	private void bindShutdownHooks(final Stage stage) {
