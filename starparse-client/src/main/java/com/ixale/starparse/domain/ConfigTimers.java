@@ -42,7 +42,9 @@ public class ConfigTimers implements Serializable, SerializeCallback {
 
 	public void addPrefixToFolders(String prefix) {
 		timers.forEach(configTimer -> {
-			configTimer.setFolder(prefix + configTimer.getFolder());
+			if (configTimer.getFolder() != null && !configTimer.getFolder().startsWith(prefix)) {
+				configTimer.setFolder(prefix + configTimer.getFolder());
+			}
 		});
 	}
 
