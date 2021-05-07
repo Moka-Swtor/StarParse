@@ -439,6 +439,13 @@
                         <Slider fx:id="timerCountdownVolume" majorTickUnit="50.0" max="100.0" maxWidth="-Infinity" minWidth="-Infinity" minorTickCount="25" prefWidth="50.0" showTickLabels="false" showTickMarks="false" snapToTicks="false" value="80.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0" />
                       </children>
                     </AnchorPane>
+                    <AnchorPane maxHeight="-Infinity" maxWidth="-1.0" minHeight="-Infinity" prefHeight="27.0" prefWidth="-1.0">
+                      <children>
+                        <CheckBox fx:id="abilityTimer" mnemonicParsing="false" text="Ability Timer" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="2.0" />
+                        <Text fx:id="abilityTrigramLabel" strokeWidth="0.0" text="Ability trigram" AnchorPane.leftAnchor="130.0" AnchorPane.topAnchor="4.0" />
+                        <TextField fx:id="abilityTrigram" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" promptText="xxx" text="" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="0.0" />
+                      </children>
+                    </AnchorPane>
                     <HBox spacing="5.0" VBox.vgrow="ALWAYS">
                       <children>
                         <Button fx:id="timerSaveButton" mnemonicParsing="false" onAction="#handleTimerSave" text="Save as new" />

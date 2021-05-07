@@ -182,10 +182,18 @@ public class ConfigTimer {
 	private String audio;
 	private Boolean showCenter;
 
-	private String countdownVoice;
+	private String countdownVoice, abilityTimerTrigram;
 	private Integer countdownCount, countdownVolume;
 
 	private Boolean enabled, ignoreRepeated;
+
+	public String getAbilityTimerTrigram() {
+		return abilityTimerTrigram;
+	}
+
+	public void setAbilityTimerTrigram(String abilityTimerTrigram) {
+		this.abilityTimerTrigram = abilityTimerTrigram;
+	}
 
 	public String getName() {
 		return name;

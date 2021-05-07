@@ -106,7 +106,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 		raidChallengesOpacityText, timersOpacityText, timersFractions, personalOpacityText, damageTakenOpacityText, lockOverlaysHotkey,
 		guildField, parselyLoginField, parselyPasswordField,
 		timerName, timerSourceName, timerTargetName, timerAbilityName, timerEffectName,
-		timerDuration, timerRepeat, timerSoundOffset, timerCountdownCount, dtDelay1, dtDelay2;
+		timerDuration, timerRepeat, timerSoundOffset, timerCountdownCount, dtDelay1, dtDelay2, abilityTrigram;
 
 	@FXML
 	private Slider raidDamageOpacitySlider, raidDtpsOpacitySlider, raidHealingOpacitySlider, raidThreatOpacitySlider,
@@ -117,7 +117,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 		timerSaveButton, timerCopyButton, timerSoundButton, timerCountdownButton;
 
 	@FXML
-	private CheckBox timeSyncEnabledButton, serverStoreEnabledButton,
+	private CheckBox timeSyncEnabledButton, serverStoreEnabledButton, abilityTimer,
 		raidDamageBars, raidDtpsBars, raidHealingBars, raidThreatBars, raidChallengesBars, timersBars, personalBars, damageTakenBars, timersCenter, popoutSolid,
 		timerDisplay, timerPlaySound, timersIgnoreRepeated, timerPlayCountdown;
 
@@ -135,7 +135,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 		timerTrigger, timerTriggerTimer, timerBoss, timerCancel;
 
 	@FXML
-	private Text currentTime, serverLabel, timerTriggerTimerLabel, timerEffectLabel, timerBossLabel, timerSoundOffsetLabel;
+	private Text currentTime, serverLabel, timerTriggerTimerLabel, timerEffectLabel, timerBossLabel, timerSoundOffsetLabel, abilityTrigramLabel;
 
 	@FXML
 	private RadioButton timerSourceYou, timerSourceOther, timerSourceCustom,
@@ -1851,6 +1851,15 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 					}
 				}
 			});
+			validators.put(abilityTrigram, new Validator<TextField>() {
+				@Override
+				public boolean isValid(TextField c) {
+					if (c.getText() == null || c.getText().isEmpty()) {
+						return !abilityTimer.isSelected();
+					}
+					return c.getText().length() == 3;
+				}
+			});
 		}
 
 		@Override
@@ -2133,6 +2142,11 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 				}
 			}
 
+			if (timer.getAbilityTimerTrigram() != null) {
+				abilityTimer.setSelected(true);
+				abilityTrigram.setText(timer.getAbilityTimerTrigram());
+			}
+
 			if (timer.getCountdownVoice() != null) {
 				timerPlayCountdown.setSelected(true);
 				timerCountdownVoice.getSelectionModel().select(timer.getCountdownVoice());
@@ -2173,7 +2187,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 				timerSourceName, timerTargetName,
 				timerAbilityName, timerEffectName,
 				timerDuration, timerRepeat,
-				timerSoundOffset, timerCountdownCount);
+				timerSoundOffset, timerCountdownCount, abilityTrigram);
 		}
 
 		private void handleSave(final ActionEvent event, boolean asCopy) {
@@ -2366,6 +2380,12 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 				currentTimer.setRepeat(Integer.parseInt(timerRepeat.getText()));
 			} else {
 				currentTimer.setRepeat(null);
+			}
+
+			if (abilityTimer.isSelected()) {
+				currentTimer.setAbilityTimerTrigram(abilityTrigram.getText());
+			} else {
+				currentTimer.setAbilityTimerTrigram(null);
 			}
 
 			final Condition cancel;
