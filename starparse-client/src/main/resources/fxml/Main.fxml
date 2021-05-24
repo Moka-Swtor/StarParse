@@ -178,6 +178,8 @@
                 </MenuItem>
                 <Menu fx:id="recentMenu" mnemonicParsing="false" text="Open recent..." />
                 <SeparatorMenuItem mnemonicParsing="false" text="" />
+                <MenuItem mnemonicParsing="false" onAction="#handleShowCalculators" text="Calculators" />
+                <SeparatorMenuItem mnemonicParsing="false" text="" />
                 <MenuItem mnemonicParsing="false" onAction="#handleSettings" text="Settings" />
                 <SeparatorMenuItem mnemonicParsing="false" text="" />
                 <MenuItem mnemonicParsing="false" onAction="#handleClose" text="Exit" />

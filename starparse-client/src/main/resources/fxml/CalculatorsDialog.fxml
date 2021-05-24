@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.input.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?scenebuilder-stylesheet ../styles.css?>
+
+<TabPane fx:id="dialogRoot" maxHeight="-Infinity" minHeight="-Infinity" minWidth="520.0" prefHeight="350.0" styleClass="modal-text" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ixale.starparse.gui.dialog.CalculatorDialogPresenter">
+  <tabs>
+    <Tab fx:id="contentUpload" text="Alacrity">
+      <content>
+        <VBox prefHeight="-1.0" prefWidth="-1.0" spacing="10.0">
+          <children>
+            <GridPane alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+              <children>
+                <Text text="Alacrity Goal" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                <TextField fx:id="alacrityGoal" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Text text="Number of augments" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                <TextField fx:id="augmentNumber" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Text text="Number of enhancements" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                <TextField fx:id="enhancementNumber" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <HBox alignment="BOTTOM_LEFT" fillHeight="false" prefHeight="-1.0" prefWidth="-1.0" spacing="5.0" GridPane.columnIndex="0" GridPane.columnSpan="2147483647" GridPane.margin="$x1" GridPane.rowIndex="5">
+                  <children>
+                    <Button fx:id="calculateButton" onAction="#handleCompute" text="compute Alacrity" />
+                    <Button cancelButton="true" onAction="#handleClose" text="Cancel" />
+                  </children>
+                </HBox>
+                <TextArea fx:id="result" prefRowCount="10" prefWidth="-1.0" wrapText="true" VBox.vgrow="ALWAYS"  GridPane.rowIndex="6" GridPane.columnSpan="2147483647"/>
+              </children>
+            </GridPane>
+          </children>
+          <padding>
+            <Insets left="10.0" right="10.0" top="20.0" />
+          </padding>
+        </VBox>
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>

@@ -3,6 +3,7 @@ package com.ixale.starparse.gui;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.ixale.starparse.gui.dialog.CalculatorDialogPresenter;
 import com.ixale.starparse.gui.popout.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -132,6 +133,12 @@ public class StarparseAppFactory
 	public SettingsDialogPresenter setingsDialogPresenter()
 	{
 		return loadPresenter("/fxml/SettingsDialog.fxml");
+	}
+
+	@Bean
+	public CalculatorDialogPresenter calculatorDialogPresenter()
+	{
+		return loadPresenter("/fxml/CalculatorsDialog.fxml");
 	}
 
 	@Bean

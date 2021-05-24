@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 
 import javax.inject.Inject;
 
+import com.ixale.starparse.gui.dialog.CalculatorDialogPresenter;
 import com.ixale.starparse.gui.popout.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -152,6 +153,8 @@ public class MainPresenter implements Initializable {
 
 	@Inject
 	private SettingsDialogPresenter settingsDialogPresenter;
+	@Inject
+	private CalculatorDialogPresenter calculatorDialogPresenter;
 	@Inject
 	private UploadParselyDialogPresenter uploadParselyDialogPresenter;
 	@Inject
@@ -1218,6 +1221,9 @@ public class MainPresenter implements Initializable {
 		raidPresenter.setRaidManager(raidManager);
 		raidPresenter.setConfig(config);
 
+		calculatorDialogPresenter.setConfig(config);
+		calculatorDialogPresenter.setStage((Stage) (root.getScene().getWindow()));
+
 		// wire settings
 		settingsDialogPresenter.setConfig(config);
 		settingsDialogPresenter.setStage((Stage) (root.getScene().getWindow()));
@@ -1805,6 +1811,10 @@ public class MainPresenter implements Initializable {
 	public void handleTimersSettings(ActionEvent event) {
 		settingsDialogPresenter.show();
 		settingsDialogPresenter.selectTimers();
+	}
+
+	public void handleShowCalculators(ActionEvent event) {
+		calculatorDialogPresenter.show();
 	}
 
 	public void handleOverlaysLock(ActionEvent event) {
