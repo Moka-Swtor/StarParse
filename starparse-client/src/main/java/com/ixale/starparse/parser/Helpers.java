@@ -18,19 +18,7 @@ import com.ixale.starparse.domain.Raid;
 import com.ixale.starparse.domain.RaidBoss;
 import com.ixale.starparse.domain.RaidBossName;
 import com.ixale.starparse.domain.Actor.Type;
-import com.ixale.starparse.domain.ops.DreadFortress;
-import com.ixale.starparse.domain.ops.DreadPalace;
-import com.ixale.starparse.domain.ops.EternalChampionship;
-import com.ixale.starparse.domain.ops.EternityVault;
-import com.ixale.starparse.domain.ops.ExplosiveConflict;
-import com.ixale.starparse.domain.ops.Iokath;
-import com.ixale.starparse.domain.ops.KaraggasPalace;
-import com.ixale.starparse.domain.ops.Ravagers;
-import com.ixale.starparse.domain.ops.ScumAndVillainy;
-import com.ixale.starparse.domain.ops.TempleOfSacrifice;
-import com.ixale.starparse.domain.ops.TerrorFromBeyond;
-import com.ixale.starparse.domain.ops.TrainingDummy;
-import com.ixale.starparse.domain.ops.WorldBoss;
+import com.ixale.starparse.domain.ops.*;
 
 public class Helpers {
 
@@ -292,7 +280,8 @@ public class Helpers {
 			new WorldBoss(),
 			new TrainingDummy(),
 			new EternalChampionship(),
-			new Iokath()
+			new Iokath(),
+			new Dxun()
 	};
 
 	private static final Map<Long, RaidBoss> bossesByGuids = new HashMap<>();
