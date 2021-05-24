@@ -206,6 +206,9 @@
             <Menu fx:id="timersMenu" mnemonicParsing="false" text="Timers">
               <items>
                 <SeparatorMenuItem mnemonicParsing="false" text="" />
+                <MenuItem fx:id="timersCheckAllMenu" mnemonicParsing="false" onAction="#handleCheckAll" text="Check all" />
+                <MenuItem fx:id="timersUncheckAllMenu" mnemonicParsing="false" onAction="#handleUnCheckAll" text="Uncheck all" />
+                <SeparatorMenuItem mnemonicParsing="false" text="" />
                 <MenuItem fx:id="timersSettingsMenu" mnemonicParsing="false" onAction="#handleTimersSettings" text="Settings" />
               </items>
             </Menu>

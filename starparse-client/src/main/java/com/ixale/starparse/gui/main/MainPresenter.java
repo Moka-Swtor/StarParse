@@ -131,7 +131,7 @@ public class MainPresenter implements Initializable {
 	@FXML
 	private ImageView logoImage;
 	@FXML
-	private MenuItem raidGroupsSettingsMenu, timersSettingsMenu;
+	private MenuItem raidGroupsSettingsMenu, timersSettingsMenu, timersCheckAllMenu, timersUncheckAllMenu;
 	@FXML
 	private CheckMenuItem timersPopoutMenu, timersCenterPopoutMenu, personalStatsPopoutMenu, damageTakenPopoutMenu, challengesPopoutMenu,
 		raidDpsPopoutMenu, raidHpsPopoutMenu, raidTpsPopoutMenu, hotsPopoutMenu, raidNotesPopoutMenu, lockOverlaysMenu;
@@ -1771,6 +1771,26 @@ public class MainPresenter implements Initializable {
 		}
 	}
 
+	public void handleUnCheckAll(ActionEvent event) {
+		try {
+			config.getConfigTimers().getTimers().forEach(configTimer -> configTimer.setEnabled(false));
+			rebuildTimersMenu();
+		} catch (Exception e) {
+			logger.error("Raiding failed: " + e.getMessage(), e);
+		}
+	}
+
+
+
+	public void handleCheckAll(ActionEvent event) {
+		try {
+			config.getConfigTimers().getTimers().forEach(configTimer -> configTimer.setEnabled(true));
+			rebuildTimersMenu();
+		} catch (Exception e) {
+			logger.error("Raiding failed: " + e.getMessage(), e);
+		}
+	}
+
 	private synchronized void setRaiding(boolean isEnabled) {
 
 		if (isEnabled) {
@@ -2016,8 +2036,10 @@ public class MainPresenter implements Initializable {
 
 		if (!timersMenu.getItems().isEmpty()) {
 			timersMenu.getItems().add(new SeparatorMenuItem());
-
 		}
+		timersMenu.getItems().add(timersCheckAllMenu);
+		timersMenu.getItems().add(timersUncheckAllMenu);
+		timersMenu.getItems().add(new SeparatorMenuItem());
 		timersMenu.getItems().add(timersSettingsMenu);
 	}
 
