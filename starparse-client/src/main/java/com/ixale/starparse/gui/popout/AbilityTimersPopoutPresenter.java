@@ -9,7 +9,9 @@ import com.ixale.starparse.timer.BaseTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import java.net.URL;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
@@ -21,6 +23,20 @@ public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
     @Override
     public void resetCombatStats() {
         // nothing to do
+    }
+
+
+    @Override
+    protected int getMinRows() {
+        return 2;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        //noinspection SuspiciousNameCombination
+        setSlotWidth(DEFAULT_SLOT_HEIGHT);
+        setSlotRows(2);
+        super.initialize(url, resourceBundle);
     }
 
     public void updateTimer(final BaseTimer timer) {

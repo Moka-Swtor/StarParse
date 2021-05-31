@@ -126,6 +126,7 @@ abstract public class BasePopoutPresenter implements Initializable {
 
 	private ShowingListener listener = null;
 
+
 	@Autowired
 	public void setEventService(EventService eventService) {
 		this.eventService = eventService;

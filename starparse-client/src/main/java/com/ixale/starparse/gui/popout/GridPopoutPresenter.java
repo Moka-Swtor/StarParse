@@ -31,7 +31,7 @@ import java.util.*;
 
 abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 
-	private static final int DEFAULT_SLOT_WIDTH = 100,
+	protected static final int DEFAULT_SLOT_WIDTH = 100,
 		DEFAULT_SLOT_HEIGHT = 50,
 		DEFAULT_SLOT_COLS = 2,
 		DEFAULT_SLOT_ROWS = 4,
@@ -62,7 +62,7 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 	private final Map<String, Long> ignoreTimers = new HashMap<>();
 
 
-	private int slotWidth = DEFAULT_SLOT_WIDTH,
+	protected int slotWidth = DEFAULT_SLOT_WIDTH,
 		slotHeight = DEFAULT_SLOT_HEIGHT,
 		slotCols = DEFAULT_SLOT_COLS,
 		slotRows = DEFAULT_SLOT_ROWS;
@@ -178,7 +178,7 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 		resizeStepH = slotHeight;
 		minW = slotWidth * 2;
 		maxW = slotWidth * 6;
-		minH = slotHeight * 4 + TITLE_HEIGHT;
+		minH = slotHeight * getMinRows() + TITLE_HEIGHT;
 		maxH = slotHeight * 8 + TITLE_HEIGHT;
 
 		if (hasPopout()) {
@@ -186,6 +186,10 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 				resizeStepW, minW, maxW,
 				resizeStepH, minH, maxH);
 		}
+	}
+
+	protected int getMinRows() {
+		return 4;
 	}
 
 
