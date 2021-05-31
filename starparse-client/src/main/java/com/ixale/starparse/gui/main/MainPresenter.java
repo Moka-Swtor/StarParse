@@ -1129,7 +1129,11 @@ public class MainPresenter implements Initializable {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						timersPopoutPresenter.updateTimer(timer);
+						if (timer.isAbilityTimer()) {
+							abilityTimersPopoutPresenter.updateTimer(timer);
+						} else {
+							timersPopoutPresenter.updateTimer(timer);
+						}
 					}
 				});
 			}
@@ -1139,7 +1143,11 @@ public class MainPresenter implements Initializable {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						timersPopoutPresenter.removeTimer(timer);
+						if (timer.isAbilityTimer()) {
+							abilityTimersPopoutPresenter.removeTimer(timer);
+						} else {
+							timersPopoutPresenter.removeTimer(timer);
+						}
 					}
 				});
 
@@ -1150,6 +1158,7 @@ public class MainPresenter implements Initializable {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
+						abilityTimersPopoutPresenter.resetTimers();
 						timersPopoutPresenter.resetTimers();
 					}
 				});

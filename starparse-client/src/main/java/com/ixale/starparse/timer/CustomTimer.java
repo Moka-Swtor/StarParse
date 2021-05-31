@@ -46,6 +46,11 @@ public class CustomTimer extends BaseTimer {
 	}
 
 	@Override
+	public boolean isAbilityTimer() {
+		return timer!=null && timer.getAbilityTimerTrigram()!=null;
+	}
+
+	@Override
 	public void start(Long timeFrom) {
 		super.start(timeFrom);
 

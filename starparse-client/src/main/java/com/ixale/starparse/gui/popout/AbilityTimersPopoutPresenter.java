@@ -5,6 +5,7 @@ import com.ixale.starparse.domain.Combat;
 import com.ixale.starparse.domain.stats.CombatStats;
 import com.ixale.starparse.parser.Parser;
 import com.ixale.starparse.parser.TimerState;
+import com.ixale.starparse.timer.BaseTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -20,6 +21,18 @@ public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
     @Override
     public void resetCombatStats() {
         // nothing to do
+    }
+
+    public void updateTimer(final BaseTimer timer) {
+        //TODO
+    }
+
+    public void removeTimer(BaseTimer timer) {
+        //TODO
+    }
+
+    public void resetTimers() {
+        // TODO
     }
 
     // TODO: replace with initilisation of list of timers identified as ability timers

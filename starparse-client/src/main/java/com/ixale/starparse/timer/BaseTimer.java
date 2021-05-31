@@ -49,6 +49,10 @@ abstract public class BaseTimer {
 		this.repeatCount = repeatCount == null ? MAX_REPEAT : repeatCount;
 	}
 
+	public boolean isAbilityTimer() {
+		return false;
+	}
+
 	public String getName() {
 		return name;
 	}

@@ -2013,6 +2013,9 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			timerCancelContainer.setPrefHeight(23.0);
 			timersIgnoreRepeated.setSelected(false);
 
+			abilityTrigram.setText(null);
+			abilityTimer.setSelected(false);
+
 			if (timer != null) {
 				loadTimer(timer);
 				validateAll();
