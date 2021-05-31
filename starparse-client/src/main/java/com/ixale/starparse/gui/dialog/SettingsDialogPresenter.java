@@ -102,14 +102,14 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 	private TextField logDirectoryField, recentParsedLogsLimitField, recentOpenedLogsLimitField, timeSyncHostField,
 		raidGroupNameField, raidGroupClientPasswordField, raidGroupAdminPasswordField,
 		raidPullSec, raidPullHotkey, raidBreakMin,
-		raidDamageOpacityText, raidHealingOpacityText, raidThreatOpacityText,
+		raidDamageOpacityText, raidDtpsOpacityText, raidHealingOpacityText, raidThreatOpacityText,
 		raidChallengesOpacityText, timersOpacityText, timersFractions, personalOpacityText, damageTakenOpacityText, lockOverlaysHotkey,
 		guildField, parselyLoginField, parselyPasswordField,
 		timerName, timerSourceName, timerTargetName, timerAbilityName, timerEffectName,
 		timerDuration, timerRepeat, timerSoundOffset, timerCountdownCount, dtDelay1, dtDelay2;
 
 	@FXML
-	private Slider raidDamageOpacitySlider, raidHealingOpacitySlider, raidThreatOpacitySlider,
+	private Slider raidDamageOpacitySlider, raidDtpsOpacitySlider, raidHealingOpacitySlider, raidThreatOpacitySlider,
 		raidChallengesOpacitySlider, timersOpacitySlider, personalOpacitySlider, damageTakenOpacitySlider, timerSoundVolume, timerCountdownVolume;
 
 	@FXML
@@ -118,7 +118,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 
 	@FXML
 	private CheckBox timeSyncEnabledButton, serverStoreEnabledButton,
-		raidDamageBars, raidHealingBars, raidThreatBars, raidChallengesBars, timersBars, personalBars, damageTakenBars, timersCenter, popoutSolid,
+		raidDamageBars, raidDtpsBars, raidHealingBars, raidThreatBars, raidChallengesBars, timersBars, personalBars, damageTakenBars, timersCenter, popoutSolid,
 		timerDisplay, timerPlaySound, timersIgnoreRepeated, timerPlayCountdown;
 
 	@FXML
@@ -185,6 +185,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			Color friendlyColor,
 			//
 			double raidDamageOpacity, boolean raidDamageBars,
+			double raidDtpsOpacity, boolean raidDtpsBars,
 			double raidHealingOpacity, boolean raidHealingBars, String raidHealingMode,
 			double raidThreatOpacity, boolean raidThreatBars,
 			double raidChallengesOpacity, boolean raidChallengesBars,
@@ -996,6 +997,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			bindPreview(popoutFriendlyColor, ConfigPopoutDefault.DEFAULT_FRIENDLY);
 
 			bindSlider(raidDamageOpacitySlider, raidDamageOpacityText);
+			bindSlider(raidDtpsOpacitySlider, raidDtpsOpacityText);
 			bindSlider(raidHealingOpacitySlider, raidHealingOpacityText);
 			bindSlider(raidThreatOpacitySlider, raidThreatOpacityText);
 			bindSlider(raidChallengesOpacitySlider, raidChallengesOpacityText);
@@ -1004,6 +1006,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			bindSlider(damageTakenOpacitySlider, damageTakenOpacityText);
 
 			bindPreview(raidDamageBars);
+			bindPreview(raidDtpsBars);
 			bindPreview(raidHealingBars);
 			bindPreview(raidThreatBars);
 			bindPreview(raidChallengesBars);
@@ -1288,6 +1291,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			current.put(popoutFriendlyColor, config.getPopoutDefault().getFriendlyColor());
 
 			loadPopoutCurrent("Raid Damage", raidDamageOpacitySlider, raidDamageOpacityText, raidDamageBars, null, null);
+			loadPopoutCurrent("Raid DTPS", raidDtpsOpacitySlider, raidDtpsOpacityText, raidDtpsBars, null, null);
 			loadPopoutCurrent("Raid Healing", raidHealingOpacitySlider, raidHealingOpacityText, raidHealingBars, raidHealingModes, raidHealingMode);
 			loadPopoutCurrent("Raid Threat", raidThreatOpacitySlider, raidThreatOpacityText, raidThreatBars, null, null);
 			loadPopoutCurrent("Raid Challenges", raidChallengesOpacitySlider, raidChallengesOpacityText, raidChallengesBars, null, null);
@@ -1398,6 +1402,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			config.getPopoutDefault().setFriendlyColor(popoutFriendlyColor.getValue());
 
 			savePopoutCurrent("Raid Damage", raidDamageOpacitySlider.getValue() / 100, raidDamageBars.isSelected());
+			savePopoutCurrent("Raid DTPS", raidDtpsOpacitySlider.getValue() / 100, raidDtpsBars.isSelected());
 			savePopoutCurrent("Raid Healing", raidHealingOpacitySlider.getValue() / 100, raidHealingBars.isSelected());
 			savePopoutCurrent("Raid Threat", raidThreatOpacitySlider.getValue() / 100, raidThreatBars.isSelected());
 			savePopoutCurrent("Raid Challenges", raidChallengesOpacitySlider.getValue() / 100, raidChallengesBars.isSelected());
@@ -1473,6 +1478,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 					popoutFriendlyColor.getValue(),
 					//
 					raidDamageOpacitySlider.getValue() / 100, raidDamageBars.isSelected(),
+					raidDtpsOpacitySlider.getValue() / 100, raidDtpsBars.isSelected(),
 					raidHealingOpacitySlider.getValue() / 100, raidHealingBars.isSelected(), getMode(raidHealingMode, raidHealingModes),
 					raidThreatOpacitySlider.getValue() / 100, raidThreatBars.isSelected(),
 					raidChallengesOpacitySlider.getValue() / 100, raidChallengesBars.isSelected(),

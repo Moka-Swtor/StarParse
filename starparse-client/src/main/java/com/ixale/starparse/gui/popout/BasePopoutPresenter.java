@@ -100,6 +100,7 @@ abstract public class BasePopoutPresenter implements Initializable {
 		barColors.put(ValueType.HEAL, ConfigPopoutDefault.DEFAULT_HEALING);
 		barColors.put(ValueType.THREAT, ConfigPopoutDefault.DEFAULT_THREAT);
 		barColors.put(ValueType.FRIENDLY, ConfigPopoutDefault.DEFAULT_FRIENDLY);
+		barColors.put(ValueType.TAKEN, ConfigPopoutDefault.DEFAULT_TAKEN);
 	}
 
 	protected int width = DEFAULT_WIDTH;

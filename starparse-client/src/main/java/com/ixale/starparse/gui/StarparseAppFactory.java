@@ -100,6 +100,13 @@ public class StarparseAppFactory
 	}
 
 	@Bean
+	public RaidDtpsPopoutPresenter raidDtpsPopoutPresenter()
+	{
+		return loadPresenter("/fxml/RaidDtpsPopout.fxml");
+	}
+
+
+	@Bean
 	public RaidDpsPopoutPresenter raidDpsPopoutPresenter()
 	{
 		return loadPresenter("/fxml/RaidDpsPopout.fxml");

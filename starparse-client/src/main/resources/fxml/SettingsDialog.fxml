@@ -15,7 +15,7 @@
 <?import javafx.scene.text.*?>
 <?scenebuilder-stylesheet ../styles.css?>
 
-<TabPane fx:id="dialogRoot" maxHeight="-Infinity" minHeight="-Infinity" minWidth="520.0" prefHeight="350.0" styleClass="modal-text" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ixale.starparse.gui.dialog.SettingsDialogPresenter">
+<TabPane fx:id="dialogRoot" maxHeight="-Infinity" minHeight="-Infinity" minWidth="520.0" prefHeight="370.0" styleClass="modal-text" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ixale.starparse.gui.dialog.SettingsDialogPresenter">
   <tabs>
     <Tab fx:id="contentGeneral" text="General">
       <content>
@@ -226,45 +226,49 @@
                 <Slider fx:id="raidDamageOpacitySlider" blockIncrement="10.0" majorTickUnit="1.0" maxWidth="-Infinity" min="1.0" minHeight="-1.0" minWidth="-Infinity" minorTickCount="0" orientation="HORIZONTAL" prefWidth="60.0" showTickLabels="false" showTickMarks="false" snapToTicks="true" value="70.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                 <TextField fx:id="raidDamageOpacityText" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="30.0" text="70" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
                 <CheckBox fx:id="raidDamageBars" selected="true" text="Bars" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                <Label text="Raid Healing" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                <Slider fx:id="raidHealingOpacitySlider" blockIncrement="10.0" majorTickUnit="1.0" maxWidth="-Infinity" min="1.0" minHeight="-1.0" minWidth="-Infinity" minorTickCount="0" orientation="HORIZONTAL" prefWidth="60.0" showTickLabels="false" showTickMarks="false" snapToTicks="true" value="70.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <TextField fx:id="raidHealingOpacityText" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="30.0" text="70" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                <CheckBox fx:id="raidHealingBars" selected="true" text="Bars" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                <ChoiceBox fx:id="raidHealingMode" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                <Label text="Raid Threat" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                <Slider fx:id="raidThreatOpacitySlider" blockIncrement="10.0" majorTickUnit="1.0" maxWidth="-Infinity" min="1.0" minHeight="-1.0" minWidth="-Infinity" minorTickCount="0" orientation="HORIZONTAL" prefWidth="60.0" showTickLabels="false" showTickMarks="false" snapToTicks="true" value="70.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <TextField fx:id="raidThreatOpacityText" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="30.0" text="70" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                <CheckBox fx:id="raidThreatBars" selected="true" text="Bars" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                <Label text="Challenges" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                <Slider fx:id="raidChallengesOpacitySlider" blockIncrement="10.0" majorTickUnit="1.0" maxWidth="-Infinity" min="1.0" minHeight="-1.0" minWidth="-Infinity" minorTickCount="0" orientation="HORIZONTAL" prefWidth="60.0" showTickLabels="false" showTickMarks="false" snapToTicks="true" value="70.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <TextField fx:id="raidChallengesOpacityText" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="30.0" text="70" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                <CheckBox fx:id="raidChallengesBars" selected="true" text="Bars" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                <Label text="Timers" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                <Slider fx:id="timersOpacitySlider" blockIncrement="10.0" majorTickUnit="1.0" maxWidth="-Infinity" min="1.0" minHeight="-1.0" minWidth="-Infinity" minorTickCount="0" orientation="HORIZONTAL" prefWidth="60.0" showTickLabels="false" showTickMarks="false" snapToTicks="true" value="70.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                <TextField fx:id="timersOpacityText" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="30.0" text="70" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                <CheckBox fx:id="timersBars" selected="true" text="Bars" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                <Label text="Fractions below" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                <Label text="Raid DTPS" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <Slider fx:id="raidDtpsOpacitySlider" blockIncrement="10.0" majorTickUnit="1.0" maxWidth="-Infinity" min="1.0" minHeight="-1.0" minWidth="-Infinity" minorTickCount="0" orientation="HORIZONTAL" prefWidth="60.0" showTickLabels="false" showTickMarks="false" snapToTicks="true" value="70.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField fx:id="raidDtpsOpacityText" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="30.0" text="70" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                <CheckBox fx:id="raidDtpsBars" selected="true" text="Bars" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <Label text="Raid Healing" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Slider fx:id="raidHealingOpacitySlider" blockIncrement="10.0" majorTickUnit="1.0" maxWidth="-Infinity" min="1.0" minHeight="-1.0" minWidth="-Infinity" minorTickCount="0" orientation="HORIZONTAL" prefWidth="60.0" showTickLabels="false" showTickMarks="false" snapToTicks="true" value="70.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <TextField fx:id="raidHealingOpacityText" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="30.0" text="70" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                <CheckBox fx:id="raidHealingBars" selected="true" text="Bars" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <ChoiceBox fx:id="raidHealingMode" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                <Label text="Raid Threat" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <Slider fx:id="raidThreatOpacitySlider" blockIncrement="10.0" majorTickUnit="1.0" maxWidth="-Infinity" min="1.0" minHeight="-1.0" minWidth="-Infinity" minorTickCount="0" orientation="HORIZONTAL" prefWidth="60.0" showTickLabels="false" showTickMarks="false" snapToTicks="true" value="70.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <TextField fx:id="raidThreatOpacityText" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="30.0" text="70" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                <CheckBox fx:id="raidThreatBars" selected="true" text="Bars" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <Label text="Challenges" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <Slider fx:id="raidChallengesOpacitySlider" blockIncrement="10.0" majorTickUnit="1.0" maxWidth="-Infinity" min="1.0" minHeight="-1.0" minWidth="-Infinity" minorTickCount="0" orientation="HORIZONTAL" prefWidth="60.0" showTickLabels="false" showTickMarks="false" snapToTicks="true" value="70.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <TextField fx:id="raidChallengesOpacityText" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="30.0" text="70" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                <CheckBox fx:id="raidChallengesBars" selected="true" text="Bars" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                <Label text="Timers" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                <Slider fx:id="timersOpacitySlider" blockIncrement="10.0" majorTickUnit="1.0" maxWidth="-Infinity" min="1.0" minHeight="-1.0" minWidth="-Infinity" minorTickCount="0" orientation="HORIZONTAL" prefWidth="60.0" showTickLabels="false" showTickMarks="false" snapToTicks="true" value="70.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <TextField fx:id="timersOpacityText" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="30.0" text="70" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                <CheckBox fx:id="timersBars" selected="true" text="Bars" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                <Label text="Fractions below" GridPane.columnIndex="3" GridPane.rowIndex="5" />
                 <TextField fx:id="timersFractions" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="20.0" promptText="s" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
-                	<GridPane.margin>
-                		<Insets right="10.0" />
-                	</GridPane.margin>
+                  <GridPane.margin>
+                    <Insets right="10.0" />
+                  </GridPane.margin>
                 </TextField>
                 <CheckBox fx:id="timersCenter" selected="false" text="Expiring window" GridPane.columnIndex="4" GridPane.rowIndex="4">
-                	<GridPane.margin>
-                		<Insets left="5.0" />
-                	</GridPane.margin>
+                  <GridPane.margin>
+                    <Insets left="5.0" />
+                  </GridPane.margin>
                 </CheckBox>
-                <Button fx:id="timersCenterMoveButton" text="Move" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                <Label text="Personal" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                <Slider fx:id="personalOpacitySlider" blockIncrement="10.0" majorTickUnit="1.0" maxWidth="-Infinity" min="1.0" minHeight="-1.0" minWidth="-Infinity" minorTickCount="0" orientation="HORIZONTAL" prefWidth="60.0" showTickLabels="false" showTickMarks="false" snapToTicks="true" value="70.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                <TextField fx:id="personalOpacityText" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="30.0" text="70" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                <CheckBox fx:id="personalBars" selected="true" text="Bars" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                <ChoiceBox fx:id="personalMode" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-                <Label text="Damage Taken" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                <Slider fx:id="damageTakenOpacitySlider" blockIncrement="10.0" majorTickUnit="1.0" maxWidth="-Infinity" min="1.0" minHeight="-1.0" minWidth="-Infinity" minorTickCount="0" orientation="HORIZONTAL" prefWidth="60.0" showTickLabels="false" showTickMarks="false" snapToTicks="true" value="70.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                <TextField fx:id="damageTakenOpacityText" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="30.0" text="70" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                <CheckBox fx:id="damageTakenBars" selected="true" text="Bars" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-                <ChoiceBox fx:id="damageTakenMode" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                <Button fx:id="timersCenterMoveButton" text="Move" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                <Label text="Personal" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                <Slider fx:id="personalOpacitySlider" blockIncrement="10.0" majorTickUnit="1.0" maxWidth="-Infinity" min="1.0" minHeight="-1.0" minWidth="-Infinity" minorTickCount="0" orientation="HORIZONTAL" prefWidth="60.0" showTickLabels="false" showTickMarks="false" snapToTicks="true" value="70.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                <TextField fx:id="personalOpacityText" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="30.0" text="70" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+                <CheckBox fx:id="personalBars" selected="true" text="Bars" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                <ChoiceBox fx:id="personalMode" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                <Label text="Damage Taken" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                <Slider fx:id="damageTakenOpacitySlider" blockIncrement="10.0" majorTickUnit="1.0" maxWidth="-Infinity" min="1.0" minHeight="-1.0" minWidth="-Infinity" minorTickCount="0" orientation="HORIZONTAL" prefWidth="60.0" showTickLabels="false" showTickMarks="false" snapToTicks="true" value="70.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                <TextField fx:id="damageTakenOpacityText" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="30.0" text="70" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
+                <CheckBox fx:id="damageTakenBars" selected="true" text="Bars" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                <ChoiceBox fx:id="damageTakenMode" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="7" />
                 <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="-1.0" VBox.vgrow="NEVER" GridPane.columnIndex="4" GridPane.rowIndex="6">
                   <children>
                     <Label text="Delay 1" GridPane.columnIndex="0" GridPane.rowIndex="0" />

@@ -134,7 +134,7 @@ public class MainPresenter implements Initializable {
 	private MenuItem raidGroupsSettingsMenu, timersSettingsMenu, timersCheckAllMenu, timersUncheckAllMenu;
 	@FXML
 	private CheckMenuItem timersPopoutMenu, timersCenterPopoutMenu, personalStatsPopoutMenu, damageTakenPopoutMenu, challengesPopoutMenu,
-		raidDpsPopoutMenu, raidHpsPopoutMenu, raidTpsPopoutMenu, hotsPopoutMenu, raidNotesPopoutMenu, lockOverlaysMenu;
+		raidDpsPopoutMenu, raidDtpsPopoutMenu, raidHpsPopoutMenu, raidTpsPopoutMenu, hotsPopoutMenu, raidNotesPopoutMenu, lockOverlaysMenu;
 
 	@Inject
 	private OverviewPresenter overviewPresenter;
@@ -172,6 +172,8 @@ public class MainPresenter implements Initializable {
 	private ChallengesPopoutPresenter challengesPopoutPresenter;
 	@Inject
 	private RaidDpsPopoutPresenter raidDpsPopoutPresenter;
+	@Inject
+	private RaidDtpsPopoutPresenter raidDtpsPopoutPresenter;
 	@Inject
 	private RaidHpsPopoutPresenter raidHpsPopoutPresenter;
 	@Inject
@@ -342,6 +344,7 @@ public class MainPresenter implements Initializable {
 		public static void setSettings(final Color backgroundColor, final Color textColor,
 			final Color damageColor, final Color healingColor, final Color threatColor, final Color friendlyColor,
 			final double raidDamageOpacity, final boolean raidDamageBars,
+			final double raidDtpsOpacity, final boolean raidDtpsBars,
 			final double raidHealingOpacity, final boolean raidHealingBars, final String raidHealingMode,
 			final double raidThreatOpacity, final boolean raidThreatBars,
 			final double raidChallengesOpacity, final boolean raidChallengesBars,
@@ -372,6 +375,9 @@ public class MainPresenter implements Initializable {
 						sp.presenter.setOpacity(raidDamageOpacity);
 						sp.presenter.setBars(raidDamageBars);
 
+					} else if (sp.presenter instanceof RaidDtpsPopoutPresenter) {
+						sp.presenter.setOpacity(raidDtpsOpacity);
+						sp.presenter.setBars(raidDtpsBars);
 					} else if (sp.presenter instanceof RaidHpsPopoutPresenter) {
 						sp.presenter.setOpacity(raidHealingOpacity);
 						sp.presenter.setBars(raidHealingBars);
@@ -1207,6 +1213,7 @@ public class MainPresenter implements Initializable {
 		StatsPopout.add(damageTakenPopoutPresenter, damageTakenPopoutMenu, config);
 		StatsPopout.add(challengesPopoutPresenter, challengesPopoutMenu, config);
 		StatsPopout.add(raidDpsPopoutPresenter, raidDpsPopoutMenu, config);
+		StatsPopout.add(raidDtpsPopoutPresenter, raidDtpsPopoutMenu, config);
 		StatsPopout.add(raidHpsPopoutPresenter, raidHpsPopoutMenu, config);
 		StatsPopout.add(raidTpsPopoutPresenter, raidTpsPopoutMenu, config);
 		StatsPopout.add(hotsPopoutPresenter, hotsPopoutMenu, config);
@@ -1252,6 +1259,7 @@ public class MainPresenter implements Initializable {
 			public void onOverlaysSettings(final Color backgroundColor, final Color textColor,
 				final Color damageColor, final Color healingColor, final Color threatColor, final Color friendlyColor,
 				final double raidDamageOpacity, final boolean raidDamageBars,
+				final double raidDtpsOpacity, final boolean raidDtpsBars,
 				final double raidHealingOpacity, final boolean raidHealingBars, final String raidHealingMode,
 				final double raidThreatOpacity, final boolean raidThreatBars,
 				final double raidChallengesOpacity, final boolean raidChallengesBars,
@@ -1263,6 +1271,7 @@ public class MainPresenter implements Initializable {
 				final boolean popoutSolid) {
 				StatsPopout.setSettings(backgroundColor, textColor, damageColor, healingColor, threatColor, friendlyColor,
 					raidDamageOpacity, raidDamageBars,
+					raidDtpsOpacity, raidDtpsBars,
 					raidHealingOpacity, raidHealingBars, raidHealingMode,
 					raidThreatOpacity, raidThreatBars,
 					raidChallengesOpacity, raidChallengesBars,

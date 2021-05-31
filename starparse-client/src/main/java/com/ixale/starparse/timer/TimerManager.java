@@ -352,6 +352,7 @@ public class TimerManager {
 		timerColors.add(ConfigPopoutDefault.DEFAULT_TIMER2);
 		timerColors.add(ConfigPopoutDefault.DEFAULT_TIMER3);
 		timerColors.add(ConfigPopoutDefault.DEFAULT_TIMER4);
+		timerColors.add(ConfigPopoutDefault.DEFAULT_TIMER5);
 	}
 
 	public static void linkSystemTimers(final List<ConfigTimer> timers) {

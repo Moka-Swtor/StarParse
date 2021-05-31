@@ -11,14 +11,16 @@ public class ConfigPopoutDefault implements Serializable {
 	public static final Color
 		DEFAULT_BACKGROUND = Color.web("0x00000081"), // 50%
 		DEFAULT_TEXT = Color.WHITE,
-		DEFAULT_DAMAGE = Color.web("#ff3e3e").deriveColor(0, 1, .9, 1),
-		DEFAULT_HEALING = Color.web("#32cd32").deriveColor(0, 1, .9, 1),
-		DEFAULT_THREAT = Color.web("#ff963e").deriveColor(0, 1, .9, 1),
-		DEFAULT_FRIENDLY = Color.web("#cd31cc").deriveColor(0, 1, .9, 1),
+		DEFAULT_DAMAGE = Color.web("#ff3e3e").deriveColor(0, 1, .9, 1), 	// red
+		DEFAULT_HEALING = Color.web("#32cd32").deriveColor(0, 1, .9, 1), 	// green
+		DEFAULT_THREAT = Color.web("#ff963e").deriveColor(0, 1, .9, 1),	// orange
+		DEFAULT_FRIENDLY = Color.web("#cd31cc").deriveColor(0, 1, .9, 1),	// purple
+		DEFAULT_TAKEN = Color.web("#d5b60a").deriveColor(0, 1, .9, 1),	// yellow
 		DEFAULT_TIMER1 = DEFAULT_DAMAGE,
 		DEFAULT_TIMER2 = DEFAULT_FRIENDLY,
 		DEFAULT_TIMER3 = DEFAULT_THREAT,
-		DEFAULT_TIMER4 = DEFAULT_HEALING;
+		DEFAULT_TIMER4 = DEFAULT_HEALING,
+		DEFAULT_TIMER5 = DEFAULT_TAKEN;
 
 	private String backgroundColor, textColor, damageColor, healingColor, threatColor, friendlyColor;
 
