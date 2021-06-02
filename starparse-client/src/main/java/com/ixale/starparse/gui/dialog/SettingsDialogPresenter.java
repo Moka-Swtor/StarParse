@@ -1861,7 +1861,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 				@Override
 				public boolean isValid(TextField c) {
 					if (c.getText() == null || c.getText().isEmpty()) {
-						return false;
+						return true;
 					}
 					return c.getText().length() == 3;
 				}
@@ -2096,8 +2096,8 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 						timerDiscipline.setVisible(true);
 						timerDiscipline.setItems(FXCollections.observableList(timer.getCharacterClass().getCharacterDisciplineNames()));
 
-						if (timer.getDiscipline() != null) {
-							timerDiscipline.getSelectionModel().select(timer.getDiscipline());
+						if (timer.getCharacterDiscipline() != null) {
+							timerDiscipline.getSelectionModel().select(timer.getCharacterDiscipline().getFullName());
 						}
 					}
 				}
@@ -2435,6 +2435,11 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			} else {
 				currentTimer.setAbilityTimerTrigram(computeDefaultTrigram(currentTimer.getName()));
 			}
+
+			currentTimer.setTimerType(ConfigTimer.TimerType.parse(timerType.getValue()));
+			currentTimer.setRaidName(timerRaid.getValue());
+			currentTimer.setCharacterClass(CharacterClass.parse(timerClass.getValue()));
+			currentTimer.setCharacterDiscipline(CharacterDiscipline.parse(timerDiscipline.getValue()));
 
 			final Condition cancel;
 			if (timerCancel.getValue() != null && !timerCancel.getValue().isEmpty() && !EMPTY_VALUE.equals(timerCancel.getValue())) {

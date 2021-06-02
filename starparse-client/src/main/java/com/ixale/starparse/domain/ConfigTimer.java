@@ -213,7 +213,8 @@ public class ConfigTimer {
 	private Boolean enabled, ignoreRepeated;
 
 	private CharacterClass characterClass;
-	private String raidName, discipline;
+	private CharacterDiscipline characterDiscipline;
+	private String raidName;
 
 	public CharacterClass getCharacterClass() {
 		return characterClass;
@@ -231,12 +232,12 @@ public class ConfigTimer {
 		this.raidName = raidName;
 	}
 
-	public String getDiscipline() {
-		return discipline;
+	public CharacterDiscipline getCharacterDiscipline() {
+		return characterDiscipline;
 	}
 
-	public void setDiscipline(String discipline) {
-		this.discipline = discipline;
+	public void setCharacterDiscipline(CharacterDiscipline characterDiscipline) {
+		this.characterDiscipline = characterDiscipline;
 	}
 
 	public TimerType getTimerType() {

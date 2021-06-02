@@ -1,5 +1,7 @@
 package com.ixale.starparse.domain;
 
+import java.util.stream.Stream;
+
 import static com.ixale.starparse.domain.CharacterClass.*;
 import static com.ixale.starparse.domain.CharacterRole.*;
 
@@ -94,5 +96,9 @@ public enum CharacterDiscipline {
 
 	public String toString() {
 		return fullName;
+	}
+
+	public static CharacterDiscipline parse(String fullName) {
+		return Stream.of(values()).filter(characterDiscipline -> characterDiscipline.fullName.equals(fullName)).findAny().orElse(null);
 	}
 }
