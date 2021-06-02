@@ -1652,7 +1652,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			timerClass.valueProperty().addListener((observable, oldValue, className) ->{
 				if (className != null) {
 					timerDiscipline.setVisible(true);
-					timerDiscipline.setItems(FXCollections.observableList(SwtorClass.parse(className).getDisciplines()));
+					timerDiscipline.setItems(FXCollections.observableList(CharacterClass.parse(className).getCharacterDisciplineNames()));
 				}
 			});
 
@@ -2091,10 +2091,10 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 
 				if (timer.getTimerType().isClassTimer()) {
 					initializeClassContainer(timer.getTimerType());
-					if (timer.getSwtorClass() != null) {
-						timerClass.getSelectionModel().select(timer.getSwtorClass().toString());
+					if (timer.getCharacterClass() != null) {
+						timerClass.getSelectionModel().select(timer.getCharacterClass().getFullName());
 						timerDiscipline.setVisible(true);
-						timerDiscipline.setItems(FXCollections.observableList(timer.getSwtorClass().getDisciplines()));
+						timerDiscipline.setItems(FXCollections.observableList(timer.getCharacterClass().getCharacterDisciplineNames()));
 
 						if (timer.getDiscipline() != null) {
 							timerDiscipline.getSelectionModel().select(timer.getDiscipline());
@@ -2537,8 +2537,8 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 		timerClassContainer.setPrefHeight(27);
 		timerClassContainer.setVisible(true);
 		final boolean republicClass = timerType == ConfigTimer.TimerType.REPUBLIC_CLASS;
-		List<SwtorClass> swtorClasses = Stream.of(SwtorClass.values()).filter(swtorClass -> republicClass == swtorClass.isRepublic()).collect(Collectors.toList());
-		timerClass.setItems(FXCollections.observableList(swtorClasses.stream().map(SwtorClass::toString).collect(Collectors.toList())));
+		List<CharacterClass> characterClasses = Stream.of(CharacterClass.values()).filter(swtorClass -> republicClass == swtorClass.isRepublic()).collect(Collectors.toList());
+		timerClass.setItems(FXCollections.observableList(characterClasses.stream().map(CharacterClass::getFullName).collect(Collectors.toList())));
 		timerDiscipline.setVisible(false);
 	}
 

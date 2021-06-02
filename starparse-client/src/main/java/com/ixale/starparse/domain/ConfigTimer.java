@@ -212,15 +212,15 @@ public class ConfigTimer {
 
 	private Boolean enabled, ignoreRepeated;
 
-	private SwtorClass swtorClass;
+	private CharacterClass characterClass;
 	private String raidName, discipline;
 
-	public SwtorClass getSwtorClass() {
-		return swtorClass;
+	public CharacterClass getCharacterClass() {
+		return characterClass;
 	}
 
-	public void setSwtorClass(SwtorClass swtorClass) {
-		this.swtorClass = swtorClass;
+	public void setCharacterClass(CharacterClass characterClass) {
+		this.characterClass = characterClass;
 	}
 
 	public String getRaidName() {
