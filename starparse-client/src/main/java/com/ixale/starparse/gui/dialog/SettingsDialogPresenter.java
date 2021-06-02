@@ -3,27 +3,16 @@ package com.ixale.starparse.gui.dialog;
 import java.io.File;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.TimeZone;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.KeyStroke;
 
-import com.ixale.starparse.domain.ConfigPopoutDefault;
-import com.ixale.starparse.domain.ConfigTimer;
+import com.ixale.starparse.domain.*;
 import com.ixale.starparse.domain.ConfigTimer.Condition;
-import com.ixale.starparse.domain.RaidBoss;
-import com.ixale.starparse.domain.RaidGroup;
-import com.ixale.starparse.domain.ServerName;
 import com.ixale.starparse.gui.Config;
 import com.ixale.starparse.gui.FlashMessage;
-import com.ixale.starparse.gui.Marshaller;
 import com.ixale.starparse.gui.SoundManager;
 import com.ixale.starparse.gui.StarparseApp;
 import com.ixale.starparse.gui.popout.BasePopoutPresenter;
@@ -117,7 +106,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 		timerSaveButton, timerCopyButton, timerSoundButton, timerCountdownButton;
 
 	@FXML
-	private CheckBox timeSyncEnabledButton, serverStoreEnabledButton, abilityTimer,
+	private CheckBox timeSyncEnabledButton, serverStoreEnabledButton,
 		raidDamageBars, raidDtpsBars, raidHealingBars, raidThreatBars, raidChallengesBars, timersBars, personalBars, damageTakenBars, timersCenter, popoutSolid,
 		timerDisplay, timerPlaySound, timersIgnoreRepeated, timerPlayCountdown;
 
@@ -132,10 +121,10 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 	@FXML
 	private ChoiceBox<String> timezoneList, serverList,
 		raidHealingMode, personalMode, damageTakenMode,
-		timerTrigger, timerTriggerTimer, timerBoss, timerCancel;
+		timerTrigger, timerTriggerTimer, timerBoss, timerType, timerRaid, timerClass, timerDiscipline, timerCancel;
 
 	@FXML
-	private Text currentTime, serverLabel, timerTriggerTimerLabel, timerEffectLabel, timerBossLabel, timerSoundOffsetLabel, abilityTrigramLabel;
+	private Text currentTime, serverLabel, timerTriggerTimerLabel, timerEffectLabel, timerSoundOffsetLabel;
 
 	@FXML
 	private RadioButton timerSourceYou, timerSourceOther, timerSourceCustom,
@@ -143,7 +132,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 
 	@FXML
 	private AnchorPane timerSourceContainer, timerTargetContainer, timerAbilityContainer,
-		timerIntervalContainer, timerTriggerContainer, timerCancelContainer;
+		timerIntervalContainer, timerTriggerContainer, timerCancelContainer, timerBossContainer, timerClassContainer;
 
 	@FXML
 	private TreeView<TimerNode> timersList;
@@ -1638,17 +1627,34 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 					resetCondition(null);
 				}
 			});
-
-			final List<String> bosses = new ArrayList<>();
-			bosses.add(EMPTY_VALUE);
-			for (final RaidBoss boss: Helpers.getRaidBosses()) {
-				if (bosses.contains(boss.getName())) {
-					continue;
+			timerType.setItems(FXCollections.observableList(
+					Stream.of(ConfigTimer.TimerType.values()).map(ConfigTimer.TimerType::toString).collect(Collectors.toList())
+			));
+			timerType.valueProperty().addListener((observable, oldValue, newValue) -> {
+				final ConfigTimer.TimerType timerType = ConfigTimer.TimerType.parse(newValue);
+				if (timerType.isClassTimer()) {
+					initializeClassContainer(timerType);
+				} else if (timerType == ConfigTimer.TimerType.BOSS) {
+					initializeBossContainer();
+				} else {
+					resetTimerClassContainer();
+					resetTimerBossContainer();
 				}
-				bosses.add(boss.getName());
-			}
-			Collections.sort(bosses);
-			timerBoss.setItems(FXCollections.observableList(bosses));
+			});
+			timerBoss.setVisible(false);
+			timerRaid.valueProperty().addListener((observable, oldValue, raidName) -> {
+				if (raidName != null) {
+					timerBoss.setVisible(true);
+					timerBoss.setItems(FXCollections.observableList(Helpers.getRaidBosses().get(raidName)));
+				}
+			});
+			timerDiscipline.setVisible(false);
+			timerClass.valueProperty().addListener((observable, oldValue, className) ->{
+				if (className != null) {
+					timerDiscipline.setVisible(true);
+					timerDiscipline.setItems(FXCollections.observableList(SwtorClass.parse(className).getDisciplines()));
+				}
+			});
 
 			final List<String> sounds = new ArrayList<>();
 			sounds.add(SOUND_FILE);
@@ -1855,7 +1861,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 				@Override
 				public boolean isValid(TextField c) {
 					if (c.getText() == null || c.getText().isEmpty()) {
-						return !abilityTimer.isSelected();
+						return false;
 					}
 					return c.getText().length() == 3;
 				}
@@ -1958,8 +1964,8 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			timerName.setPrefWidth(105.0);
 			timerName.setDisable(false);
 			timerBoss.setVisible(true);
-			timerBossLabel.setVisible(true);
-			timerBoss.getSelectionModel().clearSelection();
+			resetTimerBossContainer();
+			resetTimerClassContainer();
 			timerTriggerContainer.setVisible(true);
 			timerTriggerContainer.setPrefHeight(23.0);
 			timerTrigger.setVisible(true);
@@ -2014,7 +2020,6 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			timersIgnoreRepeated.setSelected(false);
 
 			abilityTrigram.setText(null);
-			abilityTimer.setSelected(false);
 
 			if (timer != null) {
 				loadTimer(timer);
@@ -2043,10 +2048,21 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			suppressEvents = false;
 		}
 
+		private void initializeTimerType(final ConfigTimer timer) {
+			if (timer.getTimerType() == null) {
+				timer.setTimerType(timer.getTrigger().getBoss() != null ? ConfigTimer.TimerType.BOSS : ConfigTimer.TimerType.OTHER);
+			}
+			timerType.getSelectionModel().select(timer.getTimerType().toString());
+			if (timer.getTimerType() == ConfigTimer.TimerType.BOSS && timer.getTrigger().getBoss()!=null && timer.getRaidName() == null) {
+				timer.setRaidName(Helpers.findRaidName(timer.getTrigger().getBoss()));
+			}
+		}
+
 		private void loadTimer(final ConfigTimer timer) {
 			currentTimer = timer;
 
 			timerName.setText(timer.getName());
+			initializeTimerType(timer);
 
 			if (timer.isSystem()) {
 				timerTriggerContainer.setVisible(false);
@@ -2054,9 +2070,37 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 				timerName.setPrefWidth(220.0);
 				timerName.setDisable(true);
 				timerBoss.setVisible(false);
-				timerBossLabel.setVisible(false);
-			} else if (timer.getTrigger() != null && timer.getTrigger().getType() != null) {
-				timerTrigger.getSelectionModel().select(timer.getTrigger().getType().getLabel());
+				resetTimerClassContainer();
+				resetTimerBossContainer();
+			} else {
+				if (timer.getTrigger() != null && timer.getTrigger().getType() != null) {
+					timerTrigger.getSelectionModel().select(timer.getTrigger().getType().getLabel());
+				}
+				if (timer.getTimerType() == ConfigTimer.TimerType.BOSS) {
+					SortedMap<String, List<String>> raidBosses = initializeBossContainer();
+					if (timer.getRaidName() != null) {
+						timerRaid.getSelectionModel().select(timer.getRaidName());
+						timerBoss.setVisible(true);
+						timerBoss.setItems(FXCollections.observableList(raidBosses.get(timer.getRaidName())));
+
+						if (timer.getTrigger() != null && timer.getTrigger().getBoss() != null) {
+							timerBoss.getSelectionModel().select(timer.getTrigger().getBoss());
+						}
+					}
+				};
+
+				if (timer.getTimerType().isClassTimer()) {
+					initializeClassContainer(timer.getTimerType());
+					if (timer.getSwtorClass() != null) {
+						timerClass.getSelectionModel().select(timer.getSwtorClass().toString());
+						timerDiscipline.setVisible(true);
+						timerDiscipline.setItems(FXCollections.observableList(timer.getSwtorClass().getDisciplines()));
+
+						if (timer.getDiscipline() != null) {
+							timerDiscipline.getSelectionModel().select(timer.getDiscipline());
+						}
+					}
+				}
 			}
 
 			if (timer.getTrigger() != null) {
@@ -2146,8 +2190,9 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			}
 
 			if (timer.getAbilityTimerTrigram() != null) {
-				abilityTimer.setSelected(true);
 				abilityTrigram.setText(timer.getAbilityTimerTrigram());
+			} else {
+				abilityTrigram.setText(computeDefaultTrigram(timer.getName()));
 			}
 
 			if (timer.getCountdownVoice() != null) {
@@ -2385,10 +2430,10 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 				currentTimer.setRepeat(null);
 			}
 
-			if (abilityTimer.isSelected()) {
+			if (abilityTrigram.getText()!=null) {
 				currentTimer.setAbilityTimerTrigram(abilityTrigram.getText());
 			} else {
-				currentTimer.setAbilityTimerTrigram(null);
+				currentTimer.setAbilityTimerTrigram(computeDefaultTrigram(currentTimer.getName()));
 			}
 
 			final Condition cancel;
@@ -2463,6 +2508,51 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 				player = null;
 			}
 			SoundManager.stopAll();
+		}
+	}
+
+
+	private void resetTimerBossContainer() {
+		timerBossContainer.setVisible(false);
+		timerBossContainer.setPrefHeight(0);
+	}
+
+	private SortedMap<String, List<String>> initializeBossContainer() {
+		resetTimerClassContainer();
+		timerBossContainer.setPrefHeight(27);
+		timerBossContainer.setVisible(true);
+		SortedMap<String, List<String>> bossesByRaid = Helpers.getRaidBosses();
+		timerRaid.setItems(FXCollections.observableList(new ArrayList<>(bossesByRaid.keySet())));
+		timerBoss.setVisible(false);
+		return bossesByRaid;
+	}
+
+	private void resetTimerClassContainer() {
+		timerClassContainer.setVisible(false);
+		timerClassContainer.setPrefHeight(0);
+	}
+
+	private void initializeClassContainer(ConfigTimer.TimerType timerType) {
+		resetTimerBossContainer();
+		timerClassContainer.setPrefHeight(27);
+		timerClassContainer.setVisible(true);
+		final boolean republicClass = timerType == ConfigTimer.TimerType.REPUBLIC_CLASS;
+		List<SwtorClass> swtorClasses = Stream.of(SwtorClass.values()).filter(swtorClass -> republicClass == swtorClass.isRepublic()).collect(Collectors.toList());
+		timerClass.setItems(FXCollections.observableList(swtorClasses.stream().map(SwtorClass::toString).collect(Collectors.toList())));
+		timerDiscipline.setVisible(false);
+	}
+
+	private String computeDefaultTrigram(String name) {
+		if (name == null) {
+			return null;
+		}
+		String[] words = name.split(" ");
+		if (words.length >= 3) {
+			return ("" + words[0].charAt(0) + words[1].charAt(0) + words[2].charAt(0)).toUpperCase(Locale.ROOT);
+		} else if (words.length == 2) {
+			return (words[0].substring(0, 2) + words[1].charAt(0)).toUpperCase(Locale.ROOT);
+		} else {
+			return name.substring(0, 3).toUpperCase(Locale.ROOT);
 		}
 	}
 

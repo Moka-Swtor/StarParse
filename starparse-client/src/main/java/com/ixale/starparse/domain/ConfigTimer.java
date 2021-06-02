@@ -4,6 +4,8 @@ import javafx.scene.paint.Color;
 
 import com.ixale.starparse.timer.TimerManager;
 
+import java.util.stream.Stream;
+
 public class ConfigTimer {
 
 	public static final String SYSTEM_FOLDER = "Built-in:";
@@ -173,6 +175,29 @@ public class ConfigTimer {
 
 	}
 
+	public enum TimerType {
+		BOSS("Boss Timer"), REPUBLIC_CLASS("Republic class"), IMPERIAL_CLASS("Imperial class"), OTHER("Other");
+		private final String name;
+
+		TimerType(String name) {
+			this.name = name;
+		}
+
+		public boolean isClassTimer() {
+			return this == REPUBLIC_CLASS || this == IMPERIAL_CLASS;
+		}
+
+		@Override
+		public String toString() {
+			return name;
+		}
+
+		public static TimerType parse(String value) {
+			return Stream.of(values()).filter(timerType1 -> timerType1.name.equals(value)).findAny().orElse(null);
+		}
+	}
+
+	private TimerType timerType;
 	private String name, folder;
 	private Condition trigger, cancel;
 	private Integer repeat, volume, soundOffset;
@@ -186,6 +211,41 @@ public class ConfigTimer {
 	private Integer countdownCount, countdownVolume;
 
 	private Boolean enabled, ignoreRepeated;
+
+	private SwtorClass swtorClass;
+	private String raidName, discipline;
+
+	public SwtorClass getSwtorClass() {
+		return swtorClass;
+	}
+
+	public void setSwtorClass(SwtorClass swtorClass) {
+		this.swtorClass = swtorClass;
+	}
+
+	public String getRaidName() {
+		return raidName;
+	}
+
+	public void setRaidName(String raidName) {
+		this.raidName = raidName;
+	}
+
+	public String getDiscipline() {
+		return discipline;
+	}
+
+	public void setDiscipline(String discipline) {
+		this.discipline = discipline;
+	}
+
+	public TimerType getTimerType() {
+		return timerType;
+	}
+
+	public void setTimerType(TimerType timerType) {
+		this.timerType = timerType;
+	}
 
 	public String getAbilityTimerTrigram() {
 		return abilityTimerTrigram;

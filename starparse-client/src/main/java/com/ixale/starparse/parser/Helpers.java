@@ -3,11 +3,8 @@ package com.ixale.starparse.parser;
 import static com.ixale.starparse.domain.EntityGroup.*;
 import static com.ixale.starparse.domain.EntityGuid.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.ixale.starparse.domain.Actor;
 import com.ixale.starparse.domain.CharacterDiscipline;
@@ -360,13 +357,20 @@ public class Helpers {
 		return bossesByVerbose.get(bossNameVerbose);
 	}
 
-	public static List<RaidBoss> getRaidBosses() {
-		final List<RaidBoss> bosses = new ArrayList<>();
-		for (Raid r: raids) {
-			for (RaidBoss b: r.getBosses()) {
-				bosses.add(b);
+	public static SortedMap<String, List<String>> getRaidBosses() {
+		SortedMap<String, List<String>> map = new TreeMap<>(String::compareTo);
+		for (Raid raid : raids) {
+			map.put(raid.getClass().getSimpleName(), raid.getBosses().stream().map(RaidBoss::getName).distinct().sorted().collect(Collectors.toList()));
+		}
+		return map;
+	}
+
+	public static String findRaidName(String bossName) {
+		for (Raid raid : raids) {
+			if (raid.getBosses().stream().map(RaidBoss::getName).anyMatch(bossName::equals)) {
+				return raid.getClass().getSimpleName();
 			}
 		}
-		return bosses;
+		return null;
 	}
 }

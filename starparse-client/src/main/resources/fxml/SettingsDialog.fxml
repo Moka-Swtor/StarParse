@@ -349,12 +349,28 @@
               <children>
                 <VBox id="VBox" alignment="TOP_LEFT" spacing="0.0" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.valignment="TOP">
                   <children>
-                    <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="23.0" prefWidth="-1.0">
+                    <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" prefWidth="-1.0">
                       <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="2.0" />
                         <TextField fx:id="timerName" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="105.0" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="0.0" />
-                        <Text fx:id="timerBossLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Boss" AnchorPane.leftAnchor="170.0" AnchorPane.topAnchor="2.0" />
-                        <ChoiceBox fx:id="timerBoss" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="110.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type" AnchorPane.leftAnchor="170.0" AnchorPane.topAnchor="2.0" />
+                        <ChoiceBox fx:id="timerType" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="110.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                      </children>
+                    </AnchorPane>
+                    <AnchorPane fx:id="timerClassContainer" maxHeight="-Infinity" maxWidth="-1.0" minHeight="-Infinity" prefHeight="27.0" prefWidth="-1.0">
+                      <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Class" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="2.0" />
+                        <ChoiceBox fx:id="timerClass" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="0.0" />
+                        <Text  strokeType="OUTSIDE" strokeWidth="0.0" text="Discipline" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="2.0" />
+                        <ChoiceBox fx:id="timerDiscipline" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="130.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                      </children>
+                    </AnchorPane>
+                    <AnchorPane fx:id="timerBossContainer" maxHeight="-Infinity" maxWidth="-1.0" minHeight="-Infinity" prefHeight="27.0" prefWidth="-1.0" >
+                      <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Raid" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="2.0" />
+                        <ChoiceBox fx:id="timerRaid" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="0.0" />
+                        <Text  strokeType="OUTSIDE" strokeWidth="0.0" text="Boss" AnchorPane.leftAnchor="160.0" AnchorPane.topAnchor="2.0" />
+                        <ChoiceBox fx:id="timerBoss" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="130.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                       </children>
                     </AnchorPane>
                     <AnchorPane fx:id="timerTriggerContainer" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="23.0" prefWidth="-1.0">
@@ -418,6 +434,8 @@
                       <children>
                         <CheckBox fx:id="timerDisplay" mnemonicParsing="false" text="Display" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="2.0" />
                         <ColorPicker fx:id="timerColor" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="-1.0" />
+                        <Text strokeWidth="0.0" text="Trigram" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="4.0" />
+                        <TextField fx:id="abilityTrigram" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" promptText="xxx" text="" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                       </children>
                     </AnchorPane>
                     <AnchorPane maxHeight="-Infinity" maxWidth="-1.0" minHeight="-Infinity" prefHeight="27.0" prefWidth="-1.0">
@@ -437,13 +455,6 @@
                         <ComboBox fx:id="timerCountdownVoice" focusTraversable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" AnchorPane.leftAnchor="130.0" AnchorPane.topAnchor="0.0" />
                         <Button fx:id="timerCountdownButton" mnemonicParsing="false" text="&gt;" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="0.0" />
                         <Slider fx:id="timerCountdownVolume" majorTickUnit="50.0" max="100.0" maxWidth="-Infinity" minWidth="-Infinity" minorTickCount="25" prefWidth="50.0" showTickLabels="false" showTickMarks="false" snapToTicks="false" value="80.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0" />
-                      </children>
-                    </AnchorPane>
-                    <AnchorPane maxHeight="-Infinity" maxWidth="-1.0" minHeight="-Infinity" prefHeight="27.0" prefWidth="-1.0">
-                      <children>
-                        <CheckBox fx:id="abilityTimer" mnemonicParsing="false" text="Ability Timer" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="2.0" />
-                        <Text fx:id="abilityTrigramLabel" strokeWidth="0.0" text="Ability trigram" AnchorPane.leftAnchor="130.0" AnchorPane.topAnchor="4.0" />
-                        <TextField fx:id="abilityTrigram" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" promptText="xxx" text="" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="0.0" />
                       </children>
                     </AnchorPane>
                     <HBox spacing="5.0" VBox.vgrow="ALWAYS">
