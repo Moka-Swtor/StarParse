@@ -47,7 +47,10 @@ public class CustomTimer extends BaseTimer {
 
 	@Override
 	public boolean isAbilityTimer() {
-		return timer!=null && timer.getAbilityTimerTrigram()!=null;
+
+		// return timer!=null && timer.getTimerType()!=null && timer.getTimerType().isClassTimer();
+		//TODO: use previous line when working again on grid layout feature
+		return super.isAbilityTimer();
 	}
 
 	@Override
