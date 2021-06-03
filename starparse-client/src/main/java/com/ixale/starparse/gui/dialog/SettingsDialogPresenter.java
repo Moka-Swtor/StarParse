@@ -1887,7 +1887,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 					if (appendTo == null) {
 						// folder does not exist
 						appendTo = new TreeItem<TimerNode>(new TimerNode(timer.getFolder()));
-						appendTo.setExpanded(!timer.isSystem());
+						appendTo.setExpanded(!timer.isSystemOrCommunity());
 						rootItem.getChildren().add(appendTo);
 					}
 

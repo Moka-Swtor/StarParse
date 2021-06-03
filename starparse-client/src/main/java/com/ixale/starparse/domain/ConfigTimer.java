@@ -6,6 +6,8 @@ import com.ixale.starparse.timer.TimerManager;
 
 import java.util.stream.Stream;
 
+import static com.ixale.starparse.domain.ConfigTimers.COMMUNITY_PREFIX;
+
 public class ConfigTimer {
 
 	public static final String SYSTEM_FOLDER = "Built-in:";
@@ -390,6 +392,10 @@ public class ConfigTimer {
 
 	public boolean isSystem() {
 		return folder != null && folder.startsWith(SYSTEM_FOLDER);
+	}
+
+	public boolean isSystemOrCommunity() {
+		return folder != null && (folder.startsWith(SYSTEM_FOLDER) || folder.startsWith(COMMUNITY_PREFIX));
 	}
 
 	public boolean isSystemModified() {
