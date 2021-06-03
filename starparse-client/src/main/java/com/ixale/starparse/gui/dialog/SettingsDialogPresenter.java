@@ -124,7 +124,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 		timerTrigger, timerTriggerTimer, timerBoss, timerType, timerRaid, timerClass, timerDiscipline, timerCancel;
 
 	@FXML
-	private Text currentTime, serverLabel, timerTriggerTimerLabel, timerEffectLabel, timerSoundOffsetLabel;
+	private Text currentTime, serverLabel, timerTriggerTimerLabel, timerEffectLabel, timerSoundOffsetLabel, timerTypeLabel;
 
 	@FXML
 	private RadioButton timerSourceYou, timerSourceOther, timerSourceCustom,
@@ -1964,6 +1964,8 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			timerName.setPrefWidth(105.0);
 			timerName.setDisable(false);
 			timerBoss.setVisible(true);
+			timerTypeLabel.setVisible(true);
+			timerType.setVisible(true);
 			resetTimerBossContainer();
 			resetTimerClassContainer();
 			timerTriggerContainer.setVisible(true);
@@ -2050,7 +2052,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 
 		private void initializeTimerType(final ConfigTimer timer) {
 			if (timer.getTimerType() == null) {
-				timer.setTimerType(timer.getTrigger().getBoss() != null ? ConfigTimer.TimerType.BOSS : ConfigTimer.TimerType.OTHER);
+				timer.setTimerType(timer.getTrigger()!=null && timer.getTrigger().getBoss() != null ? ConfigTimer.TimerType.BOSS : ConfigTimer.TimerType.OTHER);
 			}
 			timerType.getSelectionModel().select(timer.getTimerType().toString());
 			if (timer.getTimerType() == ConfigTimer.TimerType.BOSS && timer.getTrigger().getBoss()!=null && timer.getRaidName() == null) {
@@ -2070,6 +2072,8 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 				timerName.setPrefWidth(220.0);
 				timerName.setDisable(true);
 				timerBoss.setVisible(false);
+				timerTypeLabel.setVisible(false);
+				timerType.setVisible(false);
 				resetTimerClassContainer();
 				resetTimerBossContainer();
 			} else {
