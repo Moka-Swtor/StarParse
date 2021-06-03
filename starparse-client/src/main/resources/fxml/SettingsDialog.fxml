@@ -353,7 +353,7 @@
                       <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="2.0" />
                         <TextField fx:id="timerName" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="105.0" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="0.0" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type" AnchorPane.leftAnchor="170.0" AnchorPane.topAnchor="2.0" />
+                        <Text fx:id="timerTypeLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Type" AnchorPane.leftAnchor="170.0" AnchorPane.topAnchor="2.0" />
                         <ChoiceBox fx:id="timerType" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="110.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                       </children>
                     </AnchorPane>
