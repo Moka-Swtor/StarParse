@@ -2015,6 +2015,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			timerCountdownCount.setText("5");
 
 			timerCancel.getSelectionModel().clearSelection();
+			timerCancel.setValue(null);
 			final List<String> cancel = new ArrayList<>();
 			cancel.add(EMPTY_VALUE);
 			cancel.add(Condition.Type.COMBAT_END.getLabel());
