@@ -1966,6 +1966,9 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			timerBoss.setVisible(true);
 			timerTypeLabel.setVisible(true);
 			timerType.setVisible(true);
+			timerRaid.setValue(null);
+			timerDiscipline.setValue(null);
+			timerClass.setValue(null);
 			resetTimerBossContainer();
 			resetTimerClassContainer();
 			timerTriggerContainer.setVisible(true);
@@ -2524,6 +2527,8 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 	private void resetTimerBossContainer() {
 		timerBossContainer.setVisible(false);
 		timerBossContainer.setPrefHeight(0);
+		timerBoss.getSelectionModel().clearSelection();
+		timerBoss.setValue(null);
 	}
 
 	private SortedMap<String, List<String>> initializeBossContainer() {
