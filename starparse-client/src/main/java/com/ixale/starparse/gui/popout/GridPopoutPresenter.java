@@ -1,6 +1,8 @@
 package com.ixale.starparse.gui.popout;
 
 
+import com.ixale.starparse.domain.Combat;
+import com.ixale.starparse.domain.stats.CombatStats;
 import com.ixale.starparse.parser.TimerState;
 import com.ixale.starparse.time.TimeUtils;
 import javafx.beans.binding.Bindings;
@@ -45,7 +47,7 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 	private AnchorPane frames, popoutHeader;
 
 
-	private class TimerFrame {
+	protected static class TimerFrame {
 		int col, row;
 		final AnchorPane pane;
 		final TimerState state;
@@ -53,6 +55,16 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 		TimerFrame(final AnchorPane pane, final TimerState state) {
 			this.pane = pane;
 			this.state = state;
+		}
+
+		@Override
+		public String toString() {
+			return "TimerFrame{" +
+					"col=" + col +
+					", row=" + row +
+					", pane=" + pane +
+					", state=" + state +
+					'}';
 		}
 	}
 
@@ -81,6 +93,16 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 
 	protected void setSlotRows(int slotRows) {
 		this.slotRows = slotRows;
+	}
+
+	@Override
+	protected void refreshCombatStats(final Combat combat, final CombatStats stats) throws Exception {
+		// nothing here
+	}
+
+	@Override
+	public void resetCombatStats() {
+		// nothing here
 	}
 
 	@Override
@@ -254,26 +276,10 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 		ignoreTimers.clear();
 	}
 
+	public abstract void tickFrames(Collection<TimerFrame> timerFrames);
+
 	public void tickHots() {
-		for (final TimerFrame frame: timers.values()) {
-			boolean hotActive = false;
-			int hotStacks = 0;
-			if (frame.state.getEffect() != null && frame.state.getSince() != null) {
-				hotActive = repaintHot(frame, null);
-				if (hotActive) {
-					hotStacks = frame.state.getStacks();
-				}
-			}
-			if (hotActive != frame.pane.getChildren().get(1).isVisible()) {
-				frame.pane.getChildren().get(1).setVisible(hotActive);
-			}
-			if ((hotStacks > 0) != frame.pane.getChildren().get(2).isVisible()) {
-				frame.pane.getChildren().get(2).setVisible(hotStacks > 0);
-			}
-			if (hotStacks > 0) {
-				((Label) frame.pane.getChildren().get(2)).setText(String.valueOf(hotStacks));
-			}
-		}
+		tickFrames(timers.values());
 	}
 
 	public void setSolid(boolean solid) {
@@ -504,7 +510,8 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 		// align stacks
 		final int w = Math.max(15, Math.min(slotHeight / 4, 30));
 		if (w != ((Canvas) frame.pane.getChildren().get(1)).getWidth()) {
-			repaintHot(frame, w);
+			Canvas canvas = retrieveCanvas(frame, w);
+			this.repaintTimer(canvas.getGraphicsContext2D(), canvas.getWidth(), canvas.getHeight(), frame.state);
 		}
 		final Label s = (Label) frame.pane.getChildren().get(2);
 		s.setPrefHeight(w);
@@ -515,27 +522,15 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 		}
 	}
 
-	abstract void repaintTimer(GraphicsContext gc, double width, double height, TimerState timerState);
+	abstract boolean repaintTimer(GraphicsContext gc, double width, double height, TimerState timerState);
 
-	private boolean repaintHot(final TimerFrame frame, final Integer newSize) {
-		final Integer duration = frame.state.getDuration();
-		final Long since = frame.state.getSince();
+	protected Canvas retrieveCanvas(final TimerFrame frame, final Integer newSize) {
 		final Canvas canvas = (Canvas) frame.pane.getChildren().get(1);
 		if (newSize != null) {
 			canvas.setHeight(newSize);
 			canvas.setWidth(newSize);
 		}
-		if (since == null || (duration != null && duration < (TimeUtils.getCurrentTime() - since - TIMEOUT_WITH_DURATION))) { // arbitrary tolerance
-			return false;
-		}
-		if (TimeUtils.getCurrentTime() - since > TIMEOUT_WITHOUT_DURATION) {
-			// expired (out of range etc.)
-			return false;
-		}
-
-		final GraphicsContext gc = canvas.getGraphicsContext2D();
-		this.repaintTimer(gc, canvas.getWidth(), canvas.getHeight(), frame.state);
-		return true;
+		return canvas;
 	}
 
 	@Override

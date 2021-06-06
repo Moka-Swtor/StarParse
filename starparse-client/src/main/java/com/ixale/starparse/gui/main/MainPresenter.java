@@ -708,8 +708,6 @@ public class MainPresenter implements Initializable {
 					// TODO: leaking parser?
 					hotsPopoutPresenter.setActorStates(parser.getActorStates(), currentCharacterName);
 				}
-				// TODO: call from elsewhere with data of current ability timers
-				abilityTimersPopoutPresenter.setActorStates(parser.getActorStates());
 
 			} catch (Exception e) {
 				logger.error("General error", e);
@@ -1130,7 +1128,7 @@ public class MainPresenter implements Initializable {
 					@Override
 					public void run() {
 						if (timer.isAbilityTimer()) {
-							abilityTimersPopoutPresenter.updateTimer(timer);
+							abilityTimersPopoutPresenter.addOrUpdateOrCompleteTimer(timer);
 						} else {
 							timersPopoutPresenter.updateTimer(timer);
 						}

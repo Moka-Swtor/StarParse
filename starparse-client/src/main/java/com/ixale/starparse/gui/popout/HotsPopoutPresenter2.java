@@ -8,18 +8,17 @@ import com.ixale.starparse.parser.TimerState;
 import com.ixale.starparse.time.TimeUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -51,17 +50,52 @@ public class HotsPopoutPresenter2 extends GridPopoutPresenter {
     }
 
     @Override
-    void repaintTimer(final GraphicsContext gc, final double width, final double height, final TimerState timerState) {
+    public void tickFrames(Collection<GridPopoutPresenter.TimerFrame> timerFrames) {
+        for (final TimerFrame frame: timerFrames) {
+            boolean hotActive = false;
+            int hotStacks = 0;
+            if (frame.state.getEffect() != null && frame.state.getSince() != null) {
+                Canvas canvas = retrieveCanvas(frame, null);
+                hotActive = this.repaintTimer(canvas.getGraphicsContext2D(), canvas.getWidth(), canvas.getHeight(), frame.state);
+                if (hotActive) {
+                    hotStacks = frame.state.getStacks();
+                }
+            }
+            if (hotActive != frame.pane.getChildren().get(1).isVisible()) {
+                frame.pane.getChildren().get(1).setVisible(hotActive);
+            }
+            if ((hotStacks > 0) != frame.pane.getChildren().get(2).isVisible()) {
+                frame.pane.getChildren().get(2).setVisible(hotStacks > 0);
+            }
+            if (hotStacks > 0) {
+                ((Label) frame.pane.getChildren().get(2)).setText(String.valueOf(hotStacks));
+            }
+        }
+    }
+
+    @Override
+    boolean repaintTimer(final GraphicsContext gc, final double width, final double height, final TimerState timerState) {
+        final Integer duration = timerState.getDuration();
+        final Long since = timerState.getSince();
+
+        if (since == null || (duration != null && duration < (TimeUtils.getCurrentTime() - since - TIMEOUT_WITH_DURATION))) { // arbitrary tolerance
+            return false;
+        }
+        if (TimeUtils.getCurrentTime() - since > TIMEOUT_WITHOUT_DURATION) {
+            // expired (out of range etc.)
+            return false;
+        }
+
         gc.clearRect(0, 0, width, height);
-        if (timerState.getDuration() == null) {
+        if (duration == null) {
             gc.setFill(Color.LIMEGREEN);
         } else {
             gc.setFill(Color.DARKGREEN);
         }
         gc.fillRoundRect(0, 0, width, height, 0, 0);
-        if (timerState.getDuration() != null) {
+        if (duration != null) {
             gc.setFill(Color.LIMEGREEN);
-            double a = 360 * ((TimeUtils.getCurrentTime() - timerState.getSince()) * 1.0 / timerState.getDuration());
+            double a = 360 * ((TimeUtils.getCurrentTime() - since) * 1.0 / duration);
             if (a > 360) {
                 a = 360;
             }
@@ -103,17 +137,9 @@ public class HotsPopoutPresenter2 extends GridPopoutPresenter {
             }
 
         }
+        return true;
     }
 
-    @Override
-    protected void refreshCombatStats(final Combat combat, final CombatStats stats) throws Exception {
-        // nothing here
-    }
-
-    @Override
-    public void resetCombatStats() {
-        // nothing here
-    }
 
     public void setActorStates(final Map<Actor, Parser.ActorState> actorStates, final String currentCharacterName) {
         this.currentCharacterName = currentCharacterName;

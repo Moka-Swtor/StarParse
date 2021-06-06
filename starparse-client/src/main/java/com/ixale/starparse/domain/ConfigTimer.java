@@ -55,6 +55,18 @@ public class ConfigTimer {
 		private Integer hotkeyMod, hotkeyKey;
 		private String boss, mode, size;
 
+		public Entity computeEntity() {
+			switch (type) {
+				case ABILITY_ACTIVATED:
+					return new Entity(ability, abilityGuid);
+				case EFFECT_GAINED:
+				case EFFECT_LOST:
+					return new Entity(effect, effectGuid);
+				default:
+					return null;
+			}
+		}
+
 		public Type getType() {
 			return type;
 		}

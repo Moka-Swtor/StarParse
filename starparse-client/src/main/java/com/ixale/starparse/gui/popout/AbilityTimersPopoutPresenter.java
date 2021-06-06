@@ -1,29 +1,26 @@
 package com.ixale.starparse.gui.popout;
 
-import com.ixale.starparse.domain.Actor;
-import com.ixale.starparse.domain.Combat;
-import com.ixale.starparse.domain.stats.CombatStats;
-import com.ixale.starparse.parser.Parser;
 import com.ixale.starparse.parser.TimerState;
+import com.ixale.starparse.time.TimeUtils;
 import com.ixale.starparse.timer.BaseTimer;
+import com.ixale.starparse.timer.CustomTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
-    @Override
-    protected void refreshCombatStats(Combat combat, CombatStats stats) throws Exception {
-        // nothing to do
-    }
 
-    @Override
-    public void resetCombatStats() {
-        // nothing to do
-    }
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbilityTimersPopoutPresenter.class);
+    private static final long startMillis = System.currentTimeMillis();
+
+    private final Map<Integer, CustomTimer> timerStateMap = new HashMap<>();
+    private final Set<CustomTimer> customTimers = new HashSet<>();
 
 
     @Override
@@ -39,37 +36,56 @@ public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
         super.initialize(url, resourceBundle);
     }
 
-    public void updateTimer(final BaseTimer timer) {
-        //TODO
+    public void addOrUpdateOrCompleteTimer(final BaseTimer timer) {
+        if(!timer.isAbilityTimer())
+            return;
+        if(!(timer instanceof CustomTimer))
+            return;
+        CustomTimer customTimer = (CustomTimer) timer;
+        customTimer.update(TimeUtils.getCurrentTime());
+        boolean existingTimer = customTimers.stream().anyMatch(comparableToOtherTimer(customTimer));
+        if (existingTimer) {
+            return;
+        }
+
+        System.out.println("["+(System.currentTimeMillis()-startMillis)+  "] update ability popout : "+customTimer);
+        this.customTimers.add(customTimer);
+        super.setTimersStates(this.customTimers.stream().collect(Collectors.toMap(CustomTimer::getAbilityTimerTrigram, CustomTimer::toTimerState)));
+    }
+
+    private Predicate<CustomTimer> comparableToOtherTimer(CustomTimer customTimer) {
+        return ct -> Objects.equals(ct.getTimeFrom(), customTimer.getTimeFrom())
+                && Objects.equals(ct.getName(), customTimer.getName())
+                && Objects.equals(ct.getFirstInterval(), customTimer.getFirstInterval())
+                && ct.computeEffect().attributeEquals(customTimer.computeEffect());
     }
 
     public void removeTimer(BaseTimer timer) {
+        CustomTimer customTimer = (CustomTimer) timer;
+        Set<CustomTimer> customTimers = this.customTimers.stream().filter(Predicate.not(comparableToOtherTimer(customTimer))).collect(Collectors.toSet());
+        this.customTimers.clear();
+        this.customTimers.addAll(customTimers);
         //TODO
+        System.out.println("remove Ability timer : "+timer);
     }
 
     public void resetTimers() {
         // TODO
+        System.out.println("reset ability settings");
     }
 
-    // TODO: replace with initilisation of list of timers identified as ability timers
-    @Deprecated
-    public void setActorStates(final Map<Actor, Parser.ActorState> actorStates) {
-
-        Map<String, TimerState> collect = actorStates.entrySet().stream()
-                .filter(this::isSelfOrPlayer)
-                .collect(Collectors.toMap(entry -> entry.getKey().getName(), Map.Entry::getValue));
-        super.setTimersStates(collect);
+    @Override
+    public void tickFrames(Collection<TimerFrame> timerFrames) {
+        if(timerFrames==null || timerFrames.isEmpty())
+            return;
+        // TODO
+        System.out.println("tick ability: "+timerFrames.stream().map(TimerFrame::toString).collect(Collectors.joining(", ")));
     }
 
-    // TODO: remove
-    private boolean isSelfOrPlayer(Map.Entry<Actor, Parser.ActorState> entry) {
-        Actor.Type type = entry.getKey().getType();
-        return Actor.Type.SELF == type || Actor.Type.PLAYER == type;
-    }
 
     // TODO: replace with meaningfull paint
     @Override
-    void repaintTimer(GraphicsContext gc, double width, double height, TimerState timerState) {
+    boolean repaintTimer(GraphicsContext gc, double width, double height, TimerState timerState) {
         gc.clearRect(0, 0, width, height);
         if (timerState.getDuration() == null) {
             gc.setFill(Color.LIMEGREEN);
@@ -77,5 +93,6 @@ public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
             gc.setFill(Color.DARKGREEN);
         }
         gc.fillRoundRect(0, 0, width, height, 0, 0);
+        return true;
     }
 }

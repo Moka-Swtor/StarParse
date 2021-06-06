@@ -2,12 +2,17 @@ package com.ixale.starparse.timer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.ixale.starparse.domain.ConfigTimer;
 import com.ixale.starparse.domain.ConfigTimer.Condition;
+import com.ixale.starparse.domain.Entity;
 import com.ixale.starparse.gui.SoundManager;
+import com.ixale.starparse.parser.TimerState;
 import com.ixale.starparse.timer.TimerManager.RaidPullTimer;
 
+import com.ixale.starparse.ws.Utils;
 import javafx.scene.paint.Color;
 
 public class CustomTimer extends BaseTimer {
@@ -48,9 +53,9 @@ public class CustomTimer extends BaseTimer {
 	@Override
 	public boolean isAbilityTimer() {
 
-		// return timer!=null && timer.getTimerType()!=null && timer.getTimerType().isClassTimer();
+		return timer!=null && timer.getTimerType()!=null && timer.getTimerType().isClassTimer();
 		//TODO: use previous line when working again on grid layout feature
-		return super.isAbilityTimer();
+//		return super.isAbilityTimer();
 	}
 
 	@Override
@@ -117,6 +122,16 @@ public class CustomTimer extends BaseTimer {
 		return timer.getColor();
 	}
 
+	public String getAbilityTimerTrigram() {
+		return timer.getAbilityTimerTrigram();
+	}
+
+	public Entity computeEffect() {
+		return timer == null || timer.getTrigger() == null
+				? new Entity(getName(), 0L)
+				: timer.getTrigger().computeEntity();
+	}
+
 	public Long getTimeFrom() {
 		return timeFrom;
 	}
@@ -136,5 +151,60 @@ public class CustomTimer extends BaseTimer {
 	@Override
 	public boolean doOverrideExpiringThreshold() {
 		return systemTimer != null && (systemTimer instanceof RaidPullTimer);
+	}
+
+	@Override
+	public String toString() {
+		List<Utils.Pair> pairList = List.of(
+				Utils.Pair.of("timer", this.timer),
+				Utils.Pair.of("nextTimers", this.nextTimers),
+				Utils.Pair.of("cancelTimers", this.cancelTimers),
+				Utils.Pair.of("systemTimer", this.systemTimer),
+				Utils.Pair.of("timeFrom", this.timeFrom),
+				Utils.Pair.of("countdownThreshold", this.countdownThreshold),
+				Utils.Pair.of("soundThreshold", this.soundThreshold),
+				Utils.Pair.of("lastSample", this.lastSample),
+				Utils.Pair.of("lastSound", this.lastSound)
+		);
+		return "CustomTimer{" +
+				"timer=" + this.timer +
+				pairList.stream().filter(Utils.Pair::hasValue).map(Utils.Pair::toString).collect(Collectors.joining(", ")) +
+				'}'+super.toString();
+	}
+
+	public boolean wouldHaveSameTimerState(CustomTimer otherTimer) {
+		return Objects.equals(timeFrom, otherTimer.timeFrom)
+				&& Objects.equals(getFirstInterval(),otherTimer.getFirstInterval())
+				&& Objects.equals(getName(),otherTimer.getName())
+				&& (timer == null || Objects.equals(timer.getTrigger(),otherTimer.timer.getTrigger()));
+	}
+
+	public TimerState toTimerState() {
+		return new TimerState() {
+			@Override
+			public int getStacks() {
+				return 0;
+			}
+
+			@Override
+			public Long getSince() {
+				return timeFrom;
+			}
+
+			@Override
+			public Long getLast() {
+				return timeFrom;
+			}
+
+			@Override
+			public Entity getEffect() {
+				return computeEffect();
+			}
+
+			@Override
+			public Integer getDuration() {
+				return getFirstInterval();
+			}
+		};
 	}
 }

@@ -1,6 +1,7 @@
 package com.ixale.starparse.domain;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Entity implements Serializable {
 
@@ -28,4 +29,11 @@ public class Entity implements Serializable {
 	public String toString() {
 		return name + (guid != null ? " [" + guid + "]" : "");
 	}
+
+	public boolean attributeEquals(Entity entity) {
+		if (this == entity) return true;
+		if (entity == null) return false;
+		return Objects.equals(name, entity.name) && Objects.equals(guid, entity.guid);
+	}
+
 }
