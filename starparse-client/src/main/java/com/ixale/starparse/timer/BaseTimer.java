@@ -104,6 +104,10 @@ abstract public class BaseTimer {
 		state = State.STOPPED;
 	}
 
+	public void resetState() {
+		state = State.NEW;
+	}
+
 	public void update(final Long timeNow) {
 
 		switch (state) {

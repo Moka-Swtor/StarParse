@@ -95,6 +95,10 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 		this.slotRows = slotRows;
 	}
 
+	TimerFrame getFrame(TimerState timerState) {
+		return timers.values().stream().filter(timerFrame -> timerFrame.state == timerState).findAny().orElse(null);
+	}
+
 	@Override
 	protected void refreshCombatStats(final Combat combat, final CombatStats stats) throws Exception {
 		// nothing here

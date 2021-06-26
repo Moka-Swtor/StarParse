@@ -5,6 +5,7 @@ import com.ixale.starparse.parser.TimerState;
 import com.ixale.starparse.time.TimeUtils;
 import com.ixale.starparse.timer.BaseTimer;
 import com.ixale.starparse.timer.CustomTimer;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import org.slf4j.Logger;
@@ -21,12 +22,27 @@ public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
     private static final long startMillis = System.currentTimeMillis();
 
     private final Map<Integer, CustomTimer> timerStateMap = new HashMap<>();
-    private final Set<CustomTimer> customTimers = new HashSet<>();
+    private final Map<CustomTimer,TimerState> customTimers = new HashMap<>();
 
 
     @Override
     protected int getMinRows() {
         return 2;
+    }
+
+    @Override
+    boolean repaintTimer(GraphicsContext gc, double width, double height, TimerState timerState) {
+        return true;
+    }
+
+    @Override
+    public void tickFrames(Collection<TimerFrame> timerFrames) {
+        //  debug("tick ability: "+timerFrames.stream().map(TimerFrame::toString).collect(Collectors.joining(", ")));
+    }
+
+    private void debug(String s) {
+        LOGGER.debug(s);
+        System.out.println(s);
     }
 
     @Override
@@ -44,22 +60,25 @@ public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
             return;
         CustomTimer customTimer = (CustomTimer) timer;
         customTimer.update(TimeUtils.getCurrentTime());
-        Optional<CustomTimer> maybeExistingTimer = customTimers.stream().filter(cu -> comparableToOtherTimer(customTimer).test(cu)).findAny();
+        Optional<CustomTimer> maybeExistingTimer = customTimers.keySet().stream().filter(cu -> comparableToOtherTimer(customTimer).test(cu)).findAny();
         if (maybeExistingTimer.isPresent()) {
             CustomTimer existingTimer = maybeExistingTimer.get();
             boolean wasNew = existingTimer.isNew();
             existingTimer.update(customTimer.getTimeFrom());
             if (wasNew) {
-                System.out.println("[" + (System.currentTimeMillis() - startMillis) + "] starting existing timer : " + customTimer);
+                debug("[" + (System.currentTimeMillis() - startMillis) + "] starting existing timer : " + customTimer);
+                this.repaintTimer(existingTimer, true);
             } else {
-              //  System.out.println("["+(System.currentTimeMillis()-startMillis)+  "] update existing timer : "+customTimer.getName() + " remaining: "+customTimer.getTimeRemaining());
+                // TODO: depending on remaining time customize timer ending?
+                debug("["+(System.currentTimeMillis()-startMillis)+  "] update existing timer : "+customTimer.getName() + " remaining: "+customTimer.getTimeRemaining());
             }
             return;
         }
 
-        System.out.println("["+(System.currentTimeMillis()-startMillis)+  "] adding new timer : "+customTimer);
-        this.customTimers.add(customTimer);
-        super.setTimersStates(this.customTimers.stream().collect(Collectors.toMap(CustomTimer::getAbilityTimerTrigram, CustomTimer::toTimerState)));
+        debug("["+(System.currentTimeMillis()-startMillis)+  "] adding new timer : "+customTimer);
+        this.customTimers.put(customTimer, customTimer.toTimerState()); // CustomTimer::getAbilityTimerTrigram, CustomTimer::toTimerState
+        super.setTimersStates(this.customTimers.entrySet().stream().collect(Collectors.toMap(o -> o.getKey().getAbilityTimerTrigram(), Map.Entry::getValue)));
+        this.repaintTimer(customTimer, true);
     }
 
     private Predicate<CustomTimer> comparableToOtherTimer(CustomTimer customTimer) {
@@ -69,49 +88,54 @@ public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
     }
 
     public void removeTimer(BaseTimer timer) {
-        CustomTimer customTimer = (CustomTimer) timer;
-        Set<CustomTimer> customTimers = this.customTimers.stream().filter(Predicate.not(comparableToOtherTimer(customTimer))).collect(Collectors.toSet());
-        this.customTimers.clear();
-        this.customTimers.addAll(customTimers);
-        //TODO
-        System.out.println("remove Ability timer : "+timer);
+        this.customTimers.keySet().stream()
+                .filter(ct -> ct.getAbilityTimerTrigram().equals(((CustomTimer) timer).getAbilityTimerTrigram()))
+                .findAny().ifPresent(customTimer -> {
+            debug("remove Ability timer : " + timer);
+            this.repaintTimer(customTimer, false);
+            customTimer.resetState();
+        });
     }
 
     public void resetTimers(List<ConfigTimer> timers) {
         super.resetTimers();
-        List<CustomTimer> customAbilityTimers = timers.stream()
+        Map<CustomTimer, TimerState> customAbilityTimers = timers.stream()
                 .filter(configTimer -> configTimer.getTimerType() != null)
                 .filter(configTimer -> configTimer.getTimerType().isClassTimer())
                 .map(CustomTimer::new)
-                .collect(Collectors.toList());
-        customAbilityTimers.forEach(customTimer -> customTimer.start(TimeUtils.getCurrentTime()));
+                .collect(Collectors.toMap(ct -> ct, CustomTimer::toTimerState));
+        customAbilityTimers.keySet().forEach(customTimer -> customTimer.start(TimeUtils.getCurrentTime()));
 
         this.customTimers.clear();
-        this.customTimers.addAll(customAbilityTimers);
-        super.setTimersStates(this.customTimers.stream().collect(Collectors.toMap(CustomTimer::getAbilityTimerTrigram, CustomTimer::toTimerState)));
-        System.out.println("reset ability settings");
+        this.customTimers.putAll(customAbilityTimers);
+        super.setTimersStates(this.customTimers.entrySet().stream().collect(Collectors.toMap(o->o.getKey().getAbilityTimerTrigram(), Map.Entry::getValue)));
+        debug("reset ability settings");
     }
 
-    @Override
-    public void tickFrames(Collection<TimerFrame> timerFrames) {
-        if(timerFrames==null || timerFrames.isEmpty())
+
+
+    private void repaintTimer(CustomTimer customTimer, boolean timerStart) {
+        TimerState timerState = customTimers.get(customTimer);
+        TimerFrame timerFrame = super.getFrame(timerState);
+        if (timerFrame == null) {
             return;
-        // TODO - seems like nothing to do
-        System.out.println("tick ability: "+timerFrames.stream().map(TimerFrame::toString).collect(Collectors.joining(", ")));
-    }
-
-
-    // TODO: replace with meaningfull paint
-    @Override
-    boolean repaintTimer(GraphicsContext gc, double width, double height, TimerState timerState) {
-        System.out.println("[" + (System.currentTimeMillis() - startMillis) + "] paint timerState : " + timerState.getSince());
+        }
+        Canvas canvas = retrieveCanvas(timerFrame, null);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, width, height);
+
+        if (!timerStart) {
+            debug("[" + (System.currentTimeMillis() - startMillis) + "] unpaint timer : " + customTimer.getName());
+            return;
+        }
+        debug("[" + (System.currentTimeMillis() - startMillis) + "] paint timer : " + customTimer.getName());
+
+        // TODO: replace with meaningfull paint
         if (timerState.getDuration() == null) {
             gc.setFill(Color.LIMEGREEN);
         } else {
             gc.setFill(Color.DARKGREEN);
         }
         gc.fillRoundRect(0, 0, width, height, 0, 0);
-        return true;
     }
 }
