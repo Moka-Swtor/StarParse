@@ -65,6 +65,10 @@ abstract public class BaseTimer {
 		return firstInterval;
 	}
 
+	public Long getTimeFrom() {
+		return timeFrom;
+	}
+
 	public Integer getRepeatInterval() {
 		return repeatInterval;
 	}

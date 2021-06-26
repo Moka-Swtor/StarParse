@@ -571,7 +571,7 @@ public class MainPresenter implements Initializable {
 					raidPresenter.setCombatLogName(currentCombatLog.getFileName());
 
 					hotsPopoutPresenter.resetTimers();
-					abilityTimersPopoutPresenter.resetTimers();
+					abilityTimersPopoutPresenter.resetTimers(config.getConfigTimers().getTimers());
 
 				} else {
 					raidPresenter.setCombatLogName(null);
@@ -1156,7 +1156,7 @@ public class MainPresenter implements Initializable {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						abilityTimersPopoutPresenter.resetTimers();
+						abilityTimersPopoutPresenter.resetTimers(config.getConfigTimers().getTimers());
 						timersPopoutPresenter.resetTimers();
 					}
 				});

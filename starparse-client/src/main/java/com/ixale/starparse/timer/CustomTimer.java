@@ -21,7 +21,6 @@ public class CustomTimer extends BaseTimer {
 	private final List<ConfigTimer> nextTimers = new ArrayList<>(), cancelTimers = new ArrayList<>();
 	private final BaseTimer systemTimer;
 
-	private Long timeFrom;
 	private Integer countdownThreshold = null, soundThreshold = null;
 	private Long lastSample = null, lastSound = null;
 
@@ -132,10 +131,6 @@ public class CustomTimer extends BaseTimer {
 				: timer.getTrigger().computeEntity();
 	}
 
-	public Long getTimeFrom() {
-		return timeFrom;
-	}
-
 	public List<ConfigTimer> getNextTimers() {
 		return nextTimers;
 	}
@@ -160,7 +155,6 @@ public class CustomTimer extends BaseTimer {
 				Utils.Pair.of("nextTimers", this.nextTimers),
 				Utils.Pair.of("cancelTimers", this.cancelTimers),
 				Utils.Pair.of("systemTimer", this.systemTimer),
-				Utils.Pair.of("timeFrom", this.timeFrom),
 				Utils.Pair.of("countdownThreshold", this.countdownThreshold),
 				Utils.Pair.of("soundThreshold", this.soundThreshold),
 				Utils.Pair.of("lastSample", this.lastSample),
@@ -173,7 +167,7 @@ public class CustomTimer extends BaseTimer {
 	}
 
 	public boolean wouldHaveSameTimerState(CustomTimer otherTimer) {
-		return Objects.equals(timeFrom, otherTimer.timeFrom)
+		return Objects.equals(getTimeFrom(), otherTimer.getTimeFrom())
 				&& Objects.equals(getFirstInterval(),otherTimer.getFirstInterval())
 				&& Objects.equals(getName(),otherTimer.getName())
 				&& (timer == null || Objects.equals(timer.getTrigger(),otherTimer.timer.getTrigger()));
@@ -188,12 +182,12 @@ public class CustomTimer extends BaseTimer {
 
 			@Override
 			public Long getSince() {
-				return timeFrom;
+				return getTimeFrom();
 			}
 
 			@Override
 			public Long getLast() {
-				return timeFrom;
+				return getTimeFrom();
 			}
 
 			@Override
