@@ -32,6 +32,15 @@ public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
 
     @Override
     boolean repaintTimer(GraphicsContext gc, double width, double height, TimerState timerState) {
+        debug("non interesting repaint");
+        customTimers.entrySet().stream()
+                .filter(e-> timerState==e.getValue())
+                .map(Map.Entry::getKey)
+                .filter(customTimer -> customTimer.getTimeRemaining()!=null)
+                .findAny()
+                .ifPresent(customTimer -> {
+            this.repaintTimer(customTimer, !customTimer.isNew());
+        });
         return true;
     }
 
@@ -120,22 +129,24 @@ public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
         if (timerFrame == null) {
             return;
         }
-        Canvas canvas = retrieveCanvas(timerFrame, null);
+        double width = timerFrame.pane.getWidth()-2;
+        double height = timerFrame.pane.getHeight()-2;
+        Canvas canvas = retrieveCanvas(timerFrame, (int) Math.max(width, height));
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, width, height);
 
         if (!timerStart) {
+            gc.setFill(Color.YELLOW);
+            gc.fillRoundRect(0, 0, width, height, 0, 0);
+            gc.clearRect(5, 5, width-9, height-9);
             debug("[" + (System.currentTimeMillis() - startMillis) + "] unpaint timer : " + customTimer.getName());
-            return;
-        }
-        debug("[" + (System.currentTimeMillis() - startMillis) + "] paint timer : " + customTimer.getName());
-
-        // TODO: replace with meaningfull paint
-        if (timerState.getDuration() == null) {
-            gc.setFill(Color.LIMEGREEN);
         } else {
-            gc.setFill(Color.DARKGREEN);
+            gc.setFill(Color.GRAY);
+            gc.fillRoundRect(0, 0, width, height, 0, 0);
+            debug("[" + (System.currentTimeMillis() - startMillis) + "] paint timer : " + customTimer.getName());
         }
-        gc.fillRoundRect(0, 0, width, height, 0, 0);
+
+
+
     }
 }
