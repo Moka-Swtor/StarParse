@@ -167,7 +167,7 @@
             <Insets left="5.0" />
           </GridPane.margin>
         </ImageView>
-        <MenuBar maxWidth="-Infinity" minWidth="-Infinity" prefWidth="210.0" useSystemMenuBar="false" GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <MenuBar maxWidth="-Infinity" minWidth="-Infinity" prefWidth="270.0" useSystemMenuBar="false" GridPane.columnIndex="1" GridPane.rowIndex="0">
           <menus>
             <Menu mnemonicParsing="false" text="File">
               <items>
@@ -203,6 +203,11 @@
                 <SeparatorMenuItem mnemonicParsing="false" text="" />
                 <CheckMenuItem fx:id="lockOverlaysMenu" mnemonicParsing="false" onAction="#handleOverlaysLock" text="Lock Overlays" />
                 <MenuItem mnemonicParsing="false" onAction="#handleOverlaysSettings" text="Settings" />
+              </items>
+            </Menu>
+            <Menu fx:id="classMenu" mnemonicParsing="false" text="Class">
+              <items>
+
               </items>
             </Menu>
             <Menu fx:id="timersMenu" mnemonicParsing="false" text="Timers">

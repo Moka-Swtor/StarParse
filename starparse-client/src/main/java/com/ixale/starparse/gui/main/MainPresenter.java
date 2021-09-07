@@ -4,26 +4,20 @@ import java.awt.Desktop;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.inject.Inject;
 
+import com.ixale.starparse.domain.*;
 import com.ixale.starparse.gui.dialog.CalculatorDialogPresenter;
 import com.ixale.starparse.gui.popout.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.ixale.starparse.domain.Combat;
-import com.ixale.starparse.domain.CombatLog;
-import com.ixale.starparse.domain.ConfigTimer;
-import com.ixale.starparse.domain.RaidGroup;
 import com.ixale.starparse.domain.stats.CombatStats;
 import com.ixale.starparse.gui.Config;
 import com.ixale.starparse.gui.FlashMessage;
@@ -127,7 +121,7 @@ public class MainPresenter implements Initializable {
 	private Hyperlink linkTwitter, linkDonate;
 
 	@FXML
-	private Menu recentMenu, raidGroupsMenu, timersMenu;
+	private Menu recentMenu, raidGroupsMenu, timersMenu, classMenu;
 	@FXML
 	private ImageView logoImage;
 	@FXML
@@ -1421,6 +1415,7 @@ public class MainPresenter implements Initializable {
 		rebuildRecentMenu();
 		rebuildRaidGroupsMenu(null);
 		rebuildTimersMenu();
+		rebuildClassMenu();
 		resetCombatStats();
 
 		if (config.getPopoutDefault().getMouseTransparent() != null && config.getPopoutDefault().getMouseTransparent()) {
@@ -1985,6 +1980,51 @@ public class MainPresenter implements Initializable {
 		raidGroupsMenu.getItems().add(raidGroupsSettingsMenu);
 	}
 
+	private void rebuildClassMenu() {
+		for (CharacterClass characterClass : CharacterClass.values()) {
+			if (List.of(CharacterClass.Mercenary, CharacterClass.Sentinel, CharacterClass.Commando).contains(characterClass)) {
+				classMenu.getItems().add(new SeparatorMenuItem());
+				classMenu.getItems().add(new SeparatorMenuItem());
+			}
+			final Menu menu = new Menu(characterClass.getFullName());
+			characterClass.getCharacterDisciplines().forEach(discipline -> menu.getItems()
+					.add(buildCustomMenuItemWithCheckbox(discipline.getFullName(), /*TODO*/false, selected -> chooseClassMenu(selected, discipline))));
+			classMenu.getItems().add(menu);
+		}
+	}
+
+	private void chooseClassMenu(boolean selected, CharacterDiscipline discipline) {
+		if (selected) {
+			classMenu.getItems().stream()
+					.filter(a -> a instanceof Menu)
+					.map(a->(Menu)a).map(Menu::getItems).flatMap(Collection::stream)
+					.map(a->(CustomMenuItem)a).map(CustomMenuItem::getContent)
+					.map(a->(CheckBox)a).filter(c->!c.getText().equals(discipline.getFullName()))
+					.forEach(c->c.setSelected(false));
+			// TODO select discipline in config
+		}
+		// TODO unselect discipline in config
+	}
+
+	private CustomMenuItem buildCustomMenuItemWithCheckbox(String name, boolean enabled, Consumer<Boolean> onAction) {
+		final CheckBox cb = new CheckBox(name);
+		cb.setSelected(enabled);
+		cb.getStyleClass().add("check-item");
+		cb.setCursor(Cursor.HAND);
+		cb.setPrefWidth(150);
+		final CustomMenuItem item = new CustomMenuItem(cb, false);
+		item.getStyleClass().add("check-item-menu");
+		item.setOnAction(a -> {
+			onAction.accept(cb.isSelected());
+			// FIXME: workaround for java8 bug
+			if (timersMenu != item.getParentMenu() && !item.getParentMenu().isShowing()) {
+				timersMenu.show();
+				item.getParentMenu().show();
+			}
+		});
+		return item;
+	}
+
 	private void rebuildTimersMenu() {
 		timersMenu.getItems().clear();
 		final Map<String, List<CustomMenuItem>> folders = new HashMap<>();
@@ -1992,26 +2032,10 @@ public class MainPresenter implements Initializable {
 
 		// build folder tree
 		for (final ConfigTimer timer: config.getConfigTimers().getTimers()) {
-
-			final CheckBox cb = new CheckBox(timer.getName());
-			cb.setSelected(timer.isEnabled());
-			cb.getStyleClass().add("check-item");
-			cb.setCursor(Cursor.HAND);
-			cb.setPrefWidth(150);
-			final CustomMenuItem item = new CustomMenuItem(cb, false);
-			item.getStyleClass().add("check-item-menu");
-			item.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent e) {
-					timer.setEnabled(cb.isSelected());
-					if (!cb.isSelected()) {
-						TimerManager.stopTimer(timer.getName());
-					}
-					// FIXME: workaround for java8 bug
-					if (timersMenu != item.getParentMenu() && !item.getParentMenu().isShowing()) {
-						timersMenu.show();
-						item.getParentMenu().show();
-					}
+			final CustomMenuItem item = buildCustomMenuItemWithCheckbox(timer.getName(), timer.isEnabled(), selected -> {
+				timer.setEnabled(selected);
+				if (!selected) {
+					TimerManager.stopTimer(timer.getName());
 				}
 			});
 
