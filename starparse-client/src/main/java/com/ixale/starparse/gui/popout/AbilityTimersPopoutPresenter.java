@@ -10,6 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.net.URL;
 import java.util.*;
@@ -106,11 +107,13 @@ public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
         });
     }
 
-    public void resetTimers(List<ConfigTimer> timers) {
+    public void resetTimers(List<ConfigTimer> timers, String discipline) {
         super.resetTimers();
         Map<CustomTimer, TimerState> customAbilityTimers = timers.stream()
                 .filter(configTimer -> configTimer.getTimerType() != null)
                 .filter(configTimer -> configTimer.getTimerType().isClassTimer())
+                .filter(configTimer -> StringUtils.isEmpty(discipline)
+                        || configTimer.getCharacterDiscipline() != null && configTimer.getCharacterDiscipline().getFullName().equals(discipline))
                 .map(CustomTimer::new)
                 .collect(Collectors.toMap(ct -> ct, CustomTimer::toTimerState));
         customAbilityTimers.keySet().forEach(customTimer -> customTimer.start(TimeUtils.getCurrentTime()));

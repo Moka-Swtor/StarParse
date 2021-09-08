@@ -565,7 +565,7 @@ public class MainPresenter implements Initializable {
 					raidPresenter.setCombatLogName(currentCombatLog.getFileName());
 
 					hotsPopoutPresenter.resetTimers();
-					abilityTimersPopoutPresenter.resetTimers(config.getConfigTimers().getTimers());
+					abilityTimersPopoutPresenter.resetTimers(config.getConfigTimers().getTimers(), config.getCurrentCharacter().getDiscipline());
 
 				} else {
 					raidPresenter.setCombatLogName(null);
@@ -1150,7 +1150,7 @@ public class MainPresenter implements Initializable {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						abilityTimersPopoutPresenter.resetTimers(config.getConfigTimers().getTimers());
+						abilityTimersPopoutPresenter.resetTimers(config.getConfigTimers().getTimers(), config.getCurrentCharacter().getDiscipline());
 						timersPopoutPresenter.resetTimers();
 					}
 				});
@@ -1981,6 +1981,7 @@ public class MainPresenter implements Initializable {
 	}
 
 	private void rebuildClassMenu() {
+		String current = this.config.getCurrentCharacter().getDiscipline();
 		for (CharacterClass characterClass : CharacterClass.values()) {
 			if (List.of(CharacterClass.Mercenary, CharacterClass.Sentinel, CharacterClass.Commando).contains(characterClass)) {
 				classMenu.getItems().add(new SeparatorMenuItem());
@@ -1988,22 +1989,25 @@ public class MainPresenter implements Initializable {
 			}
 			final Menu menu = new Menu(characterClass.getFullName());
 			characterClass.getCharacterDisciplines().forEach(discipline -> menu.getItems()
-					.add(buildCustomMenuItemWithCheckbox(discipline.getFullName(), /*TODO*/false, selected -> chooseClassMenu(selected, discipline))));
+					.add(buildCustomMenuItemWithCheckbox(discipline.getFullName(), discipline.getFullName().equals(current), selected -> chooseClassMenu(selected, discipline))));
 			classMenu.getItems().add(menu);
 		}
 	}
 
 	private void chooseClassMenu(boolean selected, CharacterDiscipline discipline) {
+		String currentDiscipline = discipline.getFullName();
 		if (selected) {
 			classMenu.getItems().stream()
 					.filter(a -> a instanceof Menu)
-					.map(a->(Menu)a).map(Menu::getItems).flatMap(Collection::stream)
-					.map(a->(CustomMenuItem)a).map(CustomMenuItem::getContent)
-					.map(a->(CheckBox)a).filter(c->!c.getText().equals(discipline.getFullName()))
-					.forEach(c->c.setSelected(false));
-			// TODO select discipline in config
+					.map(a -> (Menu) a).map(Menu::getItems).flatMap(Collection::stream)
+					.map(a -> (CustomMenuItem) a).map(CustomMenuItem::getContent)
+					.map(a -> (CheckBox) a).filter(c -> !c.getText().equals(discipline.getFullName()))
+					.forEach(c -> c.setSelected(false));
+		} else {
+			currentDiscipline = null;
 		}
-		// TODO unselect discipline in config
+		this.config.getCurrentCharacter().setDiscipline(currentDiscipline);
+		abilityTimersPopoutPresenter.resetTimers(config.getConfigTimers().getTimers(), currentDiscipline);
 	}
 
 	private CustomMenuItem buildCustomMenuItemWithCheckbox(String name, boolean enabled, Consumer<Boolean> onAction) {

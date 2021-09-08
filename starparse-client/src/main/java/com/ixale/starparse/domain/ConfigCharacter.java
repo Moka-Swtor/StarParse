@@ -9,7 +9,7 @@ public class ConfigCharacter implements Serializable {
 
 	private final String name;
 
-	private String server, guild;
+	private String server, guild, discipline;
 
 	private ArrayList<ConfigPopout> popouts;
 
@@ -41,6 +41,14 @@ public class ConfigCharacter implements Serializable {
 		} else {
 			this.server = server;
 		}
+	}
+
+	public String getDiscipline() {
+		return discipline;
+	}
+
+	public void setDiscipline(String discipline) {
+		this.discipline = discipline;
 	}
 
 	public String getGuild() {
