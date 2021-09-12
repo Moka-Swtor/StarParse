@@ -15,7 +15,7 @@
 <?import javafx.scene.text.*?>
 <?scenebuilder-stylesheet ../styles.css?>
 
-<TabPane fx:id="dialogRoot" maxHeight="-Infinity" minHeight="-Infinity" minWidth="520.0" prefHeight="370.0" styleClass="modal-text" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ixale.starparse.gui.dialog.SettingsDialogPresenter">
+<TabPane fx:id="dialogRoot" maxHeight="-Infinity" minHeight="-Infinity" minWidth="650.0" prefHeight="370.0" styleClass="modal-text" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ixale.starparse.gui.dialog.SettingsDialogPresenter">
   <tabs>
     <Tab fx:id="contentGeneral" text="General">
       <content>
@@ -200,6 +200,10 @@
                 <ColorPicker fx:id="popoutThreatColor" GridPane.columnIndex="5" GridPane.rowIndex="0" />
                 <Label text="Friendly Bar" GridPane.columnIndex="4" GridPane.margin="$x5" GridPane.rowIndex="1" />
                 <ColorPicker fx:id="popoutFriendlyColor" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                <Label text="Active timer" GridPane.columnIndex="6" GridPane.margin="$x5" GridPane.rowIndex="0" minWidth="80"/>
+                <ColorPicker fx:id="activeTimerColor" GridPane.columnIndex="7" GridPane.rowIndex="0" />
+                <Label text="Inactive timer" GridPane.columnIndex="6" GridPane.margin="$x5" GridPane.rowIndex="1" minWidth="80"/>
+                <ColorPicker fx:id="inactiveTimerColor" GridPane.columnIndex="7" GridPane.rowIndex="1" />
               </children>
               <columnConstraints>
                 <ColumnConstraints fillWidth="true" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="70.0" />
@@ -222,6 +226,8 @@
             </GridPane>
             <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="-1.0" VBox.vgrow="NEVER">
               <children>
+                <Label text="Inactive opacity" GridPane.columnIndex="6" GridPane.margin="$x5" GridPane.rowIndex="0" minWidth="80"/>
+                <TextField fx:id="inactiveTimerOpacity" GridPane.columnIndex="7" GridPane.rowIndex="0" promptText="(0-100)" />
                 <Label text="Raid Damage" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                 <Slider fx:id="raidDamageOpacitySlider" blockIncrement="10.0" majorTickUnit="1.0" maxWidth="-Infinity" min="1.0" minHeight="-1.0" minWidth="-Infinity" minorTickCount="0" orientation="HORIZONTAL" prefWidth="60.0" showTickLabels="false" showTickMarks="false" snapToTicks="true" value="70.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                 <TextField fx:id="raidDamageOpacityText" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="30.0" text="70" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
@@ -269,7 +275,7 @@
                 <TextField fx:id="damageTakenOpacityText" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="30.0" text="70" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
                 <CheckBox fx:id="damageTakenBars" selected="true" text="Bars" GridPane.columnIndex="2" GridPane.rowIndex="7" />
                 <ChoiceBox fx:id="damageTakenMode" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="7" />
-                <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="-1.0" VBox.vgrow="NEVER" GridPane.columnIndex="4" GridPane.rowIndex="6">
+                <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="-1.0" VBox.vgrow="NEVER" GridPane.columnIndex="4" GridPane.rowIndex="7">
                   <children>
                     <Label text="Delay 1" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                     <TextField fx:id="dtDelay1" alignment="CENTER_RIGHT" disable="false" editable="true" maxWidth="-Infinity" prefWidth="20.0" promptText="s" GridPane.columnIndex="1" GridPane.rowIndex="0">
@@ -347,7 +353,8 @@
           <children>
             <GridPane gridLinesVisible="false" hgap="7.0" maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" vgap="0.0" VBox.vgrow="NEVER">
               <children>
-                <VBox id="VBox" alignment="TOP_LEFT" spacing="0.0" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.valignment="TOP">
+                <TreeView fx:id="timersList" focusTraversable="false" prefHeight="-1.0" prefWidth="-1.0" showRoot="false" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.vgrow="ALWAYS" />
+                <VBox id="VBox" alignment="TOP_LEFT" spacing="0.0" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.valignment="TOP" maxWidth="350">
                   <children>
                     <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" prefWidth="-1.0">
                       <children>
@@ -466,7 +473,6 @@
                     </HBox>
                   </children>
                 </VBox>
-                <TreeView fx:id="timersList" focusTraversable="false" prefHeight="-1.0" prefWidth="-1.0" showRoot="false" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.vgrow="ALWAYS" />
               </children>
               <columnConstraints>
                 <ColumnConstraints fillWidth="true" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="160.0" />

@@ -16,17 +16,19 @@ public class ConfigPopoutDefault implements Serializable {
 		DEFAULT_THREAT = Color.web("#ff963e").deriveColor(0, 1, .9, 1),	// orange
 		DEFAULT_FRIENDLY = Color.web("#cd31cc").deriveColor(0, 1, .9, 1),	// purple
 		DEFAULT_TAKEN = Color.web("#d5b60a").deriveColor(0, 1, .9, 1),	// yellow
+		DEFAULT_ACTIVE = Color.web("#d5b60a").deriveColor(0, 1, .9, 1),	// yellow
+		DEFAULT_INACTIVE = Color.grayRgb(127).deriveColor(0, 1, .9, 1),	// gray
 		DEFAULT_TIMER1 = DEFAULT_DAMAGE,
 		DEFAULT_TIMER2 = DEFAULT_FRIENDLY,
 		DEFAULT_TIMER3 = DEFAULT_THREAT,
 		DEFAULT_TIMER4 = DEFAULT_HEALING,
 		DEFAULT_TIMER5 = DEFAULT_TAKEN;
 
-	private String backgroundColor, textColor, damageColor, healingColor, threatColor, friendlyColor;
+	private String backgroundColor, textColor, damageColor, healingColor, threatColor, friendlyColor, inactiveColor, activeColor;
 
 	private Boolean mouseTransparent, timersCenter, solid;
 
-	private Integer timersFractions, dtDelay1, dtDelay2;
+	private Integer timersFractions, dtDelay1, dtDelay2, inactiveOpacity;
 
 	private Color get(String c, Color d) {
 		if (c == null) {
@@ -37,6 +39,30 @@ public class ConfigPopoutDefault implements Serializable {
 		} catch (Exception e) {
 			return d;
 		}
+	}
+
+	public Color getInactiveColor() {
+		return get(inactiveColor, DEFAULT_INACTIVE);
+	}
+
+	public void setInactiveColor(Color inactiveColor) {
+		this.inactiveColor = inactiveColor.toString();
+	}
+
+	public Color getActiveColor() {
+		return get(activeColor, DEFAULT_ACTIVE);
+	}
+
+	public void setActiveColor(Color activeColor) {
+		this.activeColor = activeColor.toString();
+	}
+
+	public Integer getInactiveOpacity() {
+		return inactiveOpacity;
+	}
+
+	public void setInactiveOpacity(Integer inactiveOpacity) {
+		this.inactiveOpacity = inactiveOpacity;
 	}
 
 	public Color getBackgroundColor() {

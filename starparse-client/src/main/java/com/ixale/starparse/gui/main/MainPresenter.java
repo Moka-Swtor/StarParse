@@ -6,8 +6,6 @@ import java.net.URI;
 import java.net.URL;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.inject.Inject;
 
@@ -565,7 +563,7 @@ public class MainPresenter implements Initializable {
 					raidPresenter.setCombatLogName(currentCombatLog.getFileName());
 
 					hotsPopoutPresenter.resetTimers();
-					abilityTimersPopoutPresenter.resetTimers(config.getConfigTimers().getTimers(), config.getCurrentCharacter().getDiscipline());
+					abilityTimersPopoutPresenter.resetTimers(config.getConfigTimers(), config.getPopoutDefault(), config.getCurrentCharacter().getDiscipline());
 
 				} else {
 					raidPresenter.setCombatLogName(null);
@@ -1150,7 +1148,7 @@ public class MainPresenter implements Initializable {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						abilityTimersPopoutPresenter.resetTimers(config.getConfigTimers().getTimers(), config.getCurrentCharacter().getDiscipline());
+						abilityTimersPopoutPresenter.resetTimers(config.getConfigTimers(), config.getPopoutDefault(), config.getCurrentCharacter().getDiscipline());
 						timersPopoutPresenter.resetTimers();
 					}
 				});
@@ -1306,6 +1304,15 @@ public class MainPresenter implements Initializable {
 			@Override
 			public void onTimersUpdated() {
 				rebuildTimersMenu();
+			}
+
+			@Override
+			public void onAbilityConfigUpdated(Color activeColor, Color inactiveColor, Integer abilityTimerOpaciy) {
+				ConfigPopoutDefault popoutDefault = config.getPopoutDefault();
+				popoutDefault.setActiveColor(activeColor);
+				popoutDefault.setInactiveColor(inactiveColor);
+				popoutDefault.setInactiveOpacity(abilityTimerOpaciy);
+				abilityTimersPopoutPresenter.resetTimers(config.getConfigTimers(), popoutDefault, config.getCurrentCharacter().getDiscipline());
 			}
 
 			@Override
@@ -2007,7 +2014,7 @@ public class MainPresenter implements Initializable {
 			currentDiscipline = null;
 		}
 		this.config.getCurrentCharacter().setDiscipline(currentDiscipline);
-		abilityTimersPopoutPresenter.resetTimers(config.getConfigTimers().getTimers(), currentDiscipline);
+		abilityTimersPopoutPresenter.resetTimers(config.getConfigTimers(), config.getPopoutDefault(), currentDiscipline);
 	}
 
 	private CustomMenuItem buildCustomMenuItemWithCheckbox(String name, boolean enabled, Consumer<Boolean> onAction) {

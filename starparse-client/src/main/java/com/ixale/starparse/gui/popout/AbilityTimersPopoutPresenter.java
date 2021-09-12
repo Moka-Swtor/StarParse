@@ -1,6 +1,8 @@
 package com.ixale.starparse.gui.popout;
 
+import com.ixale.starparse.domain.ConfigPopoutDefault;
 import com.ixale.starparse.domain.ConfigTimer;
+import com.ixale.starparse.domain.ConfigTimers;
 import com.ixale.starparse.parser.TimerState;
 import com.ixale.starparse.time.TimeUtils;
 import com.ixale.starparse.timer.BaseTimer;
@@ -22,9 +24,11 @@ public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
     private static final Logger LOGGER = LoggerFactory.getLogger(AbilityTimersPopoutPresenter.class);
     private static final long startMillis = System.currentTimeMillis();
 
-    private final Map<Integer, CustomTimer> timerStateMap = new HashMap<>();
     private final Map<CustomTimer,TimerState> customTimers = new HashMap<>();
 
+    private Color inactiveColor;
+    private Color activeColor;
+    private double inactiveOpacity;
 
     @Override
     protected int getMinRows() {
@@ -80,7 +84,7 @@ public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
                 this.repaintTimer(existingTimer, true);
             } else {
                 // TODO: depending on remaining time customize timer ending?
-                debug("["+(System.currentTimeMillis()-startMillis)+  "] update existing timer : "+customTimer.getName() + " remaining: "+customTimer.getTimeRemaining());
+               // debug("["+(System.currentTimeMillis()-startMillis)+  "] update existing timer : "+customTimer.getName() + " remaining: "+customTimer.getTimeRemaining());
             }
             return;
         }
@@ -107,9 +111,9 @@ public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
         });
     }
 
-    public void resetTimers(List<ConfigTimer> timers, String discipline) {
+    public void resetTimers(ConfigTimers configTimers, ConfigPopoutDefault popoutDefault, String discipline) {
         super.resetTimers();
-        Map<CustomTimer, TimerState> customAbilityTimers = timers.stream()
+        Map<CustomTimer, TimerState> customAbilityTimers = configTimers.getTimers().stream()
                 .filter(configTimer -> configTimer.getTimerType() != null)
                 .filter(configTimer -> configTimer.getTimerType().isClassTimer())
                 .filter(configTimer -> StringUtils.isEmpty(discipline)
@@ -118,6 +122,9 @@ public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
                 .collect(Collectors.toMap(ct -> ct, CustomTimer::toTimerState));
         customAbilityTimers.keySet().forEach(customTimer -> customTimer.start(TimeUtils.getCurrentTime()));
 
+        this.inactiveColor = popoutDefault.getInactiveColor();
+        this.inactiveOpacity = popoutDefault.getInactiveOpacity() != null ? popoutDefault.getInactiveOpacity() / 100. : 0.70d;
+        this.activeColor = popoutDefault.getActiveColor();
         this.customTimers.clear();
         this.customTimers.putAll(customAbilityTimers);
         super.setTimersStates(this.customTimers.entrySet().stream().collect(Collectors.toMap(o->o.getKey().getAbilityTimerTrigram(), Map.Entry::getValue)));
@@ -139,17 +146,14 @@ public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
         gc.clearRect(0, 0, width, height);
 
         if (!timerStart) {
-            gc.setFill(Color.YELLOW);
+            gc.setFill(activeColor);
             gc.fillRoundRect(0, 0, width, height, 0, 0);
             gc.clearRect(5, 5, width-9, height-9);
             debug("[" + (System.currentTimeMillis() - startMillis) + "] unpaint timer : " + customTimer.getName());
         } else {
-            gc.setFill(Color.GRAY);
+            gc.setFill(inactiveColor.deriveColor(0, 1, .9, inactiveOpacity));
             gc.fillRoundRect(0, 0, width, height, 0, 0);
             debug("[" + (System.currentTimeMillis() - startMillis) + "] paint timer : " + customTimer.getName());
         }
-
-
-
     }
 }

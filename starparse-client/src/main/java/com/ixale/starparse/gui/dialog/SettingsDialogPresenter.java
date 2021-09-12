@@ -94,7 +94,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 		raidDamageOpacityText, raidDtpsOpacityText, raidHealingOpacityText, raidThreatOpacityText,
 		raidChallengesOpacityText, timersOpacityText, timersFractions, personalOpacityText, damageTakenOpacityText, lockOverlaysHotkey,
 		guildField, parselyLoginField, parselyPasswordField,
-		timerName, timerSourceName, timerTargetName, timerAbilityName, timerEffectName,
+		timerName, timerSourceName, timerTargetName, timerAbilityName, timerEffectName, inactiveTimerOpacity,
 		timerDuration, timerRepeat, timerSoundOffset, timerCountdownCount, dtDelay1, dtDelay2, abilityTrigram;
 
 	@FXML
@@ -115,7 +115,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 
 	@FXML
 	private ColorPicker popoutBackgroundColor, popoutTextColor,
-		popoutDamageColor, popoutHealingColor, popoutThreatColor, popoutFriendlyColor,
+		popoutDamageColor, popoutHealingColor, popoutThreatColor, popoutFriendlyColor, inactiveTimerColor, activeTimerColor,
 		timerColor;
 
 	@FXML
@@ -189,6 +189,8 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 		void onOverlaysReset(String characterName);
 
 		void onTimersUpdated();
+
+		void onAbilityConfigUpdated(Color activeColor, Color inactiveColor, Integer abilityTimerOpaciy);
 
 		void onUploadUpdated();
 
@@ -638,7 +640,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			if (file != null) {
 				logDirectoryField.setText(file.getPath());
 			}
-			validate(logDirectoryField);
+			validate();
 		}
 	}
 
@@ -984,6 +986,8 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			bindPreview(popoutHealingColor, ConfigPopoutDefault.DEFAULT_HEALING);
 			bindPreview(popoutThreatColor, ConfigPopoutDefault.DEFAULT_THREAT);
 			bindPreview(popoutFriendlyColor, ConfigPopoutDefault.DEFAULT_FRIENDLY);
+			bindPreview(inactiveTimerColor, ConfigPopoutDefault.DEFAULT_INACTIVE);
+			bindPreview(activeTimerColor, ConfigPopoutDefault.DEFAULT_ACTIVE);
 
 			bindSlider(raidDamageOpacitySlider, raidDamageOpacityText);
 			bindSlider(raidDtpsOpacitySlider, raidDtpsOpacityText);
@@ -1007,6 +1011,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 
 			bindPreview(popoutSolid);
 
+			defaults.put(inactiveTimerOpacity, 50);
 			defaults.put(timersCenter, false);
 			validators.put(timersCenter, new Validator<CheckBox>() {
 				@Override
@@ -1025,6 +1030,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			initializeNumericTextField(timersFractions, 1, 99);
 			initializeNumericTextField(dtDelay1, 2, 15);
 			initializeNumericTextField(dtDelay2, 3, 60);
+			initializeNumericTextField(inactiveTimerOpacity, 0, 100);
 
 			timersCenterMoveButton.setDisable(true);
 			timersCenterMoveButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -1278,6 +1284,8 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			current.put(popoutHealingColor, config.getPopoutDefault().getHealingColor());
 			current.put(popoutThreatColor, config.getPopoutDefault().getThreatColor());
 			current.put(popoutFriendlyColor, config.getPopoutDefault().getFriendlyColor());
+			current.put(inactiveTimerColor, config.getPopoutDefault().getInactiveColor());
+			current.put(activeTimerColor, config.getPopoutDefault().getActiveColor());
 
 			loadPopoutCurrent("Raid Damage", raidDamageOpacitySlider, raidDamageOpacityText, raidDamageBars, null, null);
 			loadPopoutCurrent("Raid DTPS", raidDtpsOpacitySlider, raidDtpsOpacityText, raidDtpsBars, null, null);
@@ -1297,6 +1305,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			putIfNotNull(timersFractions, config.getPopoutDefault().getTimersFractions());
 			putIfNotNull(dtDelay1, config.getPopoutDefault().getDtDelay1());
 			putIfNotNull(dtDelay2, config.getPopoutDefault().getDtDelay2());
+			putIfNotNull(inactiveTimerOpacity, config.getPopoutDefault().getInactiveOpacity());
 
 			current.put(lockOverlaysHotkey, config.getlockOverlaysHotkey() == null ? "" : config.getlockOverlaysHotkey());
 
@@ -1390,6 +1399,10 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 			config.getPopoutDefault().setThreatColor(popoutThreatColor.getValue());
 			config.getPopoutDefault().setFriendlyColor(popoutFriendlyColor.getValue());
 
+			config.getPopoutDefault().setActiveColor(activeTimerColor.getValue());
+			config.getPopoutDefault().setInactiveColor(inactiveTimerColor.getValue());
+			config.getPopoutDefault().setInactiveOpacity(getSafeInt(inactiveTimerOpacity));
+
 			savePopoutCurrent("Raid Damage", raidDamageOpacitySlider.getValue() / 100, raidDamageBars.isSelected());
 			savePopoutCurrent("Raid DTPS", raidDtpsOpacitySlider.getValue() / 100, raidDtpsBars.isSelected());
 			savePopoutCurrent("Raid Healing", raidHealingOpacitySlider.getValue() / 100, raidHealingBars.isSelected());
@@ -1458,6 +1471,7 @@ public class SettingsDialogPresenter extends BaseDialogPresenter {
 
 		private void fireSettingsUpdated() {
 			if (!suppressEvents && listener != null) {
+				listener.onAbilityConfigUpdated(activeTimerColor.getValue(), inactiveTimerColor.getValue(), getSafeInt(inactiveTimerOpacity));
 				listener.onOverlaysSettings(
 					popoutBackgroundColor.getValue(),
 					popoutTextColor.getValue(),
