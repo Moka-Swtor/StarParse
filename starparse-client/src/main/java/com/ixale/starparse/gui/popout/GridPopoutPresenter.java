@@ -29,6 +29,7 @@ import javafx.stage.Screen;
 
 import java.net.URL;
 import java.util.*;
+import java.util.function.Consumer;
 
 
 abstract public class GridPopoutPresenter extends BasePopoutPresenter {
@@ -48,24 +49,46 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 
 
 	protected static class TimerFrame {
-		int col, row;
+		Integer frameCol, frameRow;
 		final AnchorPane pane;
 		final TimerState state;
+		final String name;
+		final Consumer<TimerFrame> onUpdate;
 
-		TimerFrame(final AnchorPane pane, final TimerState state) {
+		TimerFrame(final AnchorPane pane, final TimerState state, String name, Consumer<TimerFrame> onUpdate) {
 			this.pane = pane;
 			this.state = state;
+			this.name = name;
+			this.onUpdate = onUpdate;
+		}
+
+		public Integer getCol() {
+			return frameCol;
+		}
+
+		public Integer getRow() {
+			return frameRow;
+		}
+
+		public void setColAndRow(int col, int row) {
+			this.frameCol = col;
+			this.frameRow = row;
+			this.onUpdate.accept(this);
 		}
 
 		@Override
 		public String toString() {
 			return "TimerFrame{" +
-					"col=" + col +
-					", row=" + row +
+					"col=" + frameCol +
+					", row=" + frameRow +
 					", pane=" + pane +
 					", state=" + state +
 					'}';
 		}
+	}
+
+	protected void onFrameCoordsUpdated(TimerFrame frame) {
+		// nothing to do here, but children can override
 	}
 
 	private final TimerFrame[][] matrix = new TimerFrame[6][8];
@@ -172,20 +195,18 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 
 				// anyone already there?
 				for (final TimerFrame frame: timers.values()) {
-					if (frame.col == toCol && frame.row == toRow) {
+					if (frame.getCol() == toCol && frame.getRow() == toRow) {
 						if (frame == playerToMove) {
 							// nothing to do
 							return;
 						}
 						// swap places
-						frame.col = playerToMove.col;
-						frame.row = playerToMove.row;
+						frame.setColAndRow(playerToMove.getCol(), playerToMove.getRow());
 						break;
 					}
 				}
 
-				playerToMove.col = toCol;
-				playerToMove.row = toRow;
+				playerToMove.setColAndRow(toCol, toRow);
 
 				dragEvent.consume();
 				repaintPlayers();
@@ -280,6 +301,10 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 		ignoreTimers.clear();
 	}
 
+	protected void removeFromFrames(TimerFrame frame) {
+		frames.getChildren().remove(frame.pane);
+	}
+
 	public abstract void tickFrames(Collection<TimerFrame> timerFrames);
 
 	public void tickHots() {
@@ -372,23 +397,14 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 		});
 
 		// try to find space in visible area
-		final TimerFrame frame = new TimerFrame(pane, state);
+		final TimerFrame frame = new TimerFrame(pane, state, characterName, this::onFrameCoordsUpdated);
+		this.initFrameColAndRow(frame);
 
-		Integer col = null, row = null;
-		m: for (int c = 0; c < slotCols; c++) {
-			for (int r = 0; r < slotRows; r++) {
-				if (matrix[c][r] == null) {
-					col = c;
-					row = r;
-					matrix[c][r] = frame;
-					break m;
-				}
-			}
-		}
-		// fall back to anything available
-		m: if (col == null) {
-			for (int r = 0; r < matrix[0].length; r++) {
-				for (int c = 0; c < matrix.length; c++) {
+
+		if (frame.getRow()==null || frame.getCol()==null) {
+			Integer col = null, row = null;
+			m: for (int c = 0; c < slotCols; c++) {
+				for (int r = 0; r < slotRows; r++) {
 					if (matrix[c][r] == null) {
 						col = c;
 						row = r;
@@ -397,13 +413,25 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 					}
 				}
 			}
+			// fall back to anything available
+			m: if (col == null) {
+				for (int r = 0; r < matrix[0].length; r++) {
+					for (int c = 0; c < matrix.length; c++) {
+						if (matrix[c][r] == null) {
+							col = c;
+							row = r;
+							matrix[c][r] = frame;
+							break m;
+						}
+					}
+				}
+			}
+			if (col == null) {
+				// error?
+				return;
+			}
+			frame.setColAndRow(col, row);
 		}
-		if (col == null) {
-			// error?
-			return;
-		}
-		frame.col = col;
-		frame.row = row;
 
 		timers.put(characterName, frame);
 
@@ -412,24 +440,27 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 		repaintPlayer(frame);
 	}
 
+	protected void initFrameColAndRow(final TimerFrame frame) {
+		// nothing to do here, but children can override
+	}
+
 	public void removePlayer(final String characterName) {
 		final TimerFrame frame = timers.remove(characterName);
 		if (frame == null) {
 			return;
 		}
-		frames.getChildren().remove(frame.pane);
-		matrix[frame.col][frame.row] = null;
+		removeFromFrames(frame);
+		matrix[frame.getCol()][frame.getRow()] = null;
 
-		if (frame.col < slotCols && frame.row < slotRows) {
+		if (frame.getCol() < slotCols && frame.getRow() < slotRows) {
 			// use the space for someone else
 			m: for (int c = 0; c < matrix.length; c++) {
 				for (int r = 0; r < matrix[c].length; r++) {
 					if ((c >= slotCols || r >= slotRows) && matrix[c][r] != null) {
 						final TimerFrame other = matrix[c][r];
-						other.col = frame.col;
-						other.row = frame.row;
+						other.setColAndRow(frame.getCol(), frame.getRow());
 						repaintPlayer(other);
-						matrix[frame.col][frame.row] = other;
+						matrix[frame.getCol()][frame.getRow()] = other;
 						matrix[c][r] = null;
 						break m;
 					}
@@ -495,7 +526,7 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 	}
 
 	private void repaintPlayer(TimerFrame frame) {
-		if (frame.col >= slotCols || frame.row >= slotRows) {
+		if (frame.getCol() >= slotCols || frame.getRow() >= slotRows) {
 			frame.pane.setVisible(false);
 			return;
 		}
@@ -504,8 +535,8 @@ abstract public class GridPopoutPresenter extends BasePopoutPresenter {
 		((Label) frame.pane.getChildren().get(0)).setMaxWidth(slotWidth - 15d);
 
 		// align frame
-		AnchorPane.setTopAnchor(frame.pane, (double) frame.row * slotHeight);
-		AnchorPane.setLeftAnchor(frame.pane, (double) frame.col * slotWidth);
+		AnchorPane.setTopAnchor(frame.pane, (double) frame.getRow() * slotHeight);
+		AnchorPane.setLeftAnchor(frame.pane, (double) frame.getCol() * slotWidth);
 
 		// align label
 		final Label l = (Label) frame.pane.getChildren().get(0);

@@ -1,6 +1,8 @@
 package com.ixale.starparse.domain;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConfigPopout implements Serializable {
 
@@ -16,9 +18,25 @@ public class ConfigPopout implements Serializable {
 
 	private String mode;
 	private Integer cols, rows;
+	private Map<String, String> frameDisposition;
 
 	public ConfigPopout(String name) {
 		this.name = name;
+	}
+
+	public void saveFrameDisposition(String name, String coords) {
+		if (coords == null) {
+			this.frameDisposition.remove(name);
+		} else {
+			this.frameDisposition.put(name, coords);
+		}
+	}
+
+	public String getDisposition(String name) {
+		if (frameDisposition == null) {
+			frameDisposition = new HashMap<>();
+		}
+		return this.frameDisposition.get(name);
 	}
 
 	public String getName() {

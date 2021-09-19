@@ -67,6 +67,28 @@ public class AbilityTimersPopoutPresenter extends GridPopoutPresenter{
         super.initialize(url, resourceBundle);
     }
 
+    @Override
+    protected void onFrameCoordsUpdated(TimerFrame frame) {
+        characterConfig().saveFrameDisposition(frame.name, frame.getCol()+";"+frame.getRow());
+    }
+
+    @Override
+    protected void removeFromFrames(TimerFrame frame) {
+        super.removeFromFrames(frame);
+        characterConfig().saveFrameDisposition(frame.name, null);
+    }
+
+    @Override
+    protected void initFrameColAndRow(TimerFrame frame) {
+        String disposition = characterConfig().getDisposition(frame.name);
+        if (disposition != null && disposition.indexOf(';') > 0) {
+            String[] split = disposition.split(";");
+            int col = Integer.parseInt(split[0]);
+            int row = Integer.parseInt(split[1]);
+            frame.setColAndRow(col, row);
+        }
+    }
+
     public void addOrUpdateOrCompleteTimer(final BaseTimer timer) {
         if(!timer.isAbilityTimer())
             return;
