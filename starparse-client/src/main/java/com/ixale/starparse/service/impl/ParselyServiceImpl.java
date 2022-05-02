@@ -1,18 +1,16 @@
 package com.ixale.starparse.service.impl;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
 import com.ixale.starparse.domain.RaidBossName;
 import com.ixale.starparse.domain.ServerName;
 import com.ixale.starparse.gui.Config;
 import com.ixale.starparse.gui.Format;
 import com.ixale.starparse.service.ParselyService;
 import com.ixale.starparse.utils.FileUploader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service("parselyService")
 public class ParselyServiceImpl implements ParselyService {
@@ -20,30 +18,35 @@ public class ParselyServiceImpl implements ParselyService {
 	private static final Logger logger = LoggerFactory.getLogger(ParselyService.class);
 
 	@Override
-	public Params createParams(final Config config, boolean isPublic, final String notes) {
+	public Params createParams(final Config config, int visibility, final boolean guildLog, final String notes, final Context context) {
 		final Params p = new Params();
 
 		p.endpoint = config.getParselyEndpoint();
 		p.timezone = config.getTimezone();
 
-		if (config.getCurrentCharacter().getServer() != null) {
+		if (context.getServerId() != null) {
+			p.serverName = context.getServerId();
+		} else if (config.getCurrentCharacter().getServer() != null) {
 			p.serverName = ServerName.getWebalized(config.getCurrentCharacter().getServer());
 		}
 
 		if (config.getCurrentCharacter().getGuild() != null) {
 			p.guild = config.getCurrentCharacter().getGuild();
 		}
+		p.guildLog = guildLog;
 
 		if (notes != null && !notes.isEmpty()) {
 			p.notes = notes;
 		}
 
-		p.isPublic = isPublic;
+		p.visibility = visibility;
 
 		if (config.getParselyLogin() != null) {
 			p.username = config.getParselyLogin();
 			p.password = config.getParselyPassword();
 		}
+
+		p.version = context.getVersion();
 
 		return p;
 	}
@@ -62,36 +65,38 @@ public class ParselyServiceImpl implements ParselyService {
 		if (p.guild != null) {
 			fu.addFormField("guild", p.guild);
 		}
+		fu.addFormField("guild-log", p.guildLog ? "1" : "0");
 
 		if (p.notes != null) {
 			fu.addFormField("notes", p.notes);
 		}
 
-		fu.addFormField("public", p.isPublic ? "1" : "0");
+		fu.addFormField("public", "" + p.visibility); // 0 = private, 1 = public, 2 = guild
 
 		if (p.username != null) {
 			fu.addFormField("username", p.username);
 			fu.addFormField("password", p.password);
 		}
+		fu.addFormField("version", p.version);
 
 		fu.addFilePart("file", fileName, content);
 
 		if (combatsInfo != null && !combatsInfo.isEmpty()) {
-			for (final ParselyCombatInfo info: combatsInfo) {
+			for (final ParselyCombatInfo info : combatsInfo) {
 				if (info.raidBoss == null || RaidBossName.OperationsTrainingDummy.equals(info.raidBoss.getRaidBossName())) {
 					continue;
 				}
-				final StringBuilder sb = new StringBuilder();
-				sb.append(info.from).append('|');
-				sb.append(Format.formatTime(info.from, true, true)).append('|');
-				sb.append(info.to == null ? "" : info.to).append('|');
-				sb.append(info.to == null ? "" : Format.formatTime(info.to, true, true)).append('|');
-				sb.append(info.raidBoss.getRaidBossName().name()).append('|');
-				sb.append(info.raidBoss.getMode().name()).append('|');
-				sb.append(info.raidBoss.getSize().toString()).append('|');
-				sb.append(info.isNiMCrystal ? "y" : "n");
+				final String sb = String.valueOf(info.from) + '|'
+						+ Format.formatTime(info.from, true, true) + '|'
+						+ (info.to == null ? "" : info.to) + '|'
+						+ (info.to == null ? "" : Format.formatTime(info.to, true, true)) + '|'
+						+ info.raidBoss.getRaidBossName().name() + '|'
+						+ info.raidBoss.getMode().name() + '|'
+						+ info.raidBoss.getSize().toString() + '|'
+						+ (info.isNiMCrystal ? "y" : "n") + '|'
+						+ (info.instanceName == null ? "" : info.instanceName + " {" + info.instanceGuid + "}");
 
-				fu.addFormField("combats[]", sb.toString());
+				fu.addFormField("combats[]", sb);
 			}
 		}
 
@@ -102,7 +107,7 @@ public class ParselyServiceImpl implements ParselyService {
 			try {
 				xmlReply = fu.finish();
 
-			} catch (IOException e) {
+			} catch (Exception e) {
 				// try again
 				if (e.getMessage() != null && e.getMessage().contains("Server returned non-OK status")) {
 					// try again (may be temporal 504)
@@ -113,18 +118,17 @@ public class ParselyServiceImpl implements ParselyService {
 					throw e;
 				}
 			}
-
 			return getLink(xmlReply);
 
 		} catch (Exception e) {
 			if (logger.isDebugEnabled()) {
-				logger.debug("Upload failed: " + e.getMessage() + " (" + (xmlReply != null ? xmlReply : "no reply") + ")");
+				logger.debug("Upload failed: " + e.getMessage() + " (" + "no reply" + ")");
 			}
 			throw e;
 		}
 	}
 
-	public String getLink(final String xmlReply) throws Exception {
+	public String getLink(final String xmlReply) {
 
 		if (xmlReply == null || xmlReply.isEmpty()) {
 			throw new IllegalStateException("Returned empty response from the server");
@@ -132,7 +136,7 @@ public class ParselyServiceImpl implements ParselyService {
 
 		if (!xmlReply.contains("<response>")) {
 			throw new IllegalStateException("Returned invalid response from the server: "
-				+ (xmlReply.length() > 255 ? xmlReply.substring(0, 255) : xmlReply));
+					+ (xmlReply.length() > 255 ? xmlReply.substring(0, 255) : xmlReply));
 		}
 
 		final String status = getValue(xmlReply, "status");

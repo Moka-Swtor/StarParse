@@ -76,12 +76,12 @@ public class DamageTakenPopoutPresenter extends BasePopoutPresenter {
 	}
 
 	// ie, ke, ft, mr
-	private String [] getDamageTexts(final Combat combat, final CombatStats stats, int millisDelay) throws Exception {
+	private String [] getDamageTexts(final Combat combat, final CombatStats stats, int millisDelay, String selectedPlayer) throws Exception {
 		String [] result = new String [4];
 		CombatSelection combatSelection = computeSelectionForPastMillis(combat, stats, millisDelay);
-		final CombatMitigationStats mitiStats = eventService.getCombatMitigationStats(combat, combatSelection);
+		final CombatMitigationStats mitiStats = eventService.getCombatMitigationStats(combat, combatSelection, selectedPlayer);
 		final List<DamageTakenStats> dtStats = eventService.getDamageTakenStats(combat,
-				false, false, true, combatSelection);
+				false, false, true, combatSelection, selectedPlayer);
 		List<Integer> totals = this.getTotals(dtStats);
 		int ftTotal = totals.get(0), mrTotal = totals.get(1), total = totals.get(2);
 
@@ -121,7 +121,7 @@ public class DamageTakenPopoutPresenter extends BasePopoutPresenter {
 		}
 
 		// mitigation overview
-		final CombatMitigationStats mitiStats = eventService.getCombatMitigationStats(combat, context.getCombatSelection());
+		final CombatMitigationStats mitiStats = eventService.getCombatMitigationStats(combat, context.getCombatSelection(), context.getSelectedPlayer());
 
 		if (mitiStats == null) {
 			// combat gone away
@@ -138,7 +138,7 @@ public class DamageTakenPopoutPresenter extends BasePopoutPresenter {
 		// FIXME: use object
 		List<DamageTakenStats> dtStats = eventService.getDamageTakenStats(combat,
 				false, false, true,
-				context.getCombatSelection());
+				context.getCombatSelection(), context.getSelectedPlayer());
 		List<Integer> totals = this.getTotals(dtStats);
 		int ftTotal = totals.get(0), mrTotal = totals.get(1), total = totals.get(2);
 
@@ -157,12 +157,12 @@ public class DamageTakenPopoutPresenter extends BasePopoutPresenter {
 		absorbedOthersPercent.setText(Format.formatFloat(mitiStats.getAbsorbedOthersPercent()) + " %");
 		absorbedOthers.setText(Format.formatMillions(mitiStats.getAbsorbedOthers()));
 
-		String[] damageTexts1 = getDamageTexts(combat, stats, dtDelay1 == null ? 2000 : dtDelay1 * 1000);
+		String[] damageTexts1 = getDamageTexts(combat, stats, dtDelay1 == null ? 2000 : dtDelay1 * 1000, context.getSelectedPlayer());
 		ieInstant1.setText(damageTexts1[0]);
 		keInstant1.setText(damageTexts1[1]);
 		ftInstant1.setText(damageTexts1[2]);
 		mrInstant1.setText(damageTexts1[3]);
-		String[] damageTexts5 = getDamageTexts(combat, stats, dtDelay2 == null ? 10000 : dtDelay2 * 1000);
+		String[] damageTexts5 = getDamageTexts(combat, stats, dtDelay2 == null ? 10000 : dtDelay2 * 1000, context.getSelectedPlayer());
 		ieInstant5.setText(damageTexts5[0]);
 		keInstant5.setText(damageTexts5[1]);
 		ftInstant5.setText(damageTexts5[2]);

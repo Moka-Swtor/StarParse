@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	<project name="starparse-client" default="do-deploy" basedir="."  xmlns:fx="javafx:com.sun.javafx.tools.ant">
+	<project name="starparse-clientx86" default="do-deploy" basedir="."  xmlns:fx="javafx:com.sun.javafx.tools.ant">
 	<target name="init-fx-tasks">
 		<path id="fxant">
 			<filelist>
@@ -20,11 +20,11 @@
 		
 		<mkdir dir="externalLibs" />
 		
-		<copy todir="externalLibs">
-			<fileset dir="C:\Users\Marek\.m2\repository\commons-codec\commons-codec\1.2">
-				<filename name="commons-codec-1.2.jar"/>	
-			</fileset>
-		</copy>
+<!--		<copy todir="externalLibs">-->
+<!--			<fileset dir="C:\Users\Marek\.m2\repository\commons-codec\commons-codec\1.2">-->
+<!--				<filename name="commons-codec-1.2.jar"/>	-->
+<!--			</fileset>-->
+<!--		</copy>-->
 		<copy todir="externalLibs">
 			<fileset dir="C:\Users\Marek\.m2\repository\com\thoughtworks\xstream\xstream\1.4.8">
 				<filename name="xstream-1.4.8.jar"/>	
@@ -191,10 +191,10 @@
 				<include name="kryo-2.24.0.jar"/>
 				<include name="slf4j-api-1.6.1.jar"/>
 				<include name="javax.websocket-api-1.1.jar"/>
-				<include name="commons-httpclient-3.1.jar"/>
+<!--				<include name="commons-httpclient-3.1.jar"/>-->
 				<include name="objenesis-2.1.jar"/>
 				<include name="spring-aop-4.0.0.RELEASE.jar"/>
-				<include name="commons-codec-1.2.jar"/>
+<!--				<include name="commons-codec-1.2.jar"/>-->
 				<include name="slf4j-log4j12-1.6.1.jar"/>
 				<include name="javax.inject-1.jar"/>
 				<include name="spring-tx-4.0.0.RELEASE.jar"/>
@@ -322,7 +322,8 @@
 			<fx:resources refid="appRes"/>
 
 			<fx:platform>
-				<fx:jvmarg value="-Xmx256m"/>
+				<fx:jvmarg value="-Xmx400m"/>
+				<fx:jvmarg value="-XX:+UseG1GC"/>
 			</fx:platform>
 		</fx:deploy>
 		

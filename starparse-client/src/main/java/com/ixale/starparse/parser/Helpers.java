@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.ixale.starparse.domain.Actor;
+import com.ixale.starparse.domain.Actor.Type;
 import com.ixale.starparse.domain.CharacterDiscipline;
 import com.ixale.starparse.domain.Entity;
 import com.ixale.starparse.domain.EntityGuid;
@@ -16,6 +17,39 @@ import com.ixale.starparse.domain.RaidBoss;
 import com.ixale.starparse.domain.RaidBossName;
 import com.ixale.starparse.domain.Actor.Type;
 import com.ixale.starparse.domain.ops.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.ixale.starparse.domain.EntityGroup.ABSORPTION;
+import static com.ixale.starparse.domain.EntityGroup.DROP;
+import static com.ixale.starparse.domain.EntityGroup.GENERIC;
+import static com.ixale.starparse.domain.EntityGroup.GUARD;
+import static com.ixale.starparse.domain.EntityGroup.NONREDUCED_THREAT;
+import static com.ixale.starparse.domain.EntityGroup.containsGuid;
+import static com.ixale.starparse.domain.EntityGuid.AbilityActivate;
+import static com.ixale.starparse.domain.EntityGuid.ApplyEffect;
+import static com.ixale.starparse.domain.EntityGuid.Damage;
+import static com.ixale.starparse.domain.EntityGuid.Death;
+import static com.ixale.starparse.domain.EntityGuid.EffectCentering;
+import static com.ixale.starparse.domain.EntityGuid.EffectFury;
+import static com.ixale.starparse.domain.EntityGuid.EnragedDefense;
+import static com.ixale.starparse.domain.EntityGuid.EnterCombat;
+import static com.ixale.starparse.domain.EntityGuid.ExitCombat;
+import static com.ixale.starparse.domain.EntityGuid.FocusedDefense;
+import static com.ixale.starparse.domain.EntityGuid.ForceEmpowerment;
+import static com.ixale.starparse.domain.EntityGuid.Heal;
+import static com.ixale.starparse.domain.EntityGuid.PvpHeal;
+import static com.ixale.starparse.domain.EntityGuid.RemoveEffect;
+import static com.ixale.starparse.domain.EntityGuid.Revived;
+import static com.ixale.starparse.domain.EntityGuid.SafeLoginImmunity;
+import static com.ixale.starparse.domain.EntityGuid.Trauma;
+import static com.ixale.starparse.domain.EntityGuid.UnlimitedPower;
+import static com.ixale.starparse.domain.EntityGuid.isEffectAbsorbAdrenal;
+import static com.ixale.starparse.domain.EntityGuid.isEffectAbsorbRelic;
 
 public class Helpers {
 
@@ -27,9 +61,13 @@ public class Helpers {
 		return e.getSource() != null && e.getSource().getType().equals(Actor.Type.PLAYER);
 	}
 
+	public static boolean isSourceAnyPlayer(final Event e) {
+		return e.getSource() != null && (e.getSource().getType().equals(Actor.Type.PLAYER) || e.getSource().getType().equals(Actor.Type.SELF));
+	}
+
 	public static boolean isTargetEqual(final Event e, final Long guid) {
 		return e.getTarget() != null && e.getTarget().getGuid() != null
-			&& e.getTarget().getGuid().equals(guid);
+				&& e.getTarget().getGuid().equals(guid);
 	}
 
 	public static boolean isTargetEqual(final Event e, final Long guid, final String name) {
@@ -53,9 +91,21 @@ public class Helpers {
 		return e.getTarget() != null && e.getTarget().getType().equals(Actor.Type.PLAYER);
 	}
 
+	public static boolean isTargetAnyPlayer(final Event e) {
+		return e.getTarget() != null && (e.getTarget().getType().equals(Actor.Type.PLAYER) || e.getTarget().getType().equals(Actor.Type.SELF));
+	}
+
+	public static boolean isSourceOrTargetThisPlayer(final Event e) {
+		return isSourceThisPlayer(e) || isTargetThisPlayer(e);
+	}
+
+	public static boolean isSourceOrTargetAnyPlayer(final Event e) {
+		return isSourceAnyPlayer(e) || isTargetAnyPlayer(e);
+	}
+
 	public static boolean isSourceEqual(final Event e, final Long guid) {
 		return e.getSource() != null && e.getSource().getGuid() != null
-			&& e.getSource().getGuid().equals(guid);
+				&& e.getSource().getGuid().equals(guid);
 	}
 
 	public static boolean isSourceEqual(final Event e, final Long guid, final String name) {
@@ -77,7 +127,7 @@ public class Helpers {
 
 	public static boolean isSourceWithin(final Event e, final Long... guids) {
 		if (e.getSource() != null && e.getSource().getGuid() != null) {
-			for (final long guid: guids) {
+			for (final long guid : guids) {
 				if (e.getSource().getGuid().equals(guid)) {
 					return true;
 				}
@@ -88,7 +138,7 @@ public class Helpers {
 
 	public static boolean isTargetWithin(final Event e, final Long... guids) {
 		if (e.getTarget() != null && e.getTarget().getGuid() != null) {
-			for (final long guid: guids) {
+			for (final long guid : guids) {
 				if (e.getTarget().getGuid().equals(guid)) {
 					return true;
 				}
@@ -160,20 +210,19 @@ public class Helpers {
 	}
 
 	public static boolean isEffectAbsorption(final Event e) {
-		return containsGuid(ABSORPTION, e.getEffect().getGuid());
-	}
-
-	public static boolean isEffectAbsorptionBroken(Long guid) {
-		return containsGuid(ABSORPTION_BROKEN, guid);
+		return containsGuid(ABSORPTION, e.getEffect().getGuid())
+				|| isEffectAbsorbAdrenal(e.getEffect().getName())
+				|| isEffectAbsorbRelic(e.getEffect().getName());
 	}
 
 	public static boolean isEffectDualWield(final Event e) {
 		return isEffectEqual(e, EffectCentering.getGuid())
-			|| isEffectEqual(e, EffectFury.getGuid());
+				|| isEffectEqual(e, EffectFury.getGuid());
 	}
 
 	public static boolean isEffectPvP(final Event e) {
-		return e.getEffect().getGuid().equals(Trauma.getGuid()); // no lingering - not interesting
+		return e.getEffect().getGuid().equals(Trauma.getGuid()) // no lingering - not interesting
+				|| e.getEffect().getGuid().equals(PvpHeal.getGuid());
 	}
 
 	public static boolean isEffectGeneric(final Event e) {
@@ -185,11 +234,11 @@ public class Helpers {
 	}
 
 	public static boolean isAbilityNonreducedThreat(final Event e) {
-		return containsGuid(NONREDUCED_THREAT, e.getAbility().getGuid()) 
+		return containsGuid(NONREDUCED_THREAT, e.getAbility().getGuid())
 				|| (e.getAbility().getName() != null && (
-					e.getAbility().getName().contains("Medpac")
-					|| e.getAbility().getName().contains("Healing Resonance")
-				));
+				e.getAbility().getName().contains("Medpac")
+						|| e.getAbility().getName().contains("Healing Resonance")
+		));
 	}
 
 	public static boolean isAbilityNoThreat(final Event e) {
@@ -218,7 +267,7 @@ public class Helpers {
 
 	public static boolean isAbilityEqual(final Event e, final Long guid) {
 		return e.getAbility() != null && e.getAbility().getGuid() != null
-			&& e.getAbility().getGuid().equals(guid);
+				&& e.getAbility().getGuid().equals(guid);
 	}
 
 	public static boolean isAbilityEqual(final Event e, final Long guid, final String name) {
@@ -235,8 +284,7 @@ public class Helpers {
 	}
 
 	public static boolean isEffectEqual(final Event e, final Long guid) {
-		return e.getEffect() != null && e.getEffect().getGuid() != null
-			&& e.getEffect().getGuid().equals(guid);
+		return e.getEffect() != null && guid.equals(e.getEffect().getGuid());
 	}
 
 	public static boolean isEffectEqual(final Event e, final Long guid, final String name) {
@@ -278,18 +326,24 @@ public class Helpers {
 			new TrainingDummy(),
 			new EternalChampionship(),
 			new Iokath(),
-			new Dxun()
+			new Dxun(),
+			new R4Anomaly()
 	};
 
 	private static final Map<Long, RaidBoss> bossesByGuids = new HashMap<>();
 	private static final Map<String, RaidBoss> bossesByVerbose = new HashMap<>();
 	private static final Map<RaidBossName, Map<Raid.Size, Map<Raid.Mode, RaidBoss>>> bossesInstances = new HashMap<>();
+	private static final Map<Long, Raid> raidsByInstance = new HashMap<>();
+
 	static {
 		// build journal
-		for (final Raid r: raids) {
-			for (final RaidBoss b: r.getBosses()) {
+		for (final Raid r : raids) {
+			if (r.getInstanceGuid() != null) {
+				raidsByInstance.put(r.getInstanceGuid(), r);
+			}
+			for (final RaidBoss b : r.getBosses()) {
 				if (b.getConfidentNpcGuids() != null) {
-					for (long guid: b.getConfidentNpcGuids()) {
+					for (long guid : b.getConfidentNpcGuids()) {
 						if (bossesByGuids.containsKey(guid)) {
 							throw new RuntimeException("Duplicate boss (confident): " + guid);
 						}
@@ -297,7 +351,7 @@ public class Helpers {
 					}
 				}
 				if (b.getTentativeNpcGuids() != null) {
-					for (long guid: b.getTentativeNpcGuids()) {
+					for (long guid : b.getTentativeNpcGuids()) {
 						if (bossesByGuids.containsKey(guid)) {
 							throw new RuntimeException("Duplicate boss (tentative): " + guid);
 						}
@@ -323,24 +377,29 @@ public class Helpers {
 	public static RaidBoss getRaidBoss(long entityGuid, final Raid.Size size, final Raid.Mode mode) {
 		final RaidBoss boss = bossesByGuids.get(entityGuid);
 		if (boss != null && size != null && mode != null
-			&& bossesInstances.containsKey(boss.getRaidBossName())
-			&& bossesInstances.get(boss.getRaidBossName()).containsKey(size)
-			&& bossesInstances.get(boss.getRaidBossName()).get(size).containsKey(mode)) {
+				&& bossesInstances.containsKey(boss.getRaidBossName())
+				&& bossesInstances.get(boss.getRaidBossName()).containsKey(size)
+				&& bossesInstances.get(boss.getRaidBossName()).get(size).containsKey(mode)) {
 			// set by 5.4 combat enter event
 			return bossesInstances.get(boss.getRaidBossName()).get(size).get(mode);
 		}
 		return boss;
 	}
 
+	public static Raid getRaidByInstanceGuid(final Long guid) {
+		return raidsByInstance.get(guid);
+	}
+
 	private static final List<HashMap<Long, CharacterDiscipline>> disciplines = Arrays.asList(
-		new HashMap<Long, CharacterDiscipline>(), // single wield
-		new HashMap<Long, CharacterDiscipline>() // dual wield
+			new HashMap<>(), // single wield
+			new HashMap<>() // dual wield
 	);
+
 	static {
 		// build journal
-		for (final CharacterDiscipline discipline: CharacterDiscipline.values()) {
+		for (final CharacterDiscipline discipline : CharacterDiscipline.values()) {
 			int i = discipline.isDualWield() ? 1 : 0;
-			for (long guid: discipline.getAbilities()) {
+			for (long guid : discipline.getAbilities()) {
 				if (disciplines.get(i).containsKey(guid)) {
 					throw new RuntimeException("Duplicate discipline: " + guid);
 				}

@@ -55,6 +55,7 @@ public class ConfigTimers implements Serializable, SerializeCallback {
 		if (timers.isEmpty()) {
 			ConfigTimer.Condition condHo = new ConfigTimer.Condition();
 			condHo.setType(Type.ABILITY_ACTIVATED);
+			condHo.setSource(ConfigTimer.Condition.SELF);
 			condHo.setAbilityGuid(801303458480128L);
 
 			final ConfigTimer ho = new ConfigTimer();
@@ -77,6 +78,9 @@ public class ConfigTimers implements Serializable, SerializeCallback {
 	public void beforeSerialize() {
 		timers.clear();
 		for (ConfigTimer timer: allTimers) {
+			if (Boolean.TRUE.equals(timer.getIsPreview())) {
+				continue;
+			}
 			if (timer.isSystem()) {
 				// save only if anything changed
 				if (timer.isEnabled() && !timer.isSystemModified()) {

@@ -2,9 +2,11 @@ package com.ixale.starparse.domain.ops;
 
 import com.ixale.starparse.domain.Combat;
 import com.ixale.starparse.domain.Event;
+import com.ixale.starparse.domain.NpcType;
 import com.ixale.starparse.domain.Raid;
 import com.ixale.starparse.domain.RaidBoss;
 import com.ixale.starparse.domain.RaidBossName;
+import com.ixale.starparse.parser.Helpers;
 import com.ixale.starparse.timer.BaseTimer;
 import com.ixale.starparse.timer.TimerManager;
 
@@ -62,6 +64,43 @@ public class WorldBoss extends Raid {
 				new long[]{4204768687816704L}, // SM 16m
 				new long[]{4204764392849408L}, // HM 8m
 				new long[]{4204772982784000L}); // HM 16m
+
+		npcs.put(4199438633402368L, new Npc(NpcType.boss_1)); // Caustic Drone, ossus_lair, raidEncounter
+		npcs.put(4198317646938112L, new Npc(NpcType.boss_1)); // Geonosian Berserker, ossus_lair, raidEncounter
+		npcs.put(4197677696811008L, new Npc(NpcType.boss_2)); // Geonosian Royal Guard, ossus_lair, raidEncounter
+		npcs.put(4197299739688960L, new Npc(NpcType.boss_raid)); // Mutated Geonosian Queen, ossus_lair, raidEncounter
+		npcs.put(4232741809815552L, new Npc(NpcType.boss_1)); // Genosian Viscount, ossus_lair, raidTrash
+		npcs.put(4232862068899840L, new Npc(NpcType.boss_1)); // Genosian Viscount, ossus_lair, raidTrash
+		npcs.put(4232514176548864L, new Npc(NpcType.boss_1)); // Geonosian Berserker, ossus_lair, raidTrash
+		npcs.put(4216124581347328L, new Npc(NpcType.boss_1)); // Geonosian Grenadier, ossus_lair, raidTrash
+		npcs.put(4214853271027712L, new Npc(NpcType.boss_2)); // Geonosian Elite Guard, ossus_lair, raidTrash
+		npcs.put(4204764392849408L, new Npc(NpcType.boss_raid)); // Mutated Geonosian Queen, ossus_lair, raidEncounter
+		npcs.put(4204768687816704L, new Npc(NpcType.boss_raid)); // Mutated Geonosian Queen, ossus_lair, raidEncounter
+		npcs.put(4204772982784000L, new Npc(NpcType.boss_raid)); // Mutated Geonosian Queen, ossus_lair, raidEncounter
+
+		npcs.put(3570947479044096L, new Npc(NpcType.boss_raid)); // Colossal Monolith, undefined, Unknown
+		npcs.put(3570951774011392L, new Npc(NpcType.boss_raid)); // Colossal Monolith, undefined, Unknown
+		npcs.put(3570956068978688L, new Npc(NpcType.boss_raid)); // Colossal Monolith, undefined, Unknown
+
+		npcs.put(3174723861086208L, new Npc(NpcType.boss_1)); // Simulated Akkbeast, undefined, Unknown
+		npcs.put(3174749630889984L, new Npc(NpcType.boss_1)); // Simulated Wampa, undefined, Unknown
+		npcs.put(3176776855453696L, new Npc(NpcType.boss_1)); // Simulated Manka Cat, undefined, Unknown
+		npcs.put(3176858459832320L, new Npc(NpcType.boss_2)); // Simulated Rancor, undefined, Unknown
+		npcs.put(3174831235268608L, new Npc(NpcType.boss_1)); // Simulated Sleen, undefined, Unknown
+		npcs.put(3176785445388288L, new Npc(NpcType.boss_1)); // Simulated Terentatek, undefined, Unknown
+		npcs.put(3174698091282432L, new Npc(NpcType.boss_1)); // Simulated Vrblther, undefined, Unknown
+		npcs.put(3153545377349632L, new Npc(NpcType.boss_raid)); // Xenoanalyst II, undefined, Unknown
+		npcs.put(3230738824560640L, new Npc(NpcType.boss_raid)); // Xenoanalyst II, undefined, Unknown
+		npcs.put(3213919732629504L, new Npc(NpcType.boss_raid)); // Xenoanalyst II, undefined, Unknown
+		npcs.put(3213924027596800L, new Npc(NpcType.boss_raid)); // Xenoanalyst II, undefined, Unknown
+		npcs.put(3213928322564096L, new Npc(NpcType.boss_raid)); // Xenoanalyst II, undefined, Unknown
+
+		npcs.put(3259029774139392L, new Npc(NpcType.boss_1)); // Palace Security Droid, makeb_lair, raidEncounter
+		npcs.put(3210174521147392L, new Npc(NpcType.boss_raid)); // Golden Fury, makeb_lair, raidEncounter
+		npcs.put(3232735984353280L, new Npc(NpcType.boss_raid)); // Golden Fury, makeb_lair, raidEncounter
+		npcs.put(3232800408862720L, new Npc(NpcType.boss_raid)); // Golden Fury, makeb_lair, raidEncounter
+		npcs.put(3232817588731904L, new Npc(NpcType.boss_raid)); // Golden Fury, makeb_lair, raidEncounter
+//		npcs.put(3211136593821696L, new Npc(NpcType.boss_2)); // Shield Pylon, makeb_lair, raidEncounter
 	}
 
 	@Override
@@ -72,6 +111,8 @@ public class WorldBoss extends Raid {
 		}
 
 		switch (c.getBoss().getRaidBossName()) {
+			case ColossalMonolith:
+				return getNewPhaseNameForMonolith(e, c, currentPhaseName);
 			case MutatedGeonosianQueen:
 				return getNewPhaseNameForQueen(e, c, currentPhaseName);
 			default:
@@ -79,14 +120,21 @@ public class WorldBoss extends Raid {
 		}
 	}
 
-	private String getNewPhaseNameForQueen(final Event e, final Combat c, final String currentPhaseName) {
+	private String getNewPhaseNameForMonolith(final Event e, final Combat c, final String currentPhaseName) {
 
-//		switch (c.getBoss().getMode()) {
-//			case SM:
-//				// only HM/NiM
-//				return null;
-//		}
-//
+		// ------------------ Timers ------------------
+
+		if (Helpers.isAbilityEqual(e, 3546045258661888L)) {        // Bite Wounds
+			TimerManager.stopTimer(MonolithBiteWoundsTimer.class);
+			TimerManager.startTimer(MonolithBiteWoundsTimer.class, e.getTimestamp());
+		}
+
+		return null;
+	}
+
+	private String getNewPhaseNameForQueen(final Event e, final Combat c, final String currentPhaseName) {
+		if (Helpers.isTargetOtherPlayer(e)) return null;    // returns if target is other player
+
 		if (currentPhaseName == null) {
 			phaseTimers.clear();
 			phaseTimers.put(QUEEN_PHASE_GUARDS_1, c.getTimeFrom() + 2500 + 48000 + 3000);
@@ -158,8 +206,14 @@ public class WorldBoss extends Raid {
 		return null;
 	}
 
-	public static class QueenRoyalSummonsGuardsTimer extends BaseTimer {
+	public static class MonolithBiteWoundsTimer extends BaseTimer {
+		public MonolithBiteWoundsTimer() {
+			super("Bite Wounds", "Monolith Bite Wounds", 20000);
+			setColor(0);
+		}
+	}
 
+	public static class QueenRoyalSummonsGuardsTimer extends BaseTimer {
 		public QueenRoyalSummonsGuardsTimer() {
 			super("Royal Guards", "Queen Royal Summons - Guards", 48000);
 			setColor(0);
@@ -167,7 +221,6 @@ public class WorldBoss extends Raid {
 	}
 
 	public static class QueenRoyalSummonsCausticTimer extends BaseTimer {
-
 		public QueenRoyalSummonsCausticTimer() {
 			super("Caustic Drones", "Queen Royal Summons - Caustic", 74000);
 			setColor(1);

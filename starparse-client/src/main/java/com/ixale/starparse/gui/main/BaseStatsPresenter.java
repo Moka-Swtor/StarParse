@@ -2,9 +2,11 @@ package com.ixale.starparse.gui.main;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,31 +53,29 @@ abstract public class BaseStatsPresenter implements Initializable {
 
 	private Combat currentCombat = null;
 	private CombatStats currentStats = null;
+	private String currentPlayerName = null;
 
 	// context menu for interval selection
 	private final MenuItem miFrom = new MenuItem("Start at selected");
 	private final MenuItem miTo = new MenuItem("End at selected");
 
-	final Runnable onBreakdownSelectAction = new Runnable() {
-		@Override
-		public void run() {
-			try {
-				refreshCombatStats(currentCombat, currentStats);
+	final Runnable onBreakdownSelectAction = () -> {
+		try {
+			refreshCombatStats(currentCombat, currentStats);
 
-			} catch (Exception e) {
-				logger.error("General error", e);
-				e.printStackTrace();
-			}
+		} catch (Exception e) {
+			logger.error("General error", e);
+			e.printStackTrace();
 		}
 	};
 
 	protected RequestUpdateListener listener;
 
-	public static interface RequestUpdateListener {
+	public interface RequestUpdateListener {
 
-		public void onUpdateRequested();
+		void onUpdateRequested();
 
-		public void setFlash(String message, FlashMessage.Type type);
+		void setFlash(String message, FlashMessage.Type type);
 	}
 
 	public void setRequestUpdateListener(final RequestUpdateListener listener) {
@@ -104,17 +104,7 @@ abstract public class BaseStatsPresenter implements Initializable {
 		return List.of();
 	}
 
-	protected void toggleWrapper(final Pane wrapper, boolean isVisible, boolean isChart) throws Exception {
-		List<Pane> otherVisibleCharts = null;
-		int nbChartVisible = -1;
-		int height = 165;
-		if (isChart) {
-			otherVisibleCharts = getOtherVisibleCharts(wrapper);
-			nbChartVisible = otherVisibleCharts.size() + (isVisible ? 1 : 0);
-			height *= nbChartVisible == 3 ? 1 : nbChartVisible==2 ? 2 : 3;
-			final int prefHeight = height;
-			otherVisibleCharts.forEach(chart -> chart.setPrefHeight(prefHeight));
-		}
+	protected void toggleWrapper(final Pane wrapper, boolean isVisible, @SuppressWarnings("SameParameterValue") int height) throws Exception {
 
 		if (isVisible) {
 			wrapper.setPrefHeight(height);
@@ -136,15 +126,19 @@ abstract public class BaseStatsPresenter implements Initializable {
 
 	final public void updateCombatStats(final Combat combat, final CombatStats stats) throws Exception {
 
-		if (currentCombat != null && combat.getCombatId() != currentCombat.getCombatId()) {
+		if ((currentCombat != null && (combat == null || combat.getCombatId() != currentCombat.getCombatId()))
+				|| !Objects.equals(context.getSelectedPlayer(), currentPlayerName)) {
 			currentCombat = null;
 			currentStats = null;
 			resetCombatStats();
 		}
 		currentCombat = combat;
 		currentStats = stats;
+		currentPlayerName = context.getSelectedPlayer();
 
-		refreshCombatStats(combat, stats);
+		if (currentCombat != null) {
+			refreshCombatStats(combat, stats);
+		}
 	}
 
 	abstract protected void refreshCombatStats(final Combat combat, final CombatStats stats) throws Exception;
@@ -153,7 +147,7 @@ abstract public class BaseStatsPresenter implements Initializable {
 
 	protected <T> void resortTable(final TableView<T> table) {
 		if (table.getSortOrder().size() > 0 && !table.getItems().isEmpty()) {
-			final List<TableColumn<T, ?>> sortOrder = new ArrayList<TableColumn<T, ?>>(table.getSortOrder());
+			final List<TableColumn<T, ?>> sortOrder = new ArrayList<>(table.getSortOrder());
 			table.getSortOrder().clear();
 			table.getSortOrder().addAll(sortOrder);
 		}
@@ -167,27 +161,21 @@ abstract public class BaseStatsPresenter implements Initializable {
 
 	protected void createContextMenu(final TableView<? extends BaseItem> table) {
 
-		miFrom.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				if (table.getSelectionModel().getSelectedItems().isEmpty()) {
-					return;
-				}
-				context.setTickFrom(table.getSelectionModel().getSelectedItems().get(0).getTickFrom());
-				listener.onUpdateRequested();
+		miFrom.setOnAction(e -> {
+			if (table.getSelectionModel().getSelectedItems().isEmpty()) {
+				return;
 			}
+			context.setTickFrom(table.getSelectionModel().getSelectedItems().get(0).getTickFrom());
+			listener.onUpdateRequested();
 		});
 
-		miTo.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				if (table.getSelectionModel().getSelectedItems().isEmpty()) {
-					return;
-				}
-				context
-					.setTickTo(table.getSelectionModel().getSelectedItems().get(table.getSelectionModel().getSelectedItems().size() - 1).getTickTo());
-				listener.onUpdateRequested();
+		miTo.setOnAction(e -> {
+			if (table.getSelectionModel().getSelectedItems().isEmpty()) {
+				return;
 			}
+			context
+					.setTickTo(table.getSelectionModel().getSelectedItems().get(table.getSelectionModel().getSelectedItems().size() - 1).getTickTo());
+			listener.onUpdateRequested();
 		});
 
 		final ContextMenu menu = new ContextMenu(miFrom, miTo);
@@ -207,7 +195,7 @@ abstract public class BaseStatsPresenter implements Initializable {
 		@Override
 		public void handle(WindowEvent arg0) {
 			if (table.getSelectionModel().getSelectedItems().isEmpty()
-				|| table.getSelectionModel().getSelectedItem() == null) {
+					|| table.getSelectionModel().getSelectedItem() == null) {
 				miFrom.setDisable(true);
 				miTo.setDisable(true);
 				return;
@@ -225,7 +213,7 @@ abstract public class BaseStatsPresenter implements Initializable {
 	public static Image getDisciplineIcon(final CharacterDiscipline discipline) {
 		return getIcon(discipline.name().toLowerCase() + ".png");
 	}
-	
+
 	public static Image getAbilityIcon(final Long guid) {
 		return getIcon(AbilityIcon.ico.get(guid));
 	}
@@ -236,11 +224,12 @@ abstract public class BaseStatsPresenter implements Initializable {
 		}
 		if (icons == null) {
 			icons = new HashMap<>();
-			try {
-				FileLoader.extractZip(new File(StarparseApp.ICONS_DIR + ".zip"), new File(StarparseApp.ICONS_DIR));
-				FileLoader.extractZip(new File(StarparseApp.ICONS_DIR + "2.zip"), new File(StarparseApp.ICONS_DIR));
-			} catch (Exception e) {
-				logger.error("Unable to load icons: " + e.getMessage());
+			for (final String zip : Arrays.asList(".zip", "2.zip", "3.zip", "4.zip")) {
+				try {
+					FileLoader.extractZip(new File(StarparseApp.ICONS_DIR + zip), new File(StarparseApp.ICONS_DIR));
+				} catch (Exception e) {
+					logger.error("Unable to load icons [" + zip + "]: " + e.getMessage());
+				}
 			}
 		}
 		if (!icons.containsKey(ico)) {

@@ -8,12 +8,16 @@ import java.util.stream.Collectors;
 import com.ixale.starparse.domain.ConfigTimer;
 import com.ixale.starparse.domain.ConfigTimer.Condition;
 import com.ixale.starparse.domain.Entity;
+import com.ixale.starparse.domain.Event;
 import com.ixale.starparse.gui.SoundManager;
 import com.ixale.starparse.parser.TimerState;
 import com.ixale.starparse.timer.TimerManager.RaidPullTimer;
 
 import com.ixale.starparse.ws.Utils;
 import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomTimer extends BaseTimer {
 
@@ -25,25 +29,37 @@ public class CustomTimer extends BaseTimer {
 	private Long lastSample = null, lastSound = null;
 
 	public CustomTimer(final ConfigTimer timer) {
-		super(timer.getName(), null, (int) Math.round(timer.getInterval() * 1000),
-			timer.getRepeat() != null && timer.getRepeat() > 0 && timer.getInterval() > 0 ? (int) Math.round(timer.getInterval() * 1000) : null,
-			timer.getRepeat(),
-			timer.getCancel() != null && Condition.Type.COMBAT_END.equals(timer.getCancel().getType()) ? Scope.COMBAT : Scope.ANY);
+		super(timer.getName(),
+				null, (int) Math.round(timer.getInterval() * 1000),
+				timer.getRepeat() != null && timer.getRepeat() > 0 && timer.getInterval() > 0 ? (int) Math.round(timer.getInterval() * 1000) : null,
+				timer.getRepeat(),
+				timer.getCancel() != null && Condition.Type.COMBAT_END.equals(timer.getCancel().getType()) ? Scope.COMBAT : Scope.ANY);
 
 		this.timer = timer;
 		this.systemTimer = null;
 	}
 
-	public CustomTimer(final ConfigTimer timer, final BaseTimer systemTimer) {
-		this(timer, systemTimer, null);
+	public CustomTimer(final ConfigTimer timer, final Event e) {
+		super(getDisplayName(timer, e),
+				null, (int) Math.round(timer.getInterval() * 1000),
+				timer.getRepeat() != null && timer.getRepeat() > 0 && timer.getInterval() > 0 ? (int) Math.round(timer.getInterval() * 1000) : null,
+				timer.getRepeat(),
+				timer.getCancel() != null && Condition.Type.COMBAT_END.equals(timer.getCancel().getType()) ? Scope.COMBAT : Scope.ANY);
+
+		this.timer = timer;
+		this.systemTimer = null;
 	}
+
+//	public CustomTimer(final ConfigTimer timer, final BaseTimer systemTimer) {
+//		this(timer, systemTimer, null);
+//	}
 
 	public CustomTimer(final ConfigTimer timer, final BaseTimer systemTimer, final Integer interval) {
 		super(systemTimer.getName(), timer.getName(),
-			interval == null ? systemTimer.getFirstInterval() : interval,
-			systemTimer.getRepeatInterval(),
-			null, // MAX
-			systemTimer.getScope());
+				interval == null ? systemTimer.getFirstInterval() : interval,
+				systemTimer.getRepeatInterval(),
+				null, // MAX
+				systemTimer.getScope());
 
 		this.timer = timer;
 		this.systemTimer = systemTimer;
@@ -79,6 +95,7 @@ public class CustomTimer extends BaseTimer {
 		}
 	}
 
+	@SuppressWarnings("IntegerMultiplicationImplicitCastToLong")
 	@Override
 	protected void runningTick(long timeTo, long timeRemaining) {
 		if (countdownThreshold != null && countdownThreshold >= timeRemaining) {
@@ -86,7 +103,7 @@ public class CustomTimer extends BaseTimer {
 			if (sample > 0 && (lastSample == null || (timeTo - (sample * 1000)) > lastSample)) {
 				if (!TimerManager.isMuted() || Scope.ANY.equals(getScope())) {
 					SoundManager.play(sample, timer.getCountdownVoice(),
-						timer.getCountdownVolume() == null ? null : timer.getCountdownVolume() * 1.0);
+							timer.getCountdownVolume() == null ? null : timer.getCountdownVolume() * 1.0);
 				}
 
 				lastSample = timeTo - (sample * 1000); // endures random restarts from other threads etc
@@ -104,11 +121,11 @@ public class CustomTimer extends BaseTimer {
 	protected void expired(long timeTo) {
 		expiredRepeat(timeTo);
 
-		for (final ConfigTimer nextTimer: nextTimers) {
-			TimerManager.startTimer(nextTimer, getTimeTo());
+		for (final ConfigTimer nextTimer : nextTimers) {
+			TimerManager.startTimer(nextTimer, getTimeTo(), null);
 		}
-		for (final ConfigTimer cancelTimer: cancelTimers) {
-			TimerManager.stopTimer(cancelTimer.getName());
+		for (final ConfigTimer cancelTimer : cancelTimers) {
+			TimerManager.stopTimer(cancelTimer);
 		}
 	}
 
@@ -131,6 +148,11 @@ public class CustomTimer extends BaseTimer {
 				: timer.getTrigger().computeEntity();
 	}
 
+	@Override
+	public ConfigTimer.Slot getSlot() {
+		return timer.getSlot() == null ? ConfigTimer.Slot.A : timer.getSlot();
+	}
+
 	public List<ConfigTimer> getNextTimers() {
 		return nextTimers;
 	}
@@ -147,6 +169,33 @@ public class CustomTimer extends BaseTimer {
 	public boolean doOverrideExpiringThreshold() {
 		return systemTimer != null && (systemTimer instanceof RaidPullTimer);
 	}
+
+	public static String getDisplayName(final ConfigTimer timer, final Event e) {
+		return (timer.isShowSource() && e != null && e.getSource() != null
+				? getShortName(e.getSource().getName(), 15) + "\n"
+				: "") + timer.getName();
+	}
+
+	public static String getShortName(final String n, int limit) {
+		if (n != null && n.length() > limit) {
+			if (n.contains(",")) {
+				return getShortName(n.substring(0, n.indexOf(",")), limit);
+			}
+			if (n.startsWith("The ")) {
+				return getShortName(n.substring(4), limit);
+			}
+//			int i = n.indexOf(" ", n.length() - limit - 1);
+			int i = n.indexOf(" ");
+			if (i > 0) {
+				return n.charAt(0) + ". " + getShortName(n.substring(i + 1), limit - 3);
+			}
+			return n.substring(n.length() - limit);
+
+		} else {
+			return n;
+		}
+	}
+
 
 	@Override
 	public String toString() {

@@ -1,26 +1,29 @@
 package com.ixale.starparse.utils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ixale.starparse.domain.Combat;
+import com.ixale.starparse.domain.CombatInfo;
 import com.ixale.starparse.domain.Event;
 import com.ixale.starparse.domain.Raid;
 import com.ixale.starparse.domain.stats.CombatEventStats;
 import com.ixale.starparse.service.ParselyService.ParselyCombatInfo;
 import com.ixale.starparse.service.impl.Context;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class FileLoader {
 
@@ -64,30 +67,32 @@ public class FileLoader {
 		return size;
 	}
 
-	public static final void extractZip(final File sourceZip, final File destinationDir) throws Exception {
+	public static void extractZip(final File sourceZip, final File destinationDir) throws Exception {
 
 		if (sourceZip == null || !sourceZip.isFile() || !sourceZip.canRead()) {
 			throw new Exception("Unable to read source file: " + sourceZip);
 		}
 		if (!destinationDir.exists()) {
-			destinationDir.mkdir();
+			if (!destinationDir.mkdir()) {
+				throw new Exception("Unable to create icons dir: " + destinationDir);
+			}
 		}
 
 		byte[] buffer = new byte[1024];
-		FileInputStream fis = null;
 		ZipInputStream zis = null;
 		FileOutputStream fos = null;
-		ZipEntry ze = null;
-		try {
-			fis = new FileInputStream(sourceZip);
+		ZipEntry ze;
+		try (FileInputStream fis = new FileInputStream(sourceZip)) {
 			zis = new ZipInputStream(fis);
 			ze = zis.getNextEntry();
 
 			while (ze != null) {
 				final File newFile = new File(destinationDir, ze.getName());
-				if (!newFile.exists()) {
+				if (!newFile.exists() || (newFile.isFile() && newFile.length() == 3162 /* placeholder */)) {
 					if (ze.isDirectory()) {
-						newFile.mkdirs();
+						if (!newFile.mkdir()) {
+							throw new Exception("Unable to create icons dir: " + newFile);
+						}
 					} else {
 						try {
 							fos = new FileOutputStream(newFile);
@@ -120,20 +125,13 @@ public class FileLoader {
 
 				}
 			}
-			if (fis != null) {
-				try {
-					fis.close();
-				} catch (Exception ignored) {
-
-				}
-			}
 		}
 	}
 
 	// TODO: decouple & move somewhere else?
-	public static String extractCombats(final String fileName,
-		final List<Combat> allCombats, final List<Combat> selectedCombats,
-		final List<ParselyCombatInfo> combatsInfo, final Context context)
+	public static byte[] extractCombats(final String fileName,
+			final List<Combat> allCombats, final List<Combat> selectedCombats,
+			final List<ParselyCombatInfo> combatsInfo, final Context context)
 			throws Exception {
 
 		final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS", Locale.ENGLISH);
@@ -149,13 +147,14 @@ public class FileLoader {
 				logger.debug("Returning whole combat log file " + f);
 			}
 			fillParselyCombatsInfo(allCombats, combatsInfo, context);
-			return extractPortion(f, null, null);
+			return Files.readAllBytes(f.toPath());
 		}
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("Slicing combat log file " + f + ": " + selectedCombats.size() + " / " + allCombats.size());
 		}
 
+		final Set<String> areaEnteredLines = new HashSet<>();
 		Long from = null, to = null;
 		try {
 			// selected combats
@@ -167,7 +166,7 @@ public class FileLoader {
 				// bound by the next start (or EOF)
 				to = ((i + 1) < allCombats.size()) ? allCombats.get(i + 1).getTimeFrom() : null;
 
-				for (final Combat c: selectedCombats) {
+				for (final Combat c : selectedCombats) {
 					if (c == null) {
 						// selection no longer valid, can happen 
 						// FIXME: investigate
@@ -177,7 +176,12 @@ public class FileLoader {
 						if (logger.isDebugEnabled()) {
 							logger.debug("Extracting combat [" + i + "][" + from + "][" + to + "]: " + combat);
 						}
-						sb.append(extractPortion(f, from != null ? "[" + sdf.format(from) : null, to != null ? "[" + sdf.format(to) : null));
+						final ExtractedCombat ec = extractPortion(f, from != null ? "[" + sdf.format(from) : null, to != null ? "[" + sdf.format(to) : null);
+						if (ec.lastAreaEntered != null && !areaEnteredLines.contains(ec.lastAreaEntered)) {
+							sb.append(ec.lastAreaEntered).append("\r\n");
+							areaEnteredLines.add(ec.lastAreaEntered);
+						}
+						sb.append(ec.sb);
 					}
 				}
 
@@ -190,7 +194,7 @@ public class FileLoader {
 			}
 
 			fillParselyCombatsInfo(selectedCombats, combatsInfo, context);
-			return sb.toString();
+			return sb.toString().getBytes();
 
 		} catch (NullPointerException e) {
 			throw new Exception("NPE: [" + from + ", " + to + "], all: " + Arrays.asList(allCombats) + ", sel: " + Arrays.asList(selectedCombats));
@@ -203,7 +207,7 @@ public class FileLoader {
 			return;
 		}
 		try {
-			for (final Combat c: combats) {
+			for (final Combat c : combats) {
 				if (c == null) {
 					continue;
 				}
@@ -212,11 +216,17 @@ public class FileLoader {
 				info.to = c.getTimeTo();
 				info.raidBoss = c.getBoss();
 				if (info.raidBoss != null && Raid.Mode.NiM.equals(info.raidBoss.getMode())) {
-					for (final CombatEventStats e: context.getCombatEvents(c.getCombatId())) {
+					for (final CombatEventStats e : context.getCombatEvents(c.getCombatId(), context.getSelectedPlayer())) {
 						if (Event.Type.NIM_CRYSTAL.equals(e.getType())) {
 							info.isNiMCrystal = true;
+							break;
 						}
 					}
+				}
+				final CombatInfo combatInfo = context.getCombatInfo().get(c.getCombatId());
+				if (combatInfo != null && combatInfo.getLocationInfo() != null) {
+					info.instanceName = combatInfo.getLocationInfo().getInstanceName();
+					info.instanceGuid = combatInfo.getLocationInfo().getInstanceGuid();
 				}
 				combatsInfo.add(info);
 			}
@@ -225,29 +235,35 @@ public class FileLoader {
 		}
 	}
 
-	public static String extractPortion(final File file, final String from, final String to) throws Exception {
+	public static class ExtractedCombat {
+		final public StringBuilder sb = new StringBuilder();
+		public String lastAreaEntered = null;
+	}
 
-		final StringBuilder sb = new StringBuilder();
+	public static ExtractedCombat extractPortion(final File file, final String from, final String to) throws Exception {
 
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new FileReader(file));
+		final ExtractedCombat ec = new ExtractedCombat();
+
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 
 			String line;
 			boolean isReading = (from == null);
 			while ((line = br.readLine()) != null) {
 				if (isReading) {
 					if (to != null && line.startsWith(to)) {
-						// exclusive, i.e. do no read last line
+						// exclusive, i.e. do not read last line
 						// were done
 						break;
 					}
 
 					// append
-					sb.append(line).append("\r\n"); // TODO: always?
+					ec.sb.append(line).append("\r\n");
+
+				} else if (line.contains("836045448953664")) { // AreaEntered (>= 7.0.0b)
+					ec.lastAreaEntered = line;
 				}
 
-				if (!isReading && (from == null || line.startsWith(from))) {
+				if (!isReading && line.startsWith(from)) {
 					// exclusive, i.e. do no read first line
 					isReading = true;
 				}
@@ -256,15 +272,7 @@ public class FileLoader {
 		} catch (Exception e) {
 			throw new Exception("Unable to extract: " + e.getMessage(), e);
 
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (Exception ignored) {
-
-				}
-			}
 		}
-		return sb.toString();
+		return ec;
 	}
 }

@@ -1,6 +1,5 @@
 package com.ixale.starparse.domain;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Base64;
 
@@ -14,7 +13,7 @@ public class RaidGroup implements Serializable {
 	private String clientPasswordEnc, adminPasswordEnc;
 
 	public RaidGroup() {
-		
+
 	}
 
 	public RaidGroup(String name) {
@@ -58,6 +57,6 @@ public class RaidGroup implements Serializable {
 	}
 
 	public String toString() {
-		return name+" ["+clientPasswordEnc+"]["+adminPasswordEnc+"]";
+		return name + " [" + clientPasswordEnc + "][" + adminPasswordEnc + "]";
 	}
 }

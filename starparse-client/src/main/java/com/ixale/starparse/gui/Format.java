@@ -12,16 +12,19 @@ import com.ixale.starparse.time.TimeUtils;
 
 public class Format {
 
-	static final SimpleDateFormat sdfTimeHMS = new SimpleDateFormat("HH:mm:ss"),
-		sdfTimeMS = new SimpleDateFormat("mm:ss"),
-		sdfTimeMSM = new SimpleDateFormat("mm:ss.SSS"),
-		sdfTimeHMSM = new SimpleDateFormat("HH:mm:ss.SSS"),
-		sdfDateTime = new SimpleDateFormat("d.M.yy HH:mm:ss"),
-		sdfDate = new SimpleDateFormat("d.M.yy");
+	static final SimpleDateFormat
+			sdfTimeHMS = new SimpleDateFormat("HH:mm:ss"),
+			sdfTimeMS = new SimpleDateFormat("mm:ss"),
+			sdfTimeMSM = new SimpleDateFormat("mm:ss.SSS"),
+			sdfTimeHMSM = new SimpleDateFormat("HH:mm:ss.SSS"),
+			sdfDateTime = new SimpleDateFormat("d.M.yy HH:mm:ss"),
+			sdfDate = new SimpleDateFormat("d.M.yy");
 
-	static final DecimalFormat integerFormat = new DecimalFormat("#,###,###,##0"),
-		floatFormat = new DecimalFormat("#,###,###,##0.0"),
-		secondsFormat = new DecimalFormat("0.0");
+	static final DecimalFormat
+			integerFormat = new DecimalFormat("#,###,###,##0"),
+			floatFormat = new DecimalFormat("#,###,###,##0.0"),
+			secondsFormat = new DecimalFormat("0.0"),
+			percentFormat = new DecimalFormat("0.0");
 
 	static long timeDiff;
 
@@ -31,8 +34,8 @@ public class Format {
 			return "Current combat";
 		}
 		if (combat.getBoss() != null) {
-			return combat.getBoss().getName() 
-					+ " (" + combat.getBoss().getSize().toString().substring(0, combat.getBoss().getSize().toString().length() - 1) 
+			return combat.getBoss().getName()
+					+ " (" + combat.getBoss().getSize().toString().substring(0, combat.getBoss().getSize().toString().length() - 1)
 					+ " " + combat.getBoss().getMode() + ")";
 		}
 		if (combat.getName() != null) {
@@ -47,8 +50,8 @@ public class Format {
 		}
 
 		return sdfTimeHMS.format(combat.getTimeFrom())
-			+ " - " + sdfTimeHMS.format(combat.getTimeTo())
-			+ " (" + formatTime(combat.getTimeTo() - combat.getTimeFrom()) + ")";
+				+ " - " + sdfTimeHMS.format(combat.getTimeTo())
+				+ " (" + formatTime(combat.getTimeTo() - combat.getTimeFrom()) + ")";
 
 	}
 
@@ -58,7 +61,7 @@ public class Format {
 			return "";
 		}
 		return (combatLog.getCharacterName() == null ? "?" : combatLog.getCharacterName())
-			+ " @ " + sdfDateTime.format(combatLog.getTimeFrom());
+				+ " @ " + sdfDateTime.format(combatLog.getTimeFrom());
 	}
 
 	public static String formatCombatLogTime(final CombatLog combatLog, final Long timeTo) {
@@ -81,7 +84,7 @@ public class Format {
 
 	public static String formatSeconds(long time, Integer thresholdMs) {
 		if (thresholdMs == null || thresholdMs < time) {
-			return String.valueOf(Math.round(time / 1000));
+			return String.valueOf(Math.round(time / 1000.0));
 		}
 		return secondsFormat.format(time / 1000.0);
 	}
@@ -93,6 +96,7 @@ public class Format {
 		return sdfTimeHMSM.format(time);
 	}
 
+	@SuppressWarnings("unused")
 	public static String formatDate(long date) {
 		return sdfDate.format(date);
 	}
@@ -121,9 +125,7 @@ public class Format {
 			if (number >= 10000000 || number <= -10000000) {
 				return integerFormat.format(number / 1000000.0) + " M";
 			}
-			if (thousands || number >= 100000 || number <= -100000) {
-				return integerFormat.format(number / 1000.0) + " k";
-			}
+			return integerFormat.format(number / 1000.0) + " k";
 		}
 		return integerFormat.format(number);
 	}
@@ -132,16 +134,20 @@ public class Format {
 		return floatFormat.format(number);
 	}
 
+	public static String formatPercent(final double number) {
+		return percentFormat.format(100 * number);
+	}
+
 	public static String formatEffectName(final Entity effect, final Entity ability) {
 		return (ability.getName().isEmpty() || effect.getName().equals(ability.getName()))
-			? effect.getName()
-			: ability.getName() + ": " + effect.getName();
+				? (effect.getName() == null || effect.getName().trim().isEmpty() ? "(" + effect.getGuid() + ")" : effect.getName())
+				: ability.getName() + ": " + effect.getName();
 	}
 
 	public static String formatAbsorptionName(final Event e) {
 		if (e.getAbsorptionEventId() != null) {
 			return ((e.getAbsorptionSource() != null ? e.getAbsorptionSource().getName() + ": " : "")
-				+ (e.getAbsorptionAbility() != null ? e.getAbsorptionAbility().getName() : ""));
+					+ (e.getAbsorptionAbility() != null ? e.getAbsorptionAbility().getName() : ""));
 		} else if (e.getAbsorbtion() != null) {
 			return e.getAbsorbtion().getName();
 		} else {
@@ -149,7 +155,7 @@ public class Format {
 		}
 	}
 
-	final static String entityRegex = "([A-Z][a-z]+)(Warrior|Knight|Smuggler|Agent|)(30|)";
+	final static String entityRegex = "([A-Z][a-z]+)(Warrior|Knight|Smuggler|Agent|)([0-9]+|)";
 	final static String entityReplacement = "$1 ";
 
 	public static String formatAbility(final EntityGuid ability) {
@@ -160,6 +166,18 @@ public class Format {
 		}
 
 		return ability.name().replaceAll(entityRegex, entityReplacement).trim();
+	}
+
+	public static String formatFakePlayerName(final String playerName) {
+		return "(" + playerName + ")";
+	}
+
+	public static boolean isFakePlayerName(final String name) {
+		return name != null && name.startsWith("(");
+	}
+
+	public static String getRealNameEvenForFakePlayer(final String playerName) {
+		return isFakePlayerName(playerName) ? playerName.substring(1, playerName.length() - 1) : playerName;
 	}
 
 	public static void resetTimezone() {
